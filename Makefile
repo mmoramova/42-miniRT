@@ -6,7 +6,7 @@
 #    By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 09:49:08 by josorteg          #+#    #+#              #
-#    Updated: 2023/11/11 13:26:36 by mmoramov         ###   ########.fr        #
+#    Updated: 2023/11/11 17:14:16 by mmoramov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ FLAGS = -Wall -Wextra -Werror -g -O3
 
 #------------------------------SORUCES-----------------------------------------#
 
-SRC = main.c
+SRC = miniRT.c scene.c set_objects.c set_objects2.c rgb.c vector.c utils.c error.c
 PATH_SRC = ./src/
 LIBFT = ./libs/libft/
 MLIB = ./libs/minilibx_opengl_20191021/
@@ -41,7 +41,7 @@ all : dir $(NAME)
 -include $(DEP)
 
 dir:
-	@make -C $(LIBFT)
+	@make -C $(LIBFT) bonus
 	@make -C $(MLIB)
 	@mkdir -p $(F_OBJ)
 #	@mkdir -p $(F_OBJ)frac
