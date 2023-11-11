@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/11 17:21:22 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:41:28 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_amblight(t_scene *scene, char **datarow)
 	amblight = (t_amblight *) malloc(sizeof(t_amblight));
 	if (!amblight)
 		ft_error(scene, 1, "Malloc error - amblight");
-	amblight->ratio = ft_atoi(datarow[1]); //todo ft_atod
+	amblight->ratio = ft_atod(datarow[1]);
 	amblight->color = str2rgb(datarow[2]);
 
 	ft_lstadd_front(&(scene->amblight), ft_lstnew(amblight));
@@ -49,7 +49,7 @@ void	set_light(t_scene *scene, char **datarow)
 	if (!light)
 		ft_error(scene, 1, "Malloc error - light");
 	light->point = str2vector(datarow[1]);
-	light->brightness = ft_atoi(datarow[2]); //todo atod
+	light->brightness = ft_atod(datarow[2]);
 
 	ft_lstadd_front(&(scene->light), ft_lstnew(light));
 }
@@ -62,7 +62,7 @@ void	set_sphere(t_scene *scene, char **datarow)
 	if (!sphere)
 		ft_error(scene, 1, "Malloc error - sphere");
 	sphere->point = str2vector(datarow[1]);
-	sphere->diameter = ft_atoi(datarow[2]); //todo atod
+	sphere->diameter = ft_atod(datarow[2]);
 	sphere->color = str2rgb(datarow[3]);
 
 	ft_lstadd_front(&(scene->spheres), ft_lstnew(sphere));
