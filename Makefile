@@ -6,7 +6,7 @@
 #    By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 09:49:08 by josorteg          #+#    #+#              #
-#    Updated: 2023/11/11 17:14:16 by mmoramov         ###   ########.fr        #
+#    Updated: 2023/11/11 18:54:02 by mmoramov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ FLAGS = -Wall -Wextra -Werror -g -O3
 
 #------------------------------SORUCES-----------------------------------------#
 
-SRC = miniRT.c scene.c set_objects.c set_objects2.c rgb.c vector.c utils.c error.c
+SRC = miniRT.c scene.c set_objects.c set_objects2.c rgb.c vector.c utils.c error.c free.c
 PATH_SRC = ./src/
 LIBFT = ./libs/libft/
 MLIB = ./libs/minilibx_opengl_20191021/

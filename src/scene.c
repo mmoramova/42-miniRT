@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:41:55 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/11 17:24:57 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:53:41 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void scene_create(t_scene *scene, char *file)
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("|%s|\n\n", line);
+		printf("\n%s\n", line);
 		datarow = ft_split(line, '\t');
 		free(line);
 
-		printf("|Type is %s|\n\n", datarow[0]);
-		printf("|First column data %s|\n\n", datarow[1]);
+		printf("|Type is %s|\n", datarow[0]);
+		printf("|First column data %s|\n", datarow[1]);
 
 		scene_fill_line(scene, datarow);
 

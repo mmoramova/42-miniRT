@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 13:05:28 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/11 17:22:27 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:39:46 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int	main(int argc, char **argv)
 
 	scene_create(&scene, argv[1]);
 
+	free_scene(&scene);
 	return (0);
 }

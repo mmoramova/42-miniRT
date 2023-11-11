@@ -6,12 +6,13 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/11 17:24:23 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:49:42 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
 # include"libft.h"
 //# include"mlx.h"
 # include <math.h>
@@ -130,5 +131,14 @@ t_vector set_vector(char *x, char *y, char *z);
 
 //error.c
 void ft_error(t_scene *scene, int exitnumber, char *txt);
+
+//free.c
+void free_scene(t_scene *scene);
+void free_amblight(void *amblight);
+void free_camera(void *camera);
+void free_light(void *light);
+void free_sphere(void *sphere);
+void free_plane(void *plane);
+void free_cylinder(void *cylinder);
 
 #endif
