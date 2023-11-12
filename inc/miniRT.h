@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/12 13:46:02 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:23:01 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define MINIRT_H
 
 # include"libft.h"
-//# include"mlx.h"
+# include"keyscode.h"
+# include"mlx.h"
 # include <math.h>
 # include <unistd.h>
 # include <stdbool.h>
@@ -117,9 +118,21 @@ typedef struct s_cylinder
 }				t_cylinder;
 
 /* SCENE */
+
+typedef struct s_mlx
+{
+	void		*image;
+	char		*buff;
+	int			buf_wid;
+	void		*window;
+	void		*mlx;
+	t_pixel		win_size;	//aprox
+	int			bpp;
+	int			endian;
+}				t_mlx;
+
 typedef struct s_scene
 {
-	t_pixel		pixel;
 	t_line		visionray;
 	t_amblight	amblight;
 	t_camera	camera;
@@ -127,7 +140,7 @@ typedef struct s_scene
 	t_list		*spheres;
 	t_list		*planes;
 	t_list		*cylinders;
-
+	t_mlx		mlx;
 }				t_scene;
 
 //miniRT.c
@@ -167,5 +180,22 @@ void free_light(void *light);
 void free_sphere(void *sphere);
 void free_plane(void *plane);
 void free_cylinder(void *cylinder);
+
+//minilib
+void	init(t_scene *scene);
+int		display_mlx_win(t_scene *scene);
+void	draw_px(t_scene *scene, t_pixel pos);
+void	draw_win(t_scene *scene);
+void	put_pixel(t_mlx *mlx, int x, int y, int color);
+//hook
+int		key_hook(int keycode, t_scene *scene); //exit
+int		scene_exit(t_scene *scene);
+
+//Calculus
+int	ray_tracing(t_scene *scene/*t_pixel pos*/);
+void D_plane (t_camera *camera);
+void camera_intersection (t_camera *camera);
+//General calculus
+double	distance (t_vector point1,t_vector point2);
 
 #endif

@@ -1,29 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   miniRT.c                                           :+:      :+:    :+:   */
+/*   maths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/11 13:05:28 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/12 15:22:27 by josorteg         ###   ########.fr       */
+/*   Created: 2023/11/12 17:19:49 by josorteg          #+#    #+#             */
+/*   Updated: 2023/11/12 17:35:32 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include"miniRT.h"
 
-/* make && ./miniRT test.rt */
-int	main(int argc, char **argv)
+double	distance (t_vector point1,t_vector point2)
 {
-	t_scene	scene;
-
-	if (argc != 2 || ft_check_arg(argv[1]))
-		ft_error(&scene, 1, "Please add one .rt type argument");
-
-	scene_create(&scene, argv[1]);
-	init(&scene);
-	display_mlx_win(&scene);
-	free_scene(&scene);
-
-	return (0);
+	printf("distance = %f\n",sqrt (pow((point1.x - point2.x),2)+pow((point1.y - point2.y),2)+pow((point1.z - point2.z),2)));
+	return (sqrt (pow((point1.x - point2.x),2)+pow((point1.y - point2.y),2)+pow((point1.z - point2.z),2)));
 }
