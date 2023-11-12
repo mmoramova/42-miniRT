@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:41:55 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/11 18:53:41 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:41:14 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@ void scene_create(t_scene *scene, char *file)
 		line = get_next_line(fd);
 	}
 
-	/* getting and printing any information example :
+	// getting and printing any information example :
 	int cameraprint;
-	cameraprint = ((t_camera*)scene->camera->content)->point.y;
+	cameraprint = scene->camera.c_point.x;
 	printf("printing info from camera point y%d", cameraprint);
-	*/
+
 }
 
 /* creates empty t_scene for init */
 void scene_init(t_scene *scene)
 {
-	scene->amblight = ft_lstnew(NULL);
-	scene->camera = ft_lstnew(NULL);
-	scene->light = ft_lstnew(NULL);
+	//scene->amblight = ft_lstnew(NULL);
+	//scene->camera = ft_lstnew(NULL);
+	scene->lights = ft_lstnew(NULL);
 	scene->spheres = ft_lstnew(NULL);
 	scene->planes = ft_lstnew(NULL);
 	scene->cylinders = ft_lstnew(NULL);

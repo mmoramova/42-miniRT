@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/11 18:49:42 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:46:02 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 # include <fcntl.h>
 
 /* UTILS */
+typedef struct s_pixel
+{
+	int		x;
+	int		y;
+}				t_pixel;
+
 typedef struct s_vector
 {
 	double	x;
@@ -38,67 +44,90 @@ typedef struct s_rgb
 	int	rgb;
 }				t_rgb;
 
+typedef struct s_line
+{
+	double	x0;
+	double	y0;
+	double	z0;
+	double	Ux;
+	double	Uy;
+	double	Uz;
+
+}		t_line;
+
+typedef struct s_surface
+{
+	double		A;
+	double		B;
+	double		C;
+	double		D;
+	t_vector	nvector;
+
+}		t_surface;
+
 /* BASICS */
 typedef struct s_amblight
 {
-	double			ratio;
-	t_rgb			color;
+	double			al_ratio;
+	t_rgb			al_color;
 }					t_amblight;
 
 typedef struct s_camera
 {
-	t_vector	point;
-	t_vector	nvector;
-	int			angle; //int?
+	t_vector	c_point;
+	t_vector	c_nvector;
+	double		c_angle;
+	t_surface	c_surface;
 }				t_camera;
 
 typedef struct s_light
 {
-	t_vector	point;
-	double		brightness;
+	t_vector	l_point;
+	double		l_brightness;
+	t_line		lightray;
 	//t_rgb		color; for bonus
+
 }				t_light;
 
 /* OBJECTS */
 typedef struct s_sphere
 {
-	t_vector	point;
-	double		diameter;
-	t_rgb		color;
+	t_vector	sp_point;
+	double		sp_diameter;
+	t_rgb		sp_color;
+	t_vector	sp_radium;
 }				t_sphere;
 
 typedef struct s_plane
 {
-	t_vector	point;
-	t_vector	nvector;
-	t_rgb		color;
+	t_vector	p_point;
+	t_vector	p_nvector;
+	t_rgb		p_color;
+	t_surface	p_surface;
 }				t_plane;
 
 typedef struct s_cylinder
 {
-	t_vector	point;
-	t_vector	nvector;
-	double		diameter;
-	double		height;
-	t_rgb		color;
+	t_vector	c_point;
+	t_vector	c_direction;
+	double		c_diameter;
+	double		c_height;
+	t_rgb		c_color;
+	t_vector	c_nvector;
 }				t_cylinder;
 
 /* SCENE */
 typedef struct s_scene
 {
-	/*t_amblight	*amblight;
-	t_camera	*camera;
-	t_light		*light;
-	t_sphere	*spheres;
-	t_plane		*planes;
-	t_cylinder	*cylinders;*/
+	t_pixel		pixel;
+	t_line		visionray;
+	t_amblight	amblight;
+	t_camera	camera;
+	t_list		*lights;
+	t_list		*spheres;
+	t_list		*planes;
+	t_list		*cylinders;
 
-	t_list	*amblight;
-	t_list	*camera;
-	t_list	*light;
-	t_list	*spheres;
-	t_list	*planes;
-	t_list	*cylinders;
 }				t_scene;
 
 //miniRT.c
@@ -134,8 +163,6 @@ void ft_error(t_scene *scene, int exitnumber, char *txt);
 
 //free.c
 void free_scene(t_scene *scene);
-void free_amblight(void *amblight);
-void free_camera(void *camera);
 void free_light(void *light);
 void free_sphere(void *sphere);
 void free_plane(void *plane);

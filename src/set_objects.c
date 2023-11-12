@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/11 18:41:28 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:46:08 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,17 @@
 
 void	set_amblight(t_scene *scene, char **datarow)
 {
-	t_amblight	*amblight;
-
-	amblight = (t_amblight *) malloc(sizeof(t_amblight));
-	if (!amblight)
-		ft_error(scene, 1, "Malloc error - amblight");
-	amblight->ratio = ft_atod(datarow[1]);
-	amblight->color = str2rgb(datarow[2]);
-
-	ft_lstadd_front(&(scene->amblight), ft_lstnew(amblight));
+	scene->amblight.al_ratio = ft_atod(datarow[1]);
+	scene->amblight.al_color = str2rgb(datarow[2]);
 }
 
 void	set_camera(t_scene *scene, char **datarow)
 {
-	t_camera	*camera;
+	scene->camera.c_point = str2vector(datarow[1]);
+	scene->camera.c_nvector = str2vector(datarow[2]);
+	scene->camera.c_angle = ft_atod(datarow[3]);
+	//camera->c_surface = NULL;
 
-	camera = (t_camera *) malloc(sizeof(t_camera));
-	if (!camera)
-		ft_error(scene, 1, "Malloc error - camera");
-	camera->point = str2vector(datarow[1]);
-	camera->nvector = str2vector(datarow[2]);
-	camera->angle = ft_atoi(datarow[3]);
-
-	ft_lstadd_front(&(scene->camera), ft_lstnew(camera));
 }
 
 void	set_light(t_scene *scene, char **datarow)
@@ -48,10 +36,11 @@ void	set_light(t_scene *scene, char **datarow)
 	light = (t_light *) malloc(sizeof(t_light));
 	if (!light)
 		ft_error(scene, 1, "Malloc error - light");
-	light->point = str2vector(datarow[1]);
-	light->brightness = ft_atod(datarow[2]);
+	light->l_point = str2vector(datarow[1]);
+	light->l_brightness = ft_atod(datarow[2]);
+	//light->lightray = NULL;
 
-	ft_lstadd_front(&(scene->light), ft_lstnew(light));
+	ft_lstadd_front(&(scene->lights), ft_lstnew(light));
 }
 
 void	set_sphere(t_scene *scene, char **datarow)
@@ -61,9 +50,10 @@ void	set_sphere(t_scene *scene, char **datarow)
 	sphere = (t_sphere *) malloc(sizeof(t_sphere));
 	if (!sphere)
 		ft_error(scene, 1, "Malloc error - sphere");
-	sphere->point = str2vector(datarow[1]);
-	sphere->diameter = ft_atod(datarow[2]);
-	sphere->color = str2rgb(datarow[3]);
+	sphere->sp_point = str2vector(datarow[1]);
+	sphere->sp_diameter = ft_atod(datarow[2]);
+	sphere->sp_color = str2rgb(datarow[3]);
+	//sphere->sp_radium = NULL;
 
 	ft_lstadd_front(&(scene->spheres), ft_lstnew(sphere));
 }
@@ -75,9 +65,10 @@ void	set_plane(t_scene *scene, char **datarow)
 	plane = (t_plane *) malloc(sizeof(t_plane));
 	if (!plane)
 		ft_error(scene, 1, "Malloc error - plane");
-	plane->point = str2vector(datarow[1]);
-	plane->nvector = str2vector(datarow[2]);
-	plane->color = str2rgb(datarow[3]);
+	plane->p_point = str2vector(datarow[1]);
+	plane->p_nvector = str2vector(datarow[2]);
+	plane->p_color = str2rgb(datarow[3]);
+	//plane->p_surface = NULL;
 
 	ft_lstadd_front(&(scene->planes), ft_lstnew(plane));
 }
