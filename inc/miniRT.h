@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/14 17:31:19 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:48:16 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_ray
 {
 	t_line		line;
 	bool		colision;
+	t_vector	colision_point;
 	double		distance;
 	t_rgb		color;
 	t_vector	nvector;
@@ -205,12 +206,14 @@ int		key_hook(int keycode, t_scene *scene); //exit
 int		scene_exit(t_scene *scene);
 
 //Calculus
-int		ray_color(t_scene *scene, t_pixel pos);
+int		ray_color(t_scene *scene, t_pixel pos);\
+void	ray_update(t_ray *ray, t_rgb object_color, double d);
 void 	D_plane (t_camera *camera);
 void 	camera_intersection (t_camera *camera);
 t_vector	camera_first_vector (t_camera *camera);
-void intersection_vision (t_scene *scene, t_ray *ray);
-int		intersection_sfere (t_line ray, t_sphere *object);
+void 	intersection_vision (t_scene *scene, t_ray *ray);
+void	intersection_sphere(t_ray *ray, t_sphere *object);
+void	intersection_plane(t_ray *ray, t_plane *object);
 void	init_screen(t_scene *scene);
 
 //General calculus
