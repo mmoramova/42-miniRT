@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 09:07:33 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/12 16:23:33 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:59:24 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	draw_px(t_scene *scene, t_pixel pos)
 	int	color;
 
 	color = 0;
-	color = ray_tracing(scene/*,pos*/);
+	color = ray_color(scene,pos);
+	//printf("pixel x,y= (%d,%d)  color = %d\n",pos.x, pos.y,color);
 	// iter_num = 0;
 	// if (!ft_strncmp("mandelbrot", scene->pict.name, 10))
 	// 	iter_num = draw_mandelbrot(scene, pos);

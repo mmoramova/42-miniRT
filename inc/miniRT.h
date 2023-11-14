@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/12 17:23:01 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/14 17:31:19 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,15 @@ typedef struct s_line
 
 }		t_line;
 
+typedef struct s_ray
+{
+	t_line		line;
+	bool		colision;
+	double		distance;
+	t_rgb		color;
+	t_vector	nvector;
+}	t_ray;
+
 typedef struct s_surface
 {
 	double		A;
@@ -64,19 +73,23 @@ typedef struct s_surface
 	double		D;
 	t_vector	nvector;
 
-}		t_surface;
+}	t_surface;
 
 /* BASICS */
 typedef struct s_amblight
 {
 	double			al_ratio;
 	t_rgb			al_color;
+
 }					t_amblight;
 
 typedef struct s_camera
 {
 	t_vector	c_point;
+	t_vector	c_inter; //point of intersection with unitary vector
 	t_vector	c_nvector;
+	t_vector	c_up;
+	t_vector	c_left;
 	double		c_angle;
 	t_surface	c_surface;
 }				t_camera;
@@ -192,10 +205,21 @@ int		key_hook(int keycode, t_scene *scene); //exit
 int		scene_exit(t_scene *scene);
 
 //Calculus
-int	ray_tracing(t_scene *scene/*t_pixel pos*/);
-void D_plane (t_camera *camera);
-void camera_intersection (t_camera *camera);
+int		ray_color(t_scene *scene, t_pixel pos);
+void 	D_plane (t_camera *camera);
+void 	camera_intersection (t_camera *camera);
+t_vector	camera_first_vector (t_camera *camera);
+void intersection_vision (t_scene *scene, t_ray *ray);
+int		intersection_sfere (t_line ray, t_sphere *object);
+void	init_screen(t_scene *scene);
+
 //General calculus
-double	distance (t_vector point1,t_vector point2);
+double		distance (t_vector point1,t_vector point2);
+double		producto_escalar (t_vector vector1, t_vector vector2);
+t_vector 	producto_vectorial (t_vector vector1, t_vector vector2);
+t_vector	find_normal_vector (t_vector v1, double lengh);
+t_vector 	normalize_vector(t_vector v1);
+double		modulo(t_vector v1);
+t_line		two_points_line (t_vector pi, t_vector pf);
 
 #endif

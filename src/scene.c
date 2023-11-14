@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:41:55 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/12 13:41:14 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:13:45 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void scene_create(t_scene *scene, char *file)
 	// getting and printing any information example :
 	int cameraprint;
 	cameraprint = scene->camera.c_point.x;
-	printf("printing info from camera point y%d", cameraprint);
+	//printf("printing info from camera point y%d", cameraprint);
 
 }
 
