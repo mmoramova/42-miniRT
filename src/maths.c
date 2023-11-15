@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:19:49 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/14 10:18:27 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:19:22 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,3 +64,38 @@ t_line	two_points_line (t_vector pi, t_vector pf)
 	ray.z0 = pi.z;
 	return (ray);
 }
+
+t_vector escalarxvector(double esc, t_vector vec)
+{
+	t_vector	res;
+
+	res.x = esc * vec.x;
+	res.y = esc * vec.y;
+	res.z = esc * vec.z;
+	return (res);
+}
+t_vector vectorminus(t_vector v1, t_vector v2)
+{
+	t_vector res;
+
+	res.x = v1.x - v2.x;
+	res.y = v1.y - v2.y;
+	res.z = v1.z - v2.z;
+
+	return (res);
+}
+t_vector vectoradd(t_vector v1, t_vector v2)
+{
+	t_vector res;
+
+	res.x = v1.x + v2.x;
+	res.y = v1.y + v2.y;
+	res.z = v1.z + v2.z;
+
+	return (res);
+
+}
+
+
+
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/14 19:48:16 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:20:26 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,13 +206,15 @@ int		key_hook(int keycode, t_scene *scene); //exit
 int		scene_exit(t_scene *scene);
 
 //Calculus
-int		ray_color(t_scene *scene, t_pixel pos);\
+int		ray_color(t_scene *scene, t_pixel pos);
 void	ray_update(t_ray *ray, t_rgb object_color, double d);
 void 	D_plane (t_camera *camera);
 void 	camera_intersection (t_camera *camera);
 t_vector	camera_first_vector (t_camera *camera);
 void 	intersection_vision (t_scene *scene, t_ray *ray);
 void	intersection_sphere(t_ray *ray, t_sphere *object);
+void	intersection_cylinder (t_ray *ray,t_cylinder *object);
+void	intersection_cylinder1(t_ray *ray,t_cylinder *object);
 void	intersection_plane(t_ray *ray, t_plane *object);
 void	init_screen(t_scene *scene);
 
@@ -224,5 +226,8 @@ t_vector	find_normal_vector (t_vector v1, double lengh);
 t_vector 	normalize_vector(t_vector v1);
 double		modulo(t_vector v1);
 t_line		two_points_line (t_vector pi, t_vector pf);
+t_vector 	escalarxvector(double esc, t_vector vec);
+t_vector 	vectorminus(t_vector v1, t_vector v2);
+t_vector vectoradd(t_vector v1, t_vector v2);
 
 #endif
