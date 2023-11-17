@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/15 18:48:18 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:06:26 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,8 @@ void	intersection_cylinder1 (t_ray *ray,t_cylinder *object)
 	t_vector punto_centro;
 	t_vector punto_centro2;
 	t_vector punto_recta;
+	t_vector s_norm;
+	t_vector r_norm;
 	double	d;
 	double coef[3];
 	double uperc;
@@ -170,13 +172,17 @@ void	intersection_cylinder1 (t_ray *ray,t_cylinder *object)
 		if ( - coef[1] / (2 * coef[0]) - sqrt(discriminante) < d)
 			d =  - coef[1] / (2 * coef[0]) - sqrt(discriminante);
 	}
-	ccylinder = vectoradd(punto_recta,escalarxvector(d,u_norm));
-	printf("solucion (%f,%f,%f) and distance %f\n",ccylinder.x,ccylinder.y,ccylinder.z,modulo(ccylinder));
-	if (producto_escalar(c_norm,vectorminus(ccylinder,punto_centro)) < 0 && producto_escalar(c_norm,vectorminus(ccylinder,punto_centro2)) > 0)
+	s_norm.x = ray->line.Ux;
+	s_norm.y = ray->line.Uy;
+	s_norm.z = ray->line.Uz;
+	r_norm = vectorminus(punto_centro2,punto_centro);
+	ccylinder = vectoradd(punto_recta,escalarxvector(d,s_norm));
+	printf("solucion (%f,%f,%f) and product %f\n",r_norm.x,r_norm.y,r_norm.z,producto_escalar(r_norm,vectorminus(punto_centro,ccylinder)));
+	if ((producto_escalar(r_norm,vectorminus(punto_centro,ccylinder))) > 0 || producto_escalar(c_norm,vectorminus(punto_centro2,ccylinder)) < 0)
 		return;
 	if (ray->colision == 0 || ray->distance > d)
 	{
-		printf("discriminante = %f dist = %f, cil = %f\n",discriminante,ray->distance ,d);
+		//printf("discriminante = %f dist = %f, cil = %f\n",discriminante,ray->distance ,d);
 		ray_update(ray, object->c_color, d);
 	}
 
