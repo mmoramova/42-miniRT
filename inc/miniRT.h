@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/15 18:20:26 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/18 13:00:10 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_ray
 	t_vector	colision_point;
 	double		distance;
 	t_rgb		color;
-	t_vector	nvector;
+	t_vector	n_colision_vector;
 }	t_ray;
 
 typedef struct s_surface
@@ -207,7 +207,7 @@ int		scene_exit(t_scene *scene);
 
 //Calculus
 int		ray_color(t_scene *scene, t_pixel pos);
-void	ray_update(t_ray *ray, t_rgb object_color, double d);
+void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision);
 void 	D_plane (t_camera *camera);
 void 	camera_intersection (t_camera *camera);
 t_vector	camera_first_vector (t_camera *camera);
@@ -215,6 +215,7 @@ void 	intersection_vision (t_scene *scene, t_ray *ray);
 void	intersection_sphere(t_ray *ray, t_sphere *object);
 void	intersection_cylinder (t_ray *ray,t_cylinder *object);
 void	intersection_cylinder1(t_ray *ray,t_cylinder *object);
+void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object);
 void	intersection_plane(t_ray *ray, t_plane *object);
 void	init_screen(t_scene *scene);
 
@@ -229,5 +230,8 @@ t_line		two_points_line (t_vector pi, t_vector pf);
 t_vector 	escalarxvector(double esc, t_vector vec);
 t_vector 	vectorminus(t_vector v1, t_vector v2);
 t_vector vectoradd(t_vector v1, t_vector v2);
+
+//PROVISIONAL!!!!!
+void	pixel_color_normal(t_ray *ray);
 
 #endif

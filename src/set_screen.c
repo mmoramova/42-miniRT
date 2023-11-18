@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:48:20 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/14 17:06:01 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:07:28 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,10 @@ void	init_screen(t_scene *scene)
 	with = camera_first_vector (&scene->camera);
 	higt = producto_vectorial (scene->camera.c_nvector, with);
 	higt = normalize_vector (higt);
-	with = normalize_vector (with);
 	//h_angle = (scene->camera.c_angle*scene->mlx.win_size.y/scene->mlx.win_size.x);
 	//printf("vertical angle = %f horizontal angle %f\n", h_angle, scene->camera.c_angle);
 
-	dwith = distance (scene->camera.c_point, scene->camera.c_inter)*tan((scene->camera.c_angle*M_PI)/(360));
+	dwith = 1*tan((scene->camera.c_angle*M_PI)/(360));
 	dhigt = dwith * ((double) scene->mlx.win_size.y/scene->mlx.win_size.x);
 	printf ("ancho = %f , alto %f ancho p = %d alto %d\n",dwith,dhigt,scene->mlx.win_size.x,scene->mlx.win_size.y);
 	scene->camera.c_left.x = dwith * with.x;
@@ -58,13 +57,12 @@ void D_plane (t_camera *camera)
 void camera_intersection (t_camera *camera)
 {
 	//double	param;
-	double		d;
 
-	camera->c_inter.x = (camera->c_surface.A +camera->c_point.x);
-	camera->c_inter.y = (camera->c_surface.B +camera->c_point.y);
-	camera->c_inter.z = (camera->c_surface.C +camera->c_point.z);
+
+	camera->c_inter.x = (camera->c_nvector.x +camera->c_point.x);
+	camera->c_inter.y = (camera->c_nvector.y +camera->c_point.y);
+	camera->c_inter.z = (camera->c_nvector.z +camera->c_point.z);
 	//printf("intersection  x = %f + y = %f + z= %f \n",camera->c_inter.x,camera->c_inter.y,camera->c_inter.z);
-	d = distance (camera->c_point,camera->c_inter);
 	//printf ("distance between camera and surface plane = %f\n",d);
 
 }
@@ -74,7 +72,7 @@ t_vector	camera_first_vector (t_camera *camera)
 	double		lengh;
 	t_vector	first_unitary;
 
-	lengh = distance (camera->c_point, camera->c_inter)*tan((camera->c_angle/2*2*M_PI)/(360));
+	lengh = distance (camera->c_point, camera->c_inter)*tan((camera->c_angle*M_PI)/(360));
 	//printf ("module first vector= %f\n",lengh);
 	first_unitary = find_normal_vector (camera->c_nvector, lengh);
 	return (first_unitary);

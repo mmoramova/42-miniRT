@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/13 16:59:44 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:18:07 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	set_amblight(t_scene *scene, char **datarow)
 void	set_camera(t_scene *scene, char **datarow)
 {
 	scene->camera.c_point = str2vector(datarow[1]);
-	scene->camera.c_nvector = str2vector(datarow[2]);
+	scene->camera.c_nvector = normalize_vector(str2vector(datarow[2]));
 	scene->camera.c_angle = ft_atod(datarow[3]);
 	//camera->c_surface = NULL;
 
@@ -68,7 +68,13 @@ void	set_plane(t_scene *scene, char **datarow)
 	plane->p_point = str2vector(datarow[1]);
 	plane->p_nvector = str2vector(datarow[2]);
 	plane->p_color = str2rgb(datarow[3]);
-	//plane->p_surface = NULL;
+	plane->p_surface.A = plane->p_nvector.x;
+	plane->p_surface.B = plane->p_nvector.y;
+	plane->p_surface.C = plane->p_nvector.z;
+	plane->p_surface.D = -(plane->p_surface.A*(plane->p_point.x) +
+								plane->p_surface.B*(plane->p_point.y) +
+								plane->p_surface.C*(plane->p_point.z));
+
 
 	ft_lstadd_front(&(scene->planes), ft_lstnew(plane));
 }
