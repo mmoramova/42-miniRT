@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/18 17:07:03 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/19 19:09:23 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 		if (-producto_escalar(u_norm,punto_centro) - sqrt(discriminante) < d)
 			d = -producto_escalar(u_norm,punto_centro) - sqrt(discriminante);
 	}
-	radio = vectoradd(punto_recta,escalarxvector(d,u_norm));
-	if (ray->colision == 0 || ray->distance > d)
-		ray_update(ray, object->sp_color, d, radio);//bad unorm
+	radio = vectorminus(vectoradd(escalarxvector(d,u_norm), punto_recta), object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
+	if (ray->colision == 0 || ray->distance > modulo(escalarxvector(d,u_norm)))
+		ray_update(ray, object->sp_color, modulo(escalarxvector(d,u_norm)), radio);//bad unorm
 }
 
 void	intersection_plane(t_ray *ray, t_plane *object)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/18 13:00:10 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/19 17:44:15 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct s_light
 {
 	t_vector	l_point;
 	double		l_brightness;
-	t_line		lightray;
+	t_line		l_ray;
 	//t_rgb		color; for bonus
 
 }				t_light;
@@ -233,5 +233,6 @@ t_vector vectoradd(t_vector v1, t_vector v2);
 
 //PROVISIONAL!!!!!
 void	pixel_color_normal(t_ray *ray);
+void	pixel_color(t_ray *ray);
 
 #endif
