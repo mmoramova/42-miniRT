@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/21 19:45:45 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:56:54 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ t_rgb set_rgb(char *x, char *y, char *z);
 t_rgb rgbXrgb(t_rgb c1, t_rgb c2);
 t_rgb rgbXdouble(t_rgb c1, double r);
 t_rgb rgb_add(t_rgb c1, t_rgb c2);
+t_rgb rgb_norm(t_rgb c);
 
 //vector.c
 t_vector vector_init(double x, double y, double z);

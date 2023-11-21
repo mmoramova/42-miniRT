@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/21 19:58:22 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/21 21:17:25 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,30 +78,34 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 
 void	pixel_color(t_scene *scene, t_ray *ray)
 {
-	t_list	*l_list; //now working for last light, i didnt do the combination yet
+	t_list	*l_list; //now working for more light without ambient color
 	l_list = scene->lights;
 
 
-	double	al_ratio = scene->amblight.al_ratio;
-	t_rgb	al_color = scene->amblight.al_color;
-	t_rgb o_color = ray->color;
+	//double	al_ratio = scene->amblight.al_ratio;
+	//t_rgb	al_color = scene->amblight.al_color;
+//	t_rgb o_color = ray->color;
 
-	t_rgb ambient_color;
+//	t_rgb ambient_color;
 	t_rgb light_color;
 	t_rgb final_color;
 
-	ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
-	final_color = set_rgb(0,0,0);
+//	ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
+
+	//ambient_color = rgbXdouble(al_color,al_ratio);
+
+	final_color = set_rgb("0","0","0");
 	if (l_list)
 	{
 		while (l_list->content != NULL)
 		{
 			light_color = pixel_light_calculate (ray,(t_light*) l_list->content);
+			final_color = rgb_add(light_color, final_color);
 			l_list = l_list -> next;
 		}
 	}
-	final_color = rgb_add(ambient_color, final_color);
-	ray->color = final_color;
+	//final_color = rgb_add(ambient_color, final_color);
+	ray->color = rgb_norm(final_color);
 }
 
 t_rgb	pixel_light_calculate (t_ray *ray, t_light *light)
@@ -121,7 +125,7 @@ t_rgb	pixel_light_calculate (t_ray *ray, t_light *light)
 
 	if (ray->color.rgb == 0)
 	{
-		light_color = set_rgb(0,0,0);
+		light_color = set_rgb("0","0","0");
 	}
 	else
 	{
