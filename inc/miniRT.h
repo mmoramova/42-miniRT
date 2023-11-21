@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/21 15:18:42 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:45:45 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef struct s_light
 	t_vector	l_point;
 	double		l_brightness;
 	t_line		l_ray;
-	//t_rgb		color; for bonus
+	t_rgb		color;
 
 }				t_light;
 
@@ -180,6 +180,9 @@ void	set_cylinder(t_scene *scene, char **datarow);
 int	ft_create_trgb(int r, int g, int b);
 t_rgb str2rgb(char *row);
 t_rgb set_rgb(char *x, char *y, char *z);
+t_rgb rgbXrgb(t_rgb c1, t_rgb c2);
+t_rgb rgbXdouble(t_rgb c1, double r);
+t_rgb rgb_add(t_rgb c1, t_rgb c2);
 
 //vector.c
 t_vector vector_init(double x, double y, double z);
@@ -234,6 +237,7 @@ t_vector vectoradd(t_vector v1, t_vector v2);
 
 //PROVISIONAL!!!!!
 void	pixel_color_normal(t_ray *ray);
-void	pixel_color(t_ray *ray);
+void	pixel_color(t_scene *scene, t_ray *ray);
+t_rgb	pixel_light_calculate (t_ray *ray, t_light *light);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/21 18:03:29 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:58:22 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,43 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 	}
 	//provisional
 	//pixel_color_normal(ray);
-	pixel_color(ray);
+	pixel_color(scene, ray);
 	return ;
 }
 
-void	pixel_color(t_ray *ray)
+void	pixel_color(t_scene *scene, t_ray *ray)
 {
-	//int max_color;
+	t_list	*l_list; //now working for last light, i didnt do the combination yet
+	l_list = scene->lights;
 
-	//double	al_ratio = 0.85;
-	//t_rgb	al_color = set_rgb("255","255","255");
 
-	double		l_brightness = 1;
-	t_vector	l_point = vector_init(35,45,35);
-	t_rgb		l_color = set_rgb("255","255","0");
+	double	al_ratio = scene->amblight.al_ratio;
+	t_rgb	al_color = scene->amblight.al_color;
+	t_rgb o_color = ray->color;
 
+	t_rgb ambient_color;
+	t_rgb light_color;
+	t_rgb final_color;
+
+	ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
+	final_color = set_rgb(0,0,0);
+	if (l_list)
+	{
+		while (l_list->content != NULL)
+		{
+			light_color = pixel_light_calculate (ray,(t_light*) l_list->content);
+			l_list = l_list -> next;
+		}
+	}
+	final_color = rgb_add(ambient_color, final_color);
+	ray->color = final_color;
+}
+
+t_rgb	pixel_light_calculate (t_ray *ray, t_light *light)
+{
+	double		l_brightness = light->l_brightness;
+	t_vector	l_point = light->l_point;
+	t_rgb		l_color = light->color;
 
 	t_vector	o_nvector = ray->n_colision_vector;
 	t_vector	o_point = ray->colision_point;
@@ -94,27 +116,18 @@ void	pixel_color(t_ray *ray)
 
 	o_nvector = normalize_vector(o_nvector);
 	l_vector = normalize_vector(l_vector);
+
+	t_rgb light_color;
+
 	if (ray->color.rgb == 0)
 	{
-		ray->color.rgb = ft_create_trgb (0,0,0);
-		return;
+		light_color = set_rgb(0,0,0);
 	}
-	//ray->color.r= al_color.r * al_ratio + ray->color.r * (1-al_ratio);
-	//ray->color.g= al_color.g * al_ratio + ray->color.g * (1-al_ratio);
-	//ray->color.b= al_color.b * al_ratio + ray->color.b * (1-al_ratio);
-	//ray->color.r= al_color.r * al_ratio + ((ray->color.r * l_brightness) * l_color.r * fmax(0, producto_escalar(l_vector,o_nvector)) * (1-al_ratio));
-	//ray->color.g= al_color.g * al_ratio + ((ray->color.g * l_brightness) * l_color.g * fmax(0, producto_escalar(l_vector,o_nvector)) * (1-al_ratio));
-	//ray->color.b= al_color.b * al_ratio + ((ray->color.b * l_brightness) * l_color.b * fmax(0, producto_escalar(l_vector,o_nvector)) * (1-al_ratio));
-	//new_color.x= ((ray->color.r/255.0) * (l_color.r/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)));
-	//new_color.y= ((ray->color.g/255.0) * (l_color.g/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)));
-	//new_color.z= ((ray->color.b/255.0) * (l_color.b/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)));
-
-	ray->color.r= ((ray->color.r/255.0) * (l_color.r/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
-	ray->color.g= ((ray->color.g/255.0) * (l_color.g/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
-	ray->color.b= ((ray->color.b/255.0) * (l_color.b/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
-	//ray->color.r= 255*((al_color.r/255.0)*(ray->color.r/255.0) * al_ratio + (ray->color.r/255.0) * (1-al_ratio));
-	//ray->color.g= 255*((al_color.g/255.0)*(ray->color.g/255.0) * al_ratio + (ray->color.g/255.0) * (1-al_ratio));
-	//ray->color.b= 255*((al_color.b/255.0)*(ray->color.b/255.0) * al_ratio + (ray->color.b/255.0) * (1-al_ratio));
+	else
+	{
+		light_color.r= ((ray->color.r/255.0) * (l_color.r/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
+		light_color.g= ((ray->color.g/255.0) * (l_color.g/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
+		light_color.b= ((ray->color.b/255.0) * (l_color.b/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
 
 	//printf("colors (%d,%d,%d)\n", ray->color.r,ray->color.g,ray->color.b);
 	/*if (ray->color.r > 255 || ray->color.g > 255 || ray->color.b > 255 )
@@ -126,8 +139,10 @@ void	pixel_color(t_ray *ray)
 		ray->color.g= (255 * ray->color.g) / max_color;
 		ray->color.b= (255 * ray->color.b) / max_color;
 	}*/
-	ray->color.rgb = ft_create_trgb (ray->color.r,ray->color.g,ray->color.b);
+	}
+	return(light_color);
 	//printf("colors (%d,%d,%d)\n", ray->color.r,ray->color.g,ray->color.b);
+
 }
 
 //provisional

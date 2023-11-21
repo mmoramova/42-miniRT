@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_objects.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/21 17:20:34 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:51:58 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	set_light(t_scene *scene, char **datarow)
 		ft_error(scene, 1, "Malloc error - light");
 	light->l_point = str2vector(datarow[1]);
 	light->l_brightness = ft_atod(datarow[2]);
+	light->color = str2rgb(datarow[3]);
 	//light->lightray = NULL;
 
 	ft_lstadd_front(&(scene->lights), ft_lstnew(light));
