@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/19 19:09:23 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:56:52 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,37 @@
 
 void		intersection_sphere(t_ray *ray, t_sphere *object)
 {
-	double	discriminante;
-	t_vector u_norm;
+	t_vector u_ray;
 	t_vector punto_centro;
 	t_vector punto_recta;
 	t_vector radio;
+	double coef[3];
 	double	d;
+	double	discriminante;
 
-	u_norm.x = ray->line.Ux;
-	u_norm.y = ray->line.Uy;
-	u_norm.z = ray->line.Uz;
-	punto_recta.x =ray->line.x0;
-	punto_recta.y =ray->line.y0;
-	punto_recta.z =ray->line.z0;
-	u_norm = normalize_vector (u_norm);
+	u_ray = vector_init (ray->line.Ux,ray->line.Uy,ray->line.Uz);
+	punto_recta = vector_init (ray->line.x0,ray->line.y0,ray->line.z0);
 	punto_centro.x = ray->line.x0 - object->sp_point.x;
 	punto_centro.y = ray->line.y0 - object->sp_point.y;
 	punto_centro.z = ray->line.z0 - object->sp_point.z;
-	//punto_centro = normalize_vector (punto_centro);
-	//printf("vector plano x vector recta %f modulo plano %f y modilo recta %f\n",ray->nvector.x,ray->nvector.y,ray->nvector.z);
-	//printf("punto_centro (%f,%f,%f)\n",ray->line.Ux,ray->line.Uy,ray->line.Uz);
-	//printf("Producto escalar =%f,modulo al cuadrado=%f)\n",producto_escalar(u_norm,punto_centro),pow(modulo(punto_centro),2));
-	discriminante = pow(producto_escalar(u_norm,punto_centro),2)- pow(modulo(punto_centro),2) + pow(object->sp_diameter/2,2);
-	//printf("discriminante = %f\n",discriminante);
-	if (discriminante < 0)
-	{
-		//no colision, no point, no normal
-		//ray->colision = 0;
-		return ;
-	}
+
+	coef[0] = producto_escalar(u_ray,u_ray);
+	coef[1] = 2 * (producto_escalar(u_ray,punto_centro));
+	coef[2] = producto_escalar(punto_centro,punto_centro) - pow(object->sp_diameter/2,2);
+	discriminante = pow(coef[1],2) - 4 * coef[0] *coef[2];
+	if (discriminante < 0 || producto_escalar(u_ray,punto_centro)>=0)
+		return;
 	else if ( discriminante == 0)
-		d = -producto_escalar(u_norm,punto_centro);
+		d = - coef[1]/(2 * coef[0]);
 	else
 	{
-		d = -producto_escalar(u_norm,punto_centro) + sqrt(discriminante);
-		if (-producto_escalar(u_norm,punto_centro) - sqrt(discriminante) < d)
-			d = -producto_escalar(u_norm,punto_centro) - sqrt(discriminante);
+		d = modulo(u_ray) * ((-coef[1]+ sqrt(discriminante))/ 2 * coef[0]);
+		if (modulo(u_ray) * ((-coef[1] - sqrt(discriminante))/ 2 * coef[0]) < d)
+			d = modulo(u_ray) * ((-coef[1] - sqrt(discriminante))/ 2 * coef[0]);
 	}
-	radio = vectorminus(vectoradd(escalarxvector(d,u_norm), punto_recta), object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
-	if (ray->colision == 0 || ray->distance > modulo(escalarxvector(d,u_norm)))
-		ray_update(ray, object->sp_color, modulo(escalarxvector(d,u_norm)), radio);//bad unorm
+	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
+	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray)) && producto_escalar(radio,u_ray) <= 0))
+		ray_update(ray, object->sp_color, modulo(escalarxvector(d,normalize_vector(u_ray))), radio);//bad unorm
 }
 
 void	intersection_plane(t_ray *ray, t_plane *object)
@@ -79,6 +70,8 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 	o_norm.x = object->p_surface.A;
 	o_norm.y = object->p_surface.B;
 	o_norm.z = object->p_surface.C;
+	if (producto_escalar(o_norm,u_norm) >= 0)
+		return;
 
 	//printf("vector plano x vector recta %f modulo plano %f y modilo recta %f\n",ray->nvector.x,ray->nvector.y,ray->nvector.z);
 	t = - (object->p_surface.D + producto_escalar(o_norm,punto_recta))/producto_escalar(o_norm,u_norm);
@@ -86,12 +79,15 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 	// distvect = vectoradd(punto_recta,escalarxvector(t,u_norm));
 	// distvect = vectorminus
 	d = modulo(escalarxvector(t,u_norm));
+
 	//printf("t de solucion %f distance %f and ray colision distance %f \n",t ,d,ray->distance);
 
-	if (ray->colision == 0 || (ray->distance >= d && producto_escalar(o_norm,u_norm) != 0))
+	if (ray->colision == 0 || (ray->distance >= d && producto_escalar(o_norm,u_norm) <= 0))
 	{
 		//printf("t de solucion %f distance %f and ray colision distance %f \n",t ,d,ray->distance);
 		ray_update(ray, object->p_color, d,o_norm);
+		//printf("ray = (%f,%f,%f) and distance %f angle in degrees %f\n",o_norm.x,o_norm.y,o_norm.z,d, acos(2*M_PI*producto_escalar(u_norm,o_norm)/(360*modulo(u_norm)*modulo(o_norm))));
+
 	}
 }
 

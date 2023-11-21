@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/19 19:58:03 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:03:29 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@ int	ray_color(t_scene *scene,t_pixel pos)
 
 	with = scene->camera.c_left;
 	higt = scene->camera.c_up;
-	init.x = scene->camera.c_inter.x + with.x + higt.x - 2 *pos.x * (with.x/scene->mlx.win_size.x) - 2 * pos.y *(higt.x/scene->mlx.win_size.y);
-	init.y = scene->camera.c_inter.y + with.y + higt.y - 2 * pos.x * (with.y/scene->mlx.win_size.x) - 2 * pos.y *(higt.y/scene->mlx.win_size.y);
-	init.z = scene->camera.c_inter.z + with.z + higt.z - 2 * pos.x * (with.z/scene->mlx.win_size.x) - 2 *pos.y *(higt.z/scene->mlx.win_size.y);
+	init.x = scene->camera.c_ray.x + with.x + higt.x - 2 * pos.x * (with.x/scene->mlx.win_size.x) - 2 * pos.y *(higt.x/scene->mlx.win_size.y);
+	init.y = scene->camera.c_ray.y + with.y + higt.y - 2 * pos.x * (with.y/scene->mlx.win_size.x) - 2 * pos.y *(higt.y/scene->mlx.win_size.y);
+	init.z = scene->camera.c_ray.z + with.z + higt.z - 2 * pos.x * (with.z/scene->mlx.win_size.x) - 2 * pos.y *(higt.z/scene->mlx.win_size.y);
+	//printf("ray = (%f,%f,%f)\n",init.x,init.y,init.z);
 	//calculate the ray vector
 	ray_vision.color.rgb = 0;
 	ray_vision.n_colision_vector = vector_init(0,0,0);
 	ray_vision.distance = 30000000;
 	ray_vision.colision = 0;
-	ray_vision.line = two_points_line (scene->camera.c_point,init);
+	ray_vision.line = (two_points_line (scene->camera.c_point,init));
 	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
 	intersection_vision (scene, &ray_vision);
 	return(ray_vision.color.rgb);
@@ -70,8 +71,8 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 		}
 	}
 	//provisional
-	pixel_color_normal(ray);
-	//pixel_color(ray);
+	//pixel_color_normal(ray);
+	pixel_color(ray);
 	return ;
 }
 
@@ -83,8 +84,8 @@ void	pixel_color(t_ray *ray)
 	//t_rgb	al_color = set_rgb("255","255","255");
 
 	double		l_brightness = 1;
-	t_vector	l_point = vector_init(1,-25,50);
-	t_rgb		l_color = set_rgb("255","255","255");
+	t_vector	l_point = vector_init(35,45,35);
+	t_rgb		l_color = set_rgb("255","255","0");
 
 
 	t_vector	o_nvector = ray->n_colision_vector;
@@ -136,7 +137,7 @@ void	pixel_color_normal(t_ray *ray)
 	t_vector u_norm;
 	t_vector light;
 
-	light= vector_init(1 -ray->colision_point.x,-25-ray->colision_point.y,50-ray->colision_point.z);
+	light= vector_init(50 -ray->colision_point.x,50-ray->colision_point.y,50-ray->colision_point.z);
 	u_norm.x = ray->line.Ux;
 	u_norm.y = ray->line.Uy;
 	u_norm.z = ray->line.Uz;
