@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/21 21:17:25 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:55:41 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,15 @@ void	pixel_color(t_scene *scene, t_ray *ray)
 	l_list = scene->lights;
 
 
-	//double	al_ratio = scene->amblight.al_ratio;
-	//t_rgb	al_color = scene->amblight.al_color;
-//	t_rgb o_color = ray->color;
+	double	al_ratio = scene->amblight.al_ratio;
+	t_rgb	al_color = scene->amblight.al_color;
+	t_rgb o_color = ray->color;
 
-//	t_rgb ambient_color;
+	t_rgb ambient_color;
 	t_rgb light_color;
 	t_rgb final_color;
 
-//	ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
+	ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
 
 	//ambient_color = rgbXdouble(al_color,al_ratio);
 
@@ -104,8 +104,22 @@ void	pixel_color(t_scene *scene, t_ray *ray)
 			l_list = l_list -> next;
 		}
 	}
-	//final_color = rgb_add(ambient_color, final_color);
-	ray->color = rgb_norm(final_color);
+	final_color = rgb_add(ambient_color, final_color);
+	double max_color;
+
+	max_color = 0;
+	if (final_color.r > 255 || final_color.g > 255 || final_color.b > 255 )
+	{
+		max_color = fmax(fmax(final_color.r,final_color.g),final_color.b);
+		//printf("max color is %d\n", max_color);
+
+		final_color.r= (255 * final_color.r) / max_color;
+		final_color.g= (255 * final_color.g) / max_color;
+		final_color.b= (255 * final_color.b) / max_color;
+		final_color.rgb = ft_create_trgb(final_color.r, final_color.g, final_color.b);
+	}
+
+	ray->color = final_color;
 }
 
 t_rgb	pixel_light_calculate (t_ray *ray, t_light *light)
