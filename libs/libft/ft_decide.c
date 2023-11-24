@@ -14,9 +14,9 @@
 
 int	ft_decide(unsigned char l, va_list args)
 {
-	int	res;
+	
 
-	res = 0;
+	
 	if (l == 'c')
 		return (ft_wchar(va_arg(args, int)));
 	else if (l == 's')

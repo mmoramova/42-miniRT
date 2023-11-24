@@ -39,8 +39,8 @@ void scene_create(t_scene *scene, char *file)
 	}
 
 	// getting and printing any information example :
-	int cameraprint;
-	cameraprint = scene->camera.c_point.x;
+	//int cameraprint;
+	//cameraprint = scene->camera.c_point.x;
 	//printf("printing info from camera point y%d", cameraprint);
 
 }
