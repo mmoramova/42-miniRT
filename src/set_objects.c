@@ -22,7 +22,8 @@ void	set_amblight(t_scene *scene, char **datarow)
 
 void	set_camera(t_scene *scene, char **datarow)
 {
-	scene->camera.c_point = str2vector(datarow[1]);
+	scene->camera.c_point_init = str2vector(datarow[1]);
+	scene->camera.c_point = vector_init(0,0,0);
 	scene->camera.c_nvector = normalize_vector(str2vector(datarow[2]));
 	scene->camera.c_angle = ft_atod(datarow[3])* 2 * M_PI / 360;
 	//camera->c_surface = NULL;
@@ -51,7 +52,7 @@ void	set_sphere(t_scene *scene, char **datarow)
 	sphere = (t_sphere *) malloc(sizeof(t_sphere));
 	if (!sphere)
 		ft_error(scene, 1, "Malloc error - sphere");
-	sphere->sp_point = str2vector(datarow[1]);
+	sphere->sp_point = vectorminus(str2vector(datarow[1]),scene->camera.c_point_init);
 	sphere->sp_diameter = ft_atod(datarow[2]);
 	sphere->sp_color = str2rgb(datarow[3]);
 	//sphere->sp_radium = NULL;

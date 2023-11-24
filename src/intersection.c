@@ -19,10 +19,15 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	t_vector punto_recta;
 	t_vector radio;
 	double coef[3];
+	double	d1;
+	double	d2;
+	double	t1;
+	double	t2;
 	double	d;
+	double	t;
 	double	discriminante;
 
-	u_ray = vector_init (ray->line.Ux,ray->line.Uy,ray->line.Uz);
+	u_ray = normalize_vector(vector_init (ray->line.Ux,ray->line.Uy,ray->line.Uz));
 	punto_recta = vector_init (ray->line.x0,ray->line.y0,ray->line.z0);
 	punto_centro.x = ray->line.x0 - object->sp_point.x;
 	punto_centro.y = ray->line.y0 - object->sp_point.y;
@@ -32,16 +37,30 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	coef[1] = 2 * (producto_escalar(u_ray,punto_centro));
 	coef[2] = producto_escalar(punto_centro,punto_centro) - pow(object->sp_diameter/2,2);
 	discriminante = pow(coef[1],2) - 4 * coef[0] *coef[2];
-	if (discriminante < 0 || producto_escalar(u_ray,punto_centro)>=0)
+	if (discriminante < 0)
 		return;
-	else if ( discriminante == 0)
-		d = - coef[1]/(2 * coef[0]);
+	//else if ( discriminante == 0)
+	//	d = - coef[1]/(2 * coef[0]);
 	else
 	{
-		d = modulo(u_ray) * ((-coef[1]+ sqrt(discriminante))/ 2 * coef[0]);
-		if (modulo(u_ray) * ((-coef[1] - sqrt(discriminante))/ 2 * coef[0]) < d)
-			d = modulo(u_ray) * ((-coef[1] - sqrt(discriminante))/ 2 * coef[0]);
+		d1 = modulo(escalarxvector(((-coef[1]+ sqrt(discriminante))/ 2 * coef[0]),u_ray));
+		t1 = (-coef[1]+ sqrt(discriminante))/ 2 * coef[0];
+		d2 = modulo(escalarxvector(((-coef[1]-sqrt(discriminante))/ 2 * coef[0]),u_ray));
+		t2 = (-coef[1] -sqrt(discriminante))/ 2 * coef[0];
+		
 	}
+	if (t1 < 0 && t2 < 0)
+	{
+		printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
+		
+		return;
+	}
+	else if ( t1 >= 0)
+		d = d1;
+	if (t2 > 0 && (d2 < d1|| t1 < 0))
+		d = d2;
+	//printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
+	//printf("coef[%f,%f,%f]\n",coef[0],coef[1],coef[2]);
 	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
 	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray)) && producto_escalar(radio,u_ray) <= 0))
 		ray_update(ray, object->sp_color, modulo(escalarxvector(d,normalize_vector(u_ray))), radio);//bad unorm
@@ -106,7 +125,7 @@ void	intersection_cylinder (t_ray *ray,t_cylinder *object)
 {
 	//double	discriminante;
 	t_vector u_norm;
-	t_vector c_norm;
+	//t_vector c_norm;
 	t_vector punto_centro;
 	t_vector punto_recta;
 	//double	d;
@@ -118,7 +137,7 @@ void	intersection_cylinder (t_ray *ray,t_cylinder *object)
 	punto_recta.y =ray->line.y0;
 	punto_recta.z =ray->line.z0;
 	u_norm = normalize_vector (u_norm);
-	c_norm = normalize_vector (object->c_direction);
+	//c_norm = normalize_vector (object->c_direction);
 	punto_centro.x = ray->line.x0 - object->c_point.x;
 	punto_centro.y = ray->line.y0 - object->c_point.y;
 	punto_centro.z = ray->line.z0 - object->c_point.z;
@@ -220,7 +239,7 @@ void	intersection_cylinder1 (t_ray *ray,t_cylinder *object)
 void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object)
 {
 	t_vector u_norm;
-	t_vector c_norm;
+	//t_vector c_norm;
 	t_vector punto_centro;
 	t_vector punto_centro2;
 	t_vector punto_recta;
@@ -239,5 +258,5 @@ void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object)
 	punto_centro2.x = ray->line.x0 - object->c_point.x + object->c_direction.x * object->c_height/2;
 	punto_centro2.y = ray->line.y0 - object->c_point.y + object->c_direction.y * object->c_height/2;
 	punto_centro2.z = ray->line.z0 - object->c_point.z + object->c_direction.z * object->c_height/2;
-	c_norm = vectorminus(punto_centro2,punto_centro);
+	//c_norm = vectorminus(punto_centro2,punto_centro);
 }

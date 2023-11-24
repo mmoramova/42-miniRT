@@ -87,6 +87,7 @@ typedef struct s_amblight
 typedef struct s_camera
 {
 	t_vector	c_point;
+	t_vector	c_point_init;
 	t_vector	c_inter; //point of intersection with unitary vector
 	t_vector	c_nvector;
 	t_vector	c_up;
