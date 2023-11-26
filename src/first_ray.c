@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/24 20:08:41 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:17:30 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,90 +78,87 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 
 void	pixel_color(t_scene *scene, t_ray *ray)
 {
-	t_list	*l_list; //now working for more light without ambient color
+	t_list	*l_list;
 	l_list = scene->lights;
-
 
 	double	al_ratio = scene->amblight.al_ratio;
 	t_rgb	al_color = scene->amblight.al_color;
-	t_rgb o_color = ray->color;
+	t_rgb	o_color = ray->color;
 
-	t_rgb ambient_color;
-	t_rgb light_color;
-	t_rgb final_color;
+	t_rgb	ambient_color;
+	t_rgb	light_color;
+	t_rgb	specular_color;
+	t_rgb	final_color;
+
+	//init black
+	final_color = set_rgb("0","0","0");
+
+	//calculate ambient color
 
 	ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
 
-	//ambient_color = rgbXdouble(al_color,al_ratio);
-
-	final_color = set_rgb("0","0","0");
 	if (l_list)
 	{
 		while (l_list->content != NULL)
 		{
 			light_color = pixel_light_calculate (ray,(t_light*) l_list->content);
 			final_color = rgb_add(light_color, final_color);
+			specular_color = rgbXrgb(o_color,pixel_specular_calculate (scene, ray,(t_light*) l_list->content));
+			final_color = rgb_add(specular_color, final_color);
 			l_list = l_list -> next;
 		}
 	}
+	//add ambient color to the final color
+	//printf("specular color is: %d,%d,%d\n", specular_color.r,specular_color.g, specular_color.b);
+
 	final_color = rgb_add(ambient_color, final_color);
-	double max_color;
-
-	max_color = 0;
-	if (final_color.r > 255 || final_color.g > 255 || final_color.b > 255 )
-	{
-		max_color = fmax(fmax(final_color.r,final_color.g),final_color.b);
-		//printf("max color is %d\n", max_color);
-
-		final_color.r= (255 * final_color.r) / max_color;
-		final_color.g= (255 * final_color.g) / max_color;
-		final_color.b= (255 * final_color.b) / max_color;
-		final_color.rgb = ft_create_trgb(final_color.r, final_color.g, final_color.b);
-	}
-
-	ray->color = final_color;
+	ray->color = rgb_norm(final_color);
 }
 
 t_rgb	pixel_light_calculate (t_ray *ray, t_light *light)
 {
-	double		l_brightness = light->l_brightness;
 	t_vector	l_point = light->l_point;
-	t_rgb		l_color = light->color;
-
-	t_vector	o_nvector = ray->n_colision_vector;
 	t_vector	o_point = ray->colision_point;
-	t_vector	l_vector = vectorminus(l_point, o_point);
-
-	o_nvector = normalize_vector(o_nvector);
-	l_vector = normalize_vector(l_vector);
+	double		l_brightness = light->l_brightness;
 
 	t_rgb light_color;
+	t_rgb		l_color = light->color;
+
+	t_vector	o_nvector = normalize_vector(ray->n_colision_vector);
+	t_vector	l_nvector = normalize_vector(vectorminus(l_point, o_point));
 
 	if (ray->color.rgb == 0)
-	{
 		light_color = set_rgb("0","0","0");
-	}
-	else
-	{
-		light_color.r= ((ray->color.r/255.0) * (l_color.r/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
-		light_color.g= ((ray->color.g/255.0) * (l_color.g/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
-		light_color.b= ((ray->color.b/255.0) * (l_color.b/255.0) * l_brightness * fmax(0, producto_escalar(l_vector,o_nvector)))*255;
-
-	//printf("colors (%d,%d,%d)\n", ray->color.r,ray->color.g,ray->color.b);
-	/*if (ray->color.r > 255 || ray->color.g > 255 || ray->color.b > 255 )
-	{
-		max_color = fmax(fmax(ray->color.r,ray->color.g),ray->color.b);
-		//printf("max color is %d\n", max_color);
-
-		ray->color.r= (255 * ray->color.r) / max_color;
-		ray->color.g= (255 * ray->color.g) / max_color;
-		ray->color.b= (255 * ray->color.b) / max_color;
-	}*/
-	}
+		light_color = rgbXrgb(ray->color, rgbXdouble(rgbXdouble(l_color,l_brightness),fmax(0, producto_escalar(l_nvector,o_nvector))));
 	return(light_color);
 	//printf("colors (%d,%d,%d)\n", ray->color.r,ray->color.g,ray->color.b);
-
 }
+
+t_rgb	pixel_specular_calculate (t_scene *scene, t_ray *ray, t_light *light)
+{
+	t_vector	c_point = scene->camera.c_point;
+	t_vector	l_point = light->l_point;
+	t_vector	o_point = ray->colision_point;
+
+	t_rgb		specular_color;
+	t_rgb		s_color = light->color;
+	double		specular_factor;
+
+	t_vector	o_nvector = normalize_vector(ray->n_colision_vector);
+	t_vector	l_nvector = normalize_vector(vectorminus(o_point, l_point));
+
+	t_vector reflection_vector = vectorminus(l_nvector, escalarxvector(2 * producto_escalar(l_nvector, o_nvector), o_nvector));
+	t_vector view_vector = normalize_vector(vectorminus(c_point, o_point));
+	specular_factor = pow(fmax(0, producto_escalar(reflection_vector,view_vector)),32);
+
+	if (ray->color.rgb == 0)
+		specular_color = set_rgb("0","0","0");
+	else
+		specular_color = rgbXdouble(s_color,specular_factor);
+		//specular_color = rgbXdouble(rgbXdouble(s_color,s_brightness),specular_factor);
+	return(specular_color);
+}
+
 
 //provisional
 void	pixel_color_normal(t_ray *ray)

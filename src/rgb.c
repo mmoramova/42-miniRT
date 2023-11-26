@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 14:03:12 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/21 20:56:50 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/24 20:30:17 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ t_rgb rgbXdouble(t_rgb c1, double r)
 {
 	t_rgb	rgb;
 
-	rgb.r = ((c1.r/255.0) * r) * 255;
-	rgb.g = ((c1.g/255.0) * r) * 255;
-	rgb.b = ((c1.b/255.0) * r) * 255;
+	rgb.r = c1.r * r;
+	rgb.g = c1.g * r;
+	rgb.b = c1.b * r;
 	rgb.rgb = ft_create_trgb(rgb.r, rgb.g, rgb.b);
 
 	return(rgb);
@@ -67,35 +67,27 @@ t_rgb rgb_add(t_rgb c1, t_rgb c2)
 {
 	t_rgb	rgb;
 
-	rgb.r = ((c1.r/255.0) + (c2.r/255.0)) * 255;
-	rgb.g = ((c1.g/255.0) + (c2.g/255.0)) * 255;
-	rgb.b = ((c1.b/255.0) + (c2.b/255.0)) * 255;
+	rgb.r = c1.r + c2.r;
+	rgb.g = c1.g + c2.g;
+	rgb.b = c1.b + c2.b;
 	rgb.rgb = ft_create_trgb(rgb.r, rgb.g, rgb.b);
 
 	return(rgb);
 }
 
-t_rgb rgb_norm(t_rgb c)
+t_rgb	rgb_norm(t_rgb rgb)
 {
-	t_rgb	rgb;
+	double	max_color;
 
-	rgb = c;
-	if (rgb.r > 255)
-		rgb.r = 255;
-	if (rgb.r < 0)
-		rgb.r = 0;
+	max_color = 0;
+	if (rgb.r > 255 || rgb.g > 255 || rgb.b > 255 )
+	{
+		max_color = fmax(fmax(rgb.r,rgb.g),rgb.b);
 
-	if (rgb.g > 255)
-		rgb.g = 255;
-	if (rgb.g < 0)
-		rgb.g = 0;
-
-	if (rgb.g > 255)
-		rgb.g = 255;
-	if (rgb.g < 0)
-		rgb.g = 0;
-
-	rgb.rgb = ft_create_trgb(rgb.r, rgb.g, rgb.b);
-
+		rgb.r = (255 * rgb.r) / max_color;
+		rgb.g = (255 * rgb.g) / max_color;
+		rgb.b = (255 * rgb.b) / max_color;
+		rgb.rgb = ft_create_trgb(rgb.r, rgb.g, rgb.b);
+	}
 	return(rgb);
 }

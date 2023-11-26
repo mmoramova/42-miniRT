@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/21 20:56:54 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:18:53 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,5 +241,6 @@ t_vector vectoradd(t_vector v1, t_vector v2);
 void	pixel_color_normal(t_ray *ray);
 void	pixel_color(t_scene *scene, t_ray *ray);
 t_rgb	pixel_light_calculate (t_ray *ray, t_light *light);
+t_rgb	pixel_specular_calculate (t_scene *scene, t_ray *ray, t_light *light);
 
 #endif
