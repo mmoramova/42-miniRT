@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/21 17:56:52 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:36:11 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 		t1 = (-coef[1]+ sqrt(discriminante))/ 2 * coef[0];
 		d2 = modulo(escalarxvector(((-coef[1]-sqrt(discriminante))/ 2 * coef[0]),u_ray));
 		t2 = (-coef[1] -sqrt(discriminante))/ 2 * coef[0];
-		
+
 	}
 	if (t1 < 0 && t2 < 0)
 	{
-		printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
-		
+		//printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
+
 		return;
 	}
 	else if ( t1 >= 0)

@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/26 15:17:30 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:06:06 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ int	ray_color(t_scene *scene,t_pixel pos)
 	ray_vision.line = (two_points_line (scene->camera.c_point,init));
 	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
 	intersection_vision (scene, &ray_vision);
+
+	//provisional
+	//pixel_color_normal(ray_vision);
+	pixel_color(scene, &ray_vision);
+
 	return(ray_vision.color.rgb);
 }
 void intersection_vision (t_scene *scene, t_ray *ray)
@@ -70,12 +75,27 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 			c_list = c_list -> next;
 		}
 	}
-	//provisional
-	//pixel_color_normal(ray);
-	pixel_color(scene, ray);
+
 	return ;
 }
 
+bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
+{
+	t_ray	ray_vision;
+
+	ray_vision.color.rgb = 0;
+	ray_vision.n_colision_vector = vector_init(0,0,0);
+	ray_vision.distance = 30000000;
+	ray_vision.colision = 0;
+	ray_vision.line = (two_points_line (light->l_point,ray->colision_point));
+	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
+	intersection_vision (scene, &ray_vision);
+
+	//need to improve, not working
+	if (ray_vision.colision == 0) // && ray->distance > ray_vision.distance)
+		return 1;
+	return 0;
+}
 void	pixel_color(t_scene *scene, t_ray *ray)
 {
 	t_list	*l_list;
@@ -90,27 +110,34 @@ void	pixel_color(t_scene *scene, t_ray *ray)
 	t_rgb	specular_color;
 	t_rgb	final_color;
 
-	//init black
+	bool	in_shadow;
+
 	final_color = set_rgb("0","0","0");
 
 	//calculate ambient color
-
-	ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
+	if (ray->color.rgb == 0)
+		ambient_color = set_rgb("0","0","0");
+		//ambient_color = rgbXdouble(al_color,al_ratio);
+	else
+		ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
 
 	if (l_list)
 	{
 		while (l_list->content != NULL)
 		{
-			light_color = pixel_light_calculate (ray,(t_light*) l_list->content);
-			final_color = rgb_add(light_color, final_color);
-			specular_color = rgbXrgb(o_color,pixel_specular_calculate (scene, ray,(t_light*) l_list->content));
-			final_color = rgb_add(specular_color, final_color);
+
+			in_shadow = check_intersection(scene,ray,(t_light*) l_list->content);
+			//in_shadow = 0; //provisonal
+			if (in_shadow == 0)
+			{
+				light_color = pixel_light_calculate (ray,(t_light*) l_list->content);
+				final_color = rgb_add(light_color, final_color);
+				specular_color = rgbXrgb(o_color,pixel_specular_calculate (scene, ray,(t_light*) l_list->content));
+				final_color = rgb_add(specular_color, final_color);
+			}
 			l_list = l_list -> next;
 		}
 	}
-	//add ambient color to the final color
-	//printf("specular color is: %d,%d,%d\n", specular_color.r,specular_color.g, specular_color.b);
-
 	final_color = rgb_add(ambient_color, final_color);
 	ray->color = rgb_norm(final_color);
 }
@@ -129,6 +156,7 @@ t_rgb	pixel_light_calculate (t_ray *ray, t_light *light)
 
 	if (ray->color.rgb == 0)
 		light_color = set_rgb("0","0","0");
+	else
 		light_color = rgbXrgb(ray->color, rgbXdouble(rgbXdouble(l_color,l_brightness),fmax(0, producto_escalar(l_nvector,o_nvector))));
 	return(light_color);
 	//printf("colors (%d,%d,%d)\n", ray->color.r,ray->color.g,ray->color.b);
