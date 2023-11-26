@@ -14,7 +14,8 @@ NAME = miniRT
 CC = gcc
 RM = rm -rf
 LIBC = ar -rcs
-FLAGS = -g -O3
+FLAGS = -g -O3 -Wall -Wextra -Werror
+
 
 #------------------------------SORUCES-----------------------------------------#
 

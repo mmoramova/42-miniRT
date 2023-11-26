@@ -71,8 +71,8 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 		}
 	}
 	//provisional
-	pixel_color_normal(ray);
-	//pixel_color(ray);
+	//pixel_color_normal(ray);
+	pixel_color(ray);
 	return ;
 }
 
@@ -84,8 +84,8 @@ void	pixel_color(t_ray *ray)
 	//t_rgb	al_color = set_rgb("255","255","255");
 
 	double		l_brightness = 1;
-	t_vector	l_point = vector_init(1,1,1);
-	t_rgb		l_color = set_rgb("255","255","0");
+	t_vector	l_point = vector_init(0,10,10);
+	t_rgb		l_color = set_rgb("255","255","255");
 
 
 	t_vector	o_nvector = ray->n_colision_vector;

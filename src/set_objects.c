@@ -66,7 +66,8 @@ void	set_plane(t_scene *scene, char **datarow)
 	plane = (t_plane *) malloc(sizeof(t_plane));
 	if (!plane)
 		ft_error(scene, 1, "Malloc error - plane");
-	plane->p_point = str2vector(datarow[1]);
+	write(1,"a",1);
+	plane->p_point = vectorminus(str2vector(datarow[1]),scene->camera.c_point_init);;
 	plane->p_nvector = str2vector(datarow[2]);
 	plane->p_color = str2rgb(datarow[3]);
 	plane->p_surface.A = -plane->p_nvector.x;

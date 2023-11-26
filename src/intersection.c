@@ -24,7 +24,7 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	double	t1;
 	double	t2;
 	double	d;
-	double	t;
+	//double	t;
 	double	discriminante;
 
 	u_ray = normalize_vector(vector_init (ray->line.Ux,ray->line.Uy,ray->line.Uz));
@@ -51,7 +51,7 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	}
 	if (t1 < 0 && t2 < 0)
 	{
-		printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
+		//printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
 		
 		return;
 	}
@@ -59,18 +59,23 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 		d = d1;
 	if (t2 > 0 && (d2 < d1|| t1 < 0))
 		d = d2;
-	//printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
+	
 	//printf("coef[%f,%f,%f]\n",coef[0],coef[1],coef[2]);
+	//printf("punto recta (%f,%f,%f)\n",punto_centro.x,punto_centro.y,punto_centro.z);
 	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
 	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray)) && producto_escalar(radio,u_ray) <= 0))
+	{
+		if (d < sqrt(1600))
+			printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
 		ray_update(ray, object->sp_color, modulo(escalarxvector(d,normalize_vector(u_ray))), radio);//bad unorm
+	}
 }
 
 void	intersection_plane(t_ray *ray, t_plane *object)
 {
 	//todo
 
-	double	d;
+	//double	d;
 	double	t;
 
 	t_vector	punto_recta;
@@ -85,10 +90,11 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 	u_norm.x = ray->line.Ux;
 	u_norm.y = ray->line.Uy;
 	u_norm.z = ray->line.Uz;
-
+	u_norm = normalize_vector(u_norm);
 	o_norm.x = object->p_surface.A;
 	o_norm.y = object->p_surface.B;
 	o_norm.z = object->p_surface.C;
+	//write(1,"meme\n",5);
 	if (producto_escalar(o_norm,u_norm) >= 0)
 		return;
 
@@ -97,14 +103,14 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 
 	// distvect = vectoradd(punto_recta,escalarxvector(t,u_norm));
 	// distvect = vectorminus
-	d = modulo(escalarxvector(t,u_norm));
+	
+	if ( t < 9)
+		printf("t de solucion %f distance %f and ray colision distance %f \n",t ,t,ray->distance);
 
-	//printf("t de solucion %f distance %f and ray colision distance %f \n",t ,d,ray->distance);
-
-	if (ray->colision == 0 || (ray->distance >= d && producto_escalar(o_norm,u_norm) <= 0))
+	if (ray->colision == 0 || (ray->distance >= t && producto_escalar(o_norm,u_norm) <= 0))
 	{
 		//printf("t de solucion %f distance %f and ray colision distance %f \n",t ,d,ray->distance);
-		ray_update(ray, object->p_color, d,o_norm);
+		ray_update(ray, object->p_color, t,o_norm);
 		//printf("ray = (%f,%f,%f) and distance %f angle in degrees %f\n",o_norm.x,o_norm.y,o_norm.z,d, acos(2*M_PI*producto_escalar(u_norm,o_norm)/(360*modulo(u_norm)*modulo(o_norm))));
 
 	}
