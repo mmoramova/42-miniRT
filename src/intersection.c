@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/26 15:36:11 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:04:57 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	//printf("coef[%f,%f,%f]\n",coef[0],coef[1],coef[2]);
 	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
 	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray)) && producto_escalar(radio,u_ray) <= 0))
-		ray_update(ray, object->sp_color, modulo(escalarxvector(d,normalize_vector(u_ray))), radio);//bad unorm
+		ray_update(ray, object->sp_color, d, radio);//bad unorm
 }
 
 void	intersection_plane(t_ray *ray, t_plane *object)
@@ -112,10 +112,14 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 
 void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colision)
 {
+		t_vector	nray;
+
 		ray->colision = 1;
-		ray->colision_point.x = ray->line.x0 + d*ray->line.Ux;
-		ray->colision_point.y = ray->line.y0 + d*ray->line.Uy;
-		ray->colision_point.z = ray->line.z0 + d*ray->line.Uz;
+
+		nray = normalize_vector(vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz));
+		ray->colision_point.x = ray->line.x0 + d*nray.x;
+		ray->colision_point.y = ray->line.y0 + d*nray.y;
+		ray->colision_point.z = ray->line.z0 + d*nray.z;
 		ray->color = object_color;
 		ray->n_colision_vector = normal_colision;
 		ray->distance = d;
