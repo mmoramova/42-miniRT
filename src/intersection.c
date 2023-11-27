@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/21 17:56:52 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:04:57 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 		t1 = (-coef[1]+ sqrt(discriminante))/ 2 * coef[0];
 		d2 = modulo(escalarxvector(((-coef[1]-sqrt(discriminante))/ 2 * coef[0]),u_ray));
 		t2 = (-coef[1] -sqrt(discriminante))/ 2 * coef[0];
-		
+
 	}
 	if (t1 < 0 && t2 < 0)
 	{
 		//printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
-		
+
 		return;
 	}
 	else if ( t1 >= 0)
@@ -64,11 +64,7 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	//printf("punto recta (%f,%f,%f)\n",punto_centro.x,punto_centro.y,punto_centro.z);
 	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
 	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray)) && producto_escalar(radio,u_ray) <= 0))
-	{
-		if (d < sqrt(1600))
-			printf(" t1 = %f t2 = %f d1 = %f d2 = %f\n",t1,t2,d1,d2);
-		ray_update(ray, object->sp_color, modulo(escalarxvector(d,normalize_vector(u_ray))), radio);//bad unorm
-	}
+		ray_update(ray, object->sp_color, d, radio);//bad unorm
 }
 
 void	intersection_plane(t_ray *ray, t_plane *object)
@@ -118,10 +114,14 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 
 void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colision)
 {
+		t_vector	nray;
+
 		ray->colision = 1;
-		ray->colision_point.x = ray->line.x0 + d*ray->line.Ux;
-		ray->colision_point.y = ray->line.y0 + d*ray->line.Uy;
-		ray->colision_point.z = ray->line.z0 + d*ray->line.Uz;
+
+		nray = normalize_vector(vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz));
+		ray->colision_point.x = ray->line.x0 + d*nray.x;
+		ray->colision_point.y = ray->line.y0 + d*nray.y;
+		ray->colision_point.z = ray->line.z0 + d*nray.z;
 		ray->color = object_color;
 		ray->n_colision_vector = normal_colision;
 		ray->distance = d;
