@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/26 14:18:53 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:21:34 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_amblight
 {
 	double			al_ratio;
 	t_rgb			al_color;
+	int				al_count;
 
 }					t_amblight;
 
@@ -95,6 +96,7 @@ typedef struct s_camera
 	double		c_angle;
 	t_surface	c_surface;
 	t_vector	c_ray;
+	int			c_count;
 }				t_camera;
 
 typedef struct s_light
@@ -243,4 +245,10 @@ void	pixel_color(t_scene *scene, t_ray *ray);
 t_rgb	pixel_light_calculate (t_ray *ray, t_light *light);
 t_rgb	pixel_specular_calculate (t_scene *scene, t_ray *ray, t_light *light);
 
+//inputCheck.c
+int inputcheck_isRatio(char *data);
+int inputcheck_isAngle(char *data);
+int inputcheck_isColor(char *data);
+int inputcheck_isPointOrVector(char *data);
+int inputcheck_isDoublePositive(char *data);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:10:13 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/12 13:30:32 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:11:11 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 void	set_cylinder(t_scene *scene, char **datarow)
 {
 	t_cylinder	*cylinder;
+
+	if (inputcheck_isPointOrVector(datarow[1]) == 0)
+		ft_error(scene, 1, "incorrect cylinder point");
+	if (inputcheck_isPointOrVector(datarow[2]) == 0)
+		ft_error(scene, 1, "incorrect cylinder vector");
+	if (inputcheck_isDoublePositive(datarow[3]) == 0)
+		ft_error(scene, 1, "incorrect cylinder diameter");
+	if (inputcheck_isDoublePositive(datarow[4]) == 0)
+		ft_error(scene, 1, "incorrect cylinder height");
+	if (inputcheck_isColor(datarow[5]) == 0)
+		ft_error(scene, 1, "incorrect cylinder color");
 
 	cylinder = (t_cylinder *) malloc(sizeof(t_cylinder));
 	if (!cylinder)
