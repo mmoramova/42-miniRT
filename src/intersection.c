@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/30 17:16:37 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:50:46 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,28 +288,22 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	v_norm = vector_init(object->c_direction.x,object->c_direction.y,object->c_direction.z);
 	centro_base = vector_init(object->c_down.x,object->c_down.y,object->c_down.z);
 	centro_higt = vector_init(object->c_upper.x,object->c_upper.y,object->c_upper.z);
-	VoCb = vector_init (-object->c_down.x,-object->c_down.y,-object->c_down.z);
+	VoCb = vector_init (ray->line.x0-object->c_down.x,ray->line.y0-object->c_down.y,ray->line.z0-object->c_down.z);
 	coef[0] = 1 - pow (producto_escalar(r_norm,v_norm),2);
 	coef[1] = 2*(producto_escalar(r_norm,VoCb) - producto_escalar(r_norm,v_norm)*producto_escalar(VoCb,v_norm));
 	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - pow(object->c_diameter/2,2);
 	discriminante = pow(coef[1],2) - 4 * coef[0] * coef [2];
-
-	if (discriminante < 0)//(producto_escalar(c_norm,vectorminus(object->c_point,punto_centro)) > 0 && producto_escalar(c_norm,vectorminus(object->c_point,punto_centro2)) > 0))
-		return;
-	else if (discriminante == 0)
-		d = - coef[1] / (2 * coef[0]);
-	else
+	if (discriminante >= 0 )
 	{
 		d = - coef[1] / (2 * coef[0]) + sqrt(discriminante);
 		if ( - coef[1] / (2 * coef[0]) - sqrt(discriminante) < d)
 			d =  - coef[1] / (2 * coef[0]) - sqrt(discriminante);
+		solution = escalarxvector (d,r_norm);
 	}
-	if (d < 0)
+	else
 		return;
-	//cilindroN = |solution - (Cbase + (m)V
-	solution = escalarxvector (d,r_norm);
-	// m = producto_escalar(vectorminus(solution,cb),v_norm)
-	s_norm = vectorminus(solution,vectoradd(centro_base,escalarxvector(producto_escalar(vectorminus(solution,centro_base),v_norm),v_norm)));
-	if (ray->distance > d && producto_escalar(vectorminus(solution,centro_base),v_norm)<object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm)>0)
+	s_norm = vectorminus(solution,vectoradd(VoCb,escalarxvector(producto_escalar(vectorminus(solution,VoCb),v_norm),v_norm)));
+	if (ray->distance > d && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
 		ray_update(ray, object->c_color, d, s_norm);//bad s_norm
+
 }
