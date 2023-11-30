@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/29 17:21:34 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/30 16:32:22 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ typedef struct s_cylinder
 	double		c_height;
 	t_rgb		c_color;
 	t_vector	c_nvector;
+	t_vector	c_upper;
+	t_vector	c_down;
 }				t_cylinder;
 
 /* SCENE */
@@ -239,7 +241,7 @@ t_vector 	escalarxvector(double esc, t_vector vec);
 t_vector 	vectorminus(t_vector v1, t_vector v2);
 t_vector vectoradd(t_vector v1, t_vector v2);
 
-//PROVISIONAL!!!!!
+
 void	pixel_color_normal(t_ray *ray);
 void	pixel_color(t_scene *scene, t_ray *ray);
 t_rgb	pixel_light_calculate (t_ray *ray, t_light *light);
@@ -251,4 +253,7 @@ int inputcheck_isAngle(char *data);
 int inputcheck_isColor(char *data);
 int inputcheck_isPointOrVector(char *data);
 int inputcheck_isDoublePositive(char *data);
+
+//test
+void	intersection_cylinder_test (t_ray *ray,t_cylinder *object);
 #endif

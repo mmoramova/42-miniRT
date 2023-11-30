@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/27 18:24:41 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/30 16:32:04 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 	{
 		while (c_list->content != NULL)
 		{
-			//intersection_cylinder (ray,(t_cylinder*) c_list->content);
+			intersection_cylinder_test(ray,(t_cylinder*) c_list->content);
 			c_list = c_list -> next;
 		}
 	}

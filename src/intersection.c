@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/27 18:04:57 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:16:37 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 		d = d1;
 	if (t2 > 0 && (d2 < d1|| t1 < 0))
 		d = d2;
-	
+
 	//printf("coef[%f,%f,%f]\n",coef[0],coef[1],coef[2]);
 	//printf("punto recta (%f,%f,%f)\n",punto_centro.x,punto_centro.y,punto_centro.z);
 	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
@@ -99,9 +99,9 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 
 	// distvect = vectoradd(punto_recta,escalarxvector(t,u_norm));
 	// distvect = vectorminus
-	
-	if ( t < 9)
-		printf("t de solucion %f distance %f and ray colision distance %f \n",t ,t,ray->distance);
+
+	// if ( t < 9)
+	// 	printf("t de solucion %f distance %f and ray colision distance %f \n",t ,t,ray->distance);
 
 	if (ray->colision == 0 || (ray->distance >= t && producto_escalar(o_norm,u_norm) <= 0))
 	{
@@ -265,4 +265,51 @@ void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object)
 	punto_centro2.y = ray->line.y0 - object->c_point.y + object->c_direction.y * object->c_height/2;
 	punto_centro2.z = ray->line.z0 - object->c_point.z + object->c_direction.z * object->c_height/2;
 	//c_norm = vectorminus(punto_centro2,punto_centro);
+}
+//test
+//test
+//test
+//test
+//test
+void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
+{
+	t_vector 	r_norm;
+	t_vector	v_norm;
+	t_vector	s_norm;
+	t_vector 	centro_base;
+	t_vector 	centro_higt;
+	t_vector	VoCb;
+	t_vector	solution;
+	double coef[3];
+	double		discriminante;
+	double		d;
+
+	r_norm = normalize_vector(vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz));
+	v_norm = vector_init(object->c_direction.x,object->c_direction.y,object->c_direction.z);
+	centro_base = vector_init(object->c_down.x,object->c_down.y,object->c_down.z);
+	centro_higt = vector_init(object->c_upper.x,object->c_upper.y,object->c_upper.z);
+	VoCb = vector_init (-object->c_down.x,-object->c_down.y,-object->c_down.z);
+	coef[0] = 1 - pow (producto_escalar(r_norm,v_norm),2);
+	coef[1] = 2*(producto_escalar(r_norm,VoCb) - producto_escalar(r_norm,v_norm)*producto_escalar(VoCb,v_norm));
+	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - pow(object->c_diameter/2,2);
+	discriminante = pow(coef[1],2) - 4 * coef[0] * coef [2];
+
+	if (discriminante < 0)//(producto_escalar(c_norm,vectorminus(object->c_point,punto_centro)) > 0 && producto_escalar(c_norm,vectorminus(object->c_point,punto_centro2)) > 0))
+		return;
+	else if (discriminante == 0)
+		d = - coef[1] / (2 * coef[0]);
+	else
+	{
+		d = - coef[1] / (2 * coef[0]) + sqrt(discriminante);
+		if ( - coef[1] / (2 * coef[0]) - sqrt(discriminante) < d)
+			d =  - coef[1] / (2 * coef[0]) - sqrt(discriminante);
+	}
+	if (d < 0)
+		return;
+	//cilindroN = |solution - (Cbase + (m)V
+	solution = escalarxvector (d,r_norm);
+	// m = producto_escalar(vectorminus(solution,cb),v_norm)
+	s_norm = vectorminus(solution,vectoradd(centro_base,escalarxvector(producto_escalar(vectorminus(solution,centro_base),v_norm),v_norm)));
+	if (ray->distance > d && producto_escalar(vectorminus(solution,centro_base),v_norm)<object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm)>0)
+		ray_update(ray, object->c_color, d, s_norm);//bad s_norm
 }
