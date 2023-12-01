@@ -20,6 +20,11 @@ double	distance (t_vector point1,t_vector point2)
 
 double	producto_escalar (t_vector vector1, t_vector vector2)
 {
+	double	res;
+
+	res = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
+	if ( fabs(res) < 0.0001)
+		return (0);
 	return (vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z);
 }
 

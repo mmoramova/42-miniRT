@@ -20,9 +20,10 @@ void	init_screen(t_scene *scene)
 	t_vector	with_v;
 	t_vector	higt_v;
 	t_vector	north;
+	double	fov;
 
 	north = find_normal_vector(scene->camera.c_nvector,1);
-
+	fov = 150;
 	//calculate point of intersection between unitari vector and camera plane
 	scene->camera.c_ray = normalize_vector(vector_init(scene->camera.c_point.x + scene->camera.c_nvector.x
 		,scene->camera.c_point.y + scene->camera.c_nvector.y
@@ -36,8 +37,10 @@ void	init_screen(t_scene *scene)
 	scene->camera.c_left = escalarxvector(2*tan(scene->camera.c_angle/2),with_v);
 	scene->camera.c_up = escalarxvector((2*tan(scene->camera.c_angle/2)*scene->mlx.win_size.y)/scene->mlx.win_size.x,higt_v);
 	printf("modulo left = %f, modulo up = %f\n",modulo(scene->camera.c_left),modulo(scene->camera.c_up));
-
-
+	scene->camera.c_ray = escalarxvector(fov,scene->camera.c_ray);
+	scene->camera.c_left = escalarxvector(fov,scene->camera.c_left);
+	scene->camera.c_up = escalarxvector(fov,scene->camera.c_up);	
+	printf("modulo left = %f, modulo up = %f\n",modulo(scene->camera.c_left),modulo(scene->camera.c_up));
 
 
 

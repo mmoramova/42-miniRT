@@ -24,7 +24,7 @@ int	ray_color(t_scene *scene,t_pixel pos)
 	init.x = scene->camera.c_ray.x + with.x + higt.x - 2 * pos.x * (with.x/scene->mlx.win_size.x) - 2 * pos.y *(higt.x/scene->mlx.win_size.y);
 	init.y = scene->camera.c_ray.y + with.y + higt.y - 2 * pos.x * (with.y/scene->mlx.win_size.x) - 2 * pos.y *(higt.y/scene->mlx.win_size.y);
 	init.z = scene->camera.c_ray.z + with.z + higt.z - 2 * pos.x * (with.z/scene->mlx.win_size.x) - 2 * pos.y *(higt.z/scene->mlx.win_size.y);
-	//printf("ray = (%f,%f,%f)\n",init.x,init.y,init.z);
+	
 	//calculate the ray vector
 	ray_vision.color.rgb = 0;
 	ray_vision.n_colision_vector = vector_init(0,0,0);
@@ -50,6 +50,14 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 	p_list = scene->planes;
 	c_list = scene->cylinders;
 
+	if (c_list)
+	{
+		while (c_list->content != NULL)
+		{
+			intersection_cylinder_test(ray,(t_cylinder*) c_list->content);
+			c_list = c_list -> next;
+		}
+	}
 	if (sp_list)
 	{
 		while (sp_list->content != NULL)
@@ -58,6 +66,7 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 			sp_list = sp_list -> next;
 		}
 	}
+	
 	if (p_list)
 	{
 		while (p_list->content != NULL)
@@ -67,14 +76,7 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 			p_list = p_list -> next;
 		}
 	}
-	if (c_list)
-	{
-		while (c_list->content != NULL)
-		{
-			intersection_cylinder_test(ray,(t_cylinder*) c_list->content);
-			c_list = c_list -> next;
-		}
-	}
+
 
 	return ;
 }
@@ -96,7 +98,7 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 	distance_lc = modulo(vectorminus(light->l_point,ray->colision_point));
 
 	//need to improve, not working
-	if ((distance_lc * 0.999)  > ray_light.distance)
+	if ((distance_lc* 0.99)  > ray_light.distance)
 	{
 		//printf("distance to object=%f, distance coalision=%f\n", distance_lc, ray_light.distance);
 		return 1;

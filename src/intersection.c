@@ -277,7 +277,7 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	t_vector	v_norm;
 	t_vector	s_norm;
 	t_vector 	centro_base;
-	t_vector 	centro_higt;
+	//t_vector 	centro_higt;
 	t_vector	VoCb;
 	t_vector	solution;
 	double coef[3];
@@ -286,24 +286,27 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 
 	r_norm = normalize_vector(vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz));
 	v_norm = vector_init(object->c_direction.x,object->c_direction.y,object->c_direction.z);
-	centro_base = vector_init(object->c_down.x,object->c_down.y,object->c_down.z);
-	centro_higt = vector_init(object->c_upper.x,object->c_upper.y,object->c_upper.z);
+	centro_base = vector_init(object->c_down.x-ray->line.x0,object->c_down.y-ray->line.y0,object->c_down.z-ray->line.z0);
+	//centro_higt = vector_init(object->c_upper.x,object->c_upper.y,object->c_upper.z);
 	VoCb = vector_init (ray->line.x0-object->c_down.x,ray->line.y0-object->c_down.y,ray->line.z0-object->c_down.z);
-	coef[0] = 1 - pow (producto_escalar(r_norm,v_norm),2);
+	coef[0] = 1 - powl (producto_escalar(r_norm,v_norm),2);
 	coef[1] = 2*(producto_escalar(r_norm,VoCb) - producto_escalar(r_norm,v_norm)*producto_escalar(VoCb,v_norm));
-	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - pow(object->c_diameter/2,2);
-	discriminante = pow(coef[1],2) - 4 * coef[0] * coef [2];
-	if (discriminante >= 0 )
+	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - powl(object->c_diameter/2,2);
+	discriminante = powl(coef[1],2) - 4 * coef[0] * coef [2];
+	if (discriminante >= 0)
 	{
-		d = - coef[1] / (2 * coef[0]) + sqrt(discriminante);
-		if ( - coef[1] / (2 * coef[0]) - sqrt(discriminante) < d)
-			d =  - coef[1] / (2 * coef[0]) - sqrt(discriminante);
+		d = - coef[1] / (2 * coef[0]) + sqrtl(discriminante);
+		if ( - coef[1] / (2 * coef[0]) - sqrtl(discriminante) < d)
+			d =  - coef[1] / (2 * coef[0]) - sqrtl(discriminante);
 		solution = escalarxvector (d,r_norm);
+		if ( d < 0)
+			return;
+
 	}
 	else
 		return;
-	s_norm = vectorminus(solution,vectoradd(VoCb,escalarxvector(producto_escalar(vectorminus(solution,VoCb),v_norm),v_norm)));
-	if (ray->distance > d && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
-		ray_update(ray, object->c_color, d, s_norm);//bad s_norm
+	s_norm = vectorminus(solution,vectoradd(centro_base,escalarxvector(producto_escalar(vectorminus(solution,centro_base),v_norm),v_norm)));
+	if (ray->distance >= d  && producto_escalar(s_norm,r_norm)< 0 && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
+			ray_update(ray, object->c_color, d, s_norm);//bad s_norm
 
 }
