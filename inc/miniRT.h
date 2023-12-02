@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/30 16:32:22 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:16:19 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,14 +181,19 @@ void	set_sphere(t_scene *scene, char **datarow);
 void	set_plane(t_scene *scene, char **datarow);
 void	set_cylinder(t_scene *scene, char **datarow);
 
-//rgb.c
-int	ft_create_trgb(int r, int g, int b);
-t_rgb str2rgb(char *row);
-t_rgb set_rgb(char *x, char *y, char *z);
-t_rgb rgbXrgb(t_rgb c1, t_rgb c2);
-t_rgb rgbXdouble(t_rgb c1, double r);
-t_rgb rgb_add(t_rgb c1, t_rgb c2);
-t_rgb rgb_norm(t_rgb c);
+//rgb.c, rgb2.c
+int		set_trgb(int r, int g, int b);
+t_rgb	set_rgb(char *row);
+t_rgb	rgb_mult(t_rgb c1, t_rgb c2);
+t_rgb	rgb_multd(t_rgb c1, double r);
+t_rgb	rgb_sum(t_rgb c1, t_rgb c2);
+t_rgb	rgb_normalize(t_rgb c);
+
+//set_color.c
+void	set_color(t_scene *scene, t_ray *ray);
+t_rgb	set_ambient_color (t_ray *ray, t_amblight *amblight);
+t_rgb	set_diffuse_color (t_ray *ray, t_light *light);
+t_rgb	set_specular_color (t_scene *scene, t_ray *ray, t_light *light);
 
 //vector.c
 t_vector vector_init(double x, double y, double z);
@@ -228,6 +233,7 @@ void	intersection_cylinder1(t_ray *ray,t_cylinder *object);
 void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object);
 void	intersection_plane(t_ray *ray, t_plane *object);
 void	init_screen(t_scene *scene);
+bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light);
 
 //General calculus
 double		distance (t_vector point1,t_vector point2);
@@ -241,11 +247,8 @@ t_vector 	escalarxvector(double esc, t_vector vec);
 t_vector 	vectorminus(t_vector v1, t_vector v2);
 t_vector vectoradd(t_vector v1, t_vector v2);
 
-
-void	pixel_color_normal(t_ray *ray);
-void	pixel_color(t_scene *scene, t_ray *ray);
-t_rgb	pixel_light_calculate (t_ray *ray, t_light *light);
-t_rgb	pixel_specular_calculate (t_scene *scene, t_ray *ray, t_light *light);
+//PROVISIONAL!!!!!
+void	set_color_normal(t_ray *ray);
 
 //inputCheck.c
 int inputcheck_isRatio(char *data);

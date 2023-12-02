@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_objects2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:10:13 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/30 15:47:57 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:19:50 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	set_cylinder(t_scene *scene, char **datarow)
 {
 	t_cylinder	*cylinder;
 
+	if (datarow[5] == NULL || datarow[6] != NULL)
+		ft_error(scene, 1, "incorrect number of inputs in camera");
 	if (inputcheck_isPointOrVector(datarow[1]) == 0)
 		ft_error(scene, 1, "incorrect cylinder point");
 	if (inputcheck_isPointOrVector(datarow[2]) == 0)
@@ -26,15 +28,14 @@ void	set_cylinder(t_scene *scene, char **datarow)
 		ft_error(scene, 1, "incorrect cylinder height");
 	if (inputcheck_isColor(datarow[5]) == 0)
 		ft_error(scene, 1, "incorrect cylinder color");
-
 	cylinder = (t_cylinder *) malloc(sizeof(t_cylinder));
 	if (!cylinder)
 		ft_error(scene, 1, "Malloc error - cylinder");
-	cylinder->c_point = vectorminus(str2vector(datarow[1]),scene->camera.c_point_init);
-	cylinder->c_direction = normalize_vector(str2vector(datarow[2]));
+	cylinder->c_point = vectorminus(str2vector(datarow[1]), scene->camera.c_point_init);
+	cylinder->c_direction = str2vector(datarow[2]);
 	cylinder->c_diameter = ft_atod(datarow[3]);
 	cylinder->c_height = ft_atod(datarow[4]);
-	cylinder->c_color = str2rgb(datarow[5]);
+	cylinder->c_color = set_rgb(datarow[5]);
 	cylinder->c_upper = vectoradd(cylinder->c_point,escalarxvector(cylinder->c_height/2,cylinder->c_direction));
 	cylinder->c_down = vectoradd(cylinder->c_point,escalarxvector(-cylinder->c_height/2,cylinder->c_direction));
 	printf("cylinder center (%f,%f,%f), vector (%f,%f,%f), upper (%f,%f,%f), down (%f,%f,%f)\n"

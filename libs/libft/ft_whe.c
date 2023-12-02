@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_whe.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:46:46 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/19 14:11:07 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:42:29 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_whe(unsigned long n, char *basec, int base)
 {
@@ -26,7 +26,7 @@ int	ft_whe(unsigned long n, char *basec, int base)
 		res++;
 	}
 	else
-	{	
+	{
 		res += write(1, &basec[n], 1);
 		if (res != 1)
 			return (-1);

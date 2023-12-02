@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:36:17 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/19 14:04:43 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:42:29 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
-#include"ft_printf.h"
+
+#include "ft_printf.h"
 
 int	ft_printf(const char *str, ...)
 {

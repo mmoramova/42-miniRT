@@ -3,20 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_decide.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:40:51 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/19 14:22:22 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:44:49 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_decide(unsigned char l, va_list args)
 {
-	
-
-	
 	if (l == 'c')
 		return (ft_wchar(va_arg(args, int)));
 	else if (l == 's')
