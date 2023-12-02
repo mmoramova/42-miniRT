@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wint.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:50:41 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/19 14:10:11 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:42:29 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_wint(int n)
 {

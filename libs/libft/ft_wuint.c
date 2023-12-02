@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wuint.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:52:45 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/18 12:38:23 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:42:29 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_wuint(unsigned int n)
 {

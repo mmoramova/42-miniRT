@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 15:24:14 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/19 13:58:08 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:44:30 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include<unistd.h>
-# include<stdarg.h>
-# include<stdlib.h>
+# include <unistd.h>
+# include <stdarg.h>
+# include <stdlib.h>
 
 int	ft_printf(const char *str, ...);
 int	ft_decide(unsigned char l, va_list args);

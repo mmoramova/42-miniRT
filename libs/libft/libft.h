@@ -6,16 +6,16 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:26:09 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/02 11:41:07 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:42:08 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include<stdlib.h>
-# include<stdarg.h>
-# include<unistd.h>
+# include <stdlib.h>
+# include <stdarg.h>
+# include <unistd.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 999

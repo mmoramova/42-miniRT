@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_whexX.c                                         :+:      :+:    :+:   */
+/*   ft_whexx.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 15:04:12 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/19 14:09:37 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:43:28 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include"ft_printf.h"
+
+#include "ft_printf.h"
 
 int	ft_whexx(unsigned int n)
 {
