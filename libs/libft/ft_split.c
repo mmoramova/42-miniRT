@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 09:44:08 by josorteg          #+#    #+#             */
-/*   Updated: 2022/10/04 12:13:56 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:40:38 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "libft.h"
 
 static size_t	ft_count_char(const char *str, char c)
 {
@@ -76,7 +76,7 @@ char	**ft_split(char const *s, char c)
 			if (res[np++] == NULL)
 				return (clean(res, np));
 			s += lp;
-		}		
+		}
 	}
 	res[np] = NULL;
 	return (res);

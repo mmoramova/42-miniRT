@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 10:31:31 by josorteg          #+#    #+#             */
-/*   Updated: 2022/09/30 10:59:03 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:40:38 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "libft.h"
 
 static int	ft_count(int n)
 {
@@ -52,7 +52,7 @@ char	*ft_itoa(int n)
 	if (n == 0)
 		res[0] = (0 + 48);
 	while (n > 0)
-	{	
+	{
 		res[mem - 1] = (n % 10 + 48);
 		n = n / 10;
 		mem--;
