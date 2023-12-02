@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/29 17:35:34 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:04:52 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 /* here are the functions which creates proper structure, fills data and add to t_scene */
 void	set_amblight(t_scene *scene, char **datarow)
 {
+	if (datarow[2] == NULL || datarow[3] != NULL)
+		ft_error(scene, 1, "incorrect number of inputs in amblight");
 	if (scene->amblight.al_count == 1)
 		ft_error(scene, 1, "multiple amblight rows");
 	if (inputcheck_isRatio(datarow[1]) == 0)
@@ -29,6 +31,8 @@ void	set_amblight(t_scene *scene, char **datarow)
 
 void	set_camera(t_scene *scene, char **datarow)
 {
+	if (datarow[3] == NULL || datarow[4] != NULL)
+		ft_error(scene, 1, "incorrect number of inputs in camera");
 	if (scene->camera.c_count == 1)
 		ft_error(scene, 1, "multiple camera rows");
 	if (inputcheck_isPointOrVector(datarow[1]) == 0)
@@ -51,6 +55,8 @@ void	set_light(t_scene *scene, char **datarow)
 {
 	t_light	*light;
 
+	if (datarow[3] == NULL || datarow[4] != NULL)
+		ft_error(scene, 1, "incorrect number of inputs in light");
 	if (inputcheck_isPointOrVector(datarow[1]) == 0)
 		ft_error(scene, 1, "incorrect light point");
 	if (inputcheck_isRatio(datarow[2]) == 0)
@@ -73,13 +79,14 @@ void	set_sphere(t_scene *scene, char **datarow)
 {
 	t_sphere	*sphere;
 
+	if (datarow[3] == NULL || datarow[4] != NULL)
+		ft_error(scene, 1, "incorrect number of inputs in sphere");
 	if (inputcheck_isPointOrVector(datarow[1]) == 0)
 		ft_error(scene, 1, "incorrect sphere point");
 	if (inputcheck_isDoublePositive(datarow[2]) == 0)
 		ft_error(scene, 1, "incorrect sphere diameter");
 	if (inputcheck_isColor(datarow[3]) == 0)
 		ft_error(scene, 1, "incorrect sphere color");
-
 		sphere = (t_sphere *) malloc(sizeof(t_sphere));
 	if (!sphere)
 		ft_error(scene, 1, "Malloc error - sphere");
@@ -95,6 +102,8 @@ void	set_plane(t_scene *scene, char **datarow)
 {
 	t_plane	*plane;
 
+	if (datarow[3] == NULL || datarow[4] != NULL)
+		ft_error(scene, 1, "incorrect number of inputs in plane");
 	if (inputcheck_isPointOrVector(datarow[1]) == 0)
 		ft_error(scene, 1, "incorrect plane point");
 	if (inputcheck_isPointOrVector(datarow[2]) == 0)
