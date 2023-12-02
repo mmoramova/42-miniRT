@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/30 16:32:04 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:44:33 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ray_color(t_scene *scene,t_pixel pos)
 	init.x = scene->camera.c_ray.x + with.x + higt.x - 2 * pos.x * (with.x/scene->mlx.win_size.x) - 2 * pos.y *(higt.x/scene->mlx.win_size.y);
 	init.y = scene->camera.c_ray.y + with.y + higt.y - 2 * pos.x * (with.y/scene->mlx.win_size.x) - 2 * pos.y *(higt.y/scene->mlx.win_size.y);
 	init.z = scene->camera.c_ray.z + with.z + higt.z - 2 * pos.x * (with.z/scene->mlx.win_size.x) - 2 * pos.y *(higt.z/scene->mlx.win_size.y);
-	
+
 	//calculate the ray vector
 	ray_vision.color.rgb = 0;
 	ray_vision.n_colision_vector = vector_init(0,0,0);
@@ -66,7 +66,7 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 			sp_list = sp_list -> next;
 		}
 	}
-	
+
 	if (p_list)
 	{
 		while (p_list->content != NULL)
@@ -84,6 +84,9 @@ void intersection_vision (t_scene *scene, t_ray *ray)
 bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 {
 	t_ray	ray_light;
+	t_vector	light_pos;
+	t_vector	light_vector;
+	double	new_distance;
 	double	distance_lc;
 
 	ray_light.color.rgb = 0;
@@ -94,16 +97,23 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 
 	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
 	intersection_vision (scene, &ray_light);
-
+	light_pos = vector_init(ray->line.x0,ray->line.y0,ray->line.z0);
 	distance_lc = modulo(vectorminus(light->l_point,ray->colision_point));
+	light_vector = vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz);
 
+	new_distance = modulo(vectorminus(ray_light.colision_point,light_pos));
 	//need to improve, not working
-	if ((distance_lc* 0.99)  > ray_light.distance)
+	if ((distance_lc* 0.99)  <= new_distance && producto_escalar(vectorminus(ray_light.colision_point,light_pos),light_vector) >=0)
 	{
 		//printf("distance to object=%f, distance coalision=%f\n", distance_lc, ray_light.distance);
-		return 1;
+		return 0;
 	}
-	return 0;
+	if ((distance_lc* 0.99)  <= ray_light.distance)
+	{
+		return(0);
+	}
+
+	return 1;
 }
 void	pixel_color(t_scene *scene, t_ray *ray)
 {
