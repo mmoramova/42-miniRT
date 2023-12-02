@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/30 19:50:46 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:13:36 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	//double	t;
 	double	discriminante;
 
-	u_ray = normalize_vector(vector_init (ray->line.Ux,ray->line.Uy,ray->line.Uz));
-	punto_recta = vector_init (ray->line.x0,ray->line.y0,ray->line.z0);
-	punto_centro.x = ray->line.x0 - object->sp_point.x;
-	punto_centro.y = ray->line.y0 - object->sp_point.y;
-	punto_centro.z = ray->line.z0 - object->sp_point.z;
+	u_ray = normalize_vector(ray->line.l_vector);
+	punto_recta = ray->line.l_point;
+	punto_centro = vectorminus(ray->line.l_point, object->sp_point);
 
 	coef[0] = producto_escalar(u_ray,u_ray);
 	coef[1] = 2 * (producto_escalar(u_ray,punto_centro));
@@ -79,13 +77,9 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 	t_vector	o_norm;
 
 
-	punto_recta.x =ray->line.x0;
-	punto_recta.y =ray->line.y0;
-	punto_recta.z =ray->line.z0;
+	punto_recta = ray->line.l_point;
+	u_norm = ray->line.l_vector;
 
-	u_norm.x = ray->line.Ux;
-	u_norm.y = ray->line.Uy;
-	u_norm.z = ray->line.Uz;
 	u_norm = normalize_vector(u_norm);
 	o_norm.x = object->p_surface.A;
 	o_norm.y = object->p_surface.B;
@@ -118,10 +112,8 @@ void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colisio
 
 		ray->colision = 1;
 
-		nray = normalize_vector(vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz));
-		ray->colision_point.x = ray->line.x0 + d*nray.x;
-		ray->colision_point.y = ray->line.y0 + d*nray.y;
-		ray->colision_point.z = ray->line.z0 + d*nray.z;
+		nray = normalize_vector(ray->line.l_vector);
+		ray->colision_point = vectoradd(ray->line.l_point,escalarxvector(d,nray));
 		ray->color = object_color;
 		ray->n_colision_vector = normal_colision;
 		ray->distance = d;
@@ -136,17 +128,12 @@ void	intersection_cylinder (t_ray *ray,t_cylinder *object)
 	t_vector punto_recta;
 	//double	d;
 
-	u_norm.x = ray->line.Ux;
-	u_norm.y = ray->line.Uy;
-	u_norm.z = ray->line.Uz;
-	punto_recta.x =ray->line.x0;
-	punto_recta.y =ray->line.y0;
-	punto_recta.z =ray->line.z0;
+	punto_recta = ray->line.l_point;
+	u_norm = ray->line.l_vector;
+
 	u_norm = normalize_vector (u_norm);
 	//c_norm = normalize_vector (object->c_direction);
-	punto_centro.x = ray->line.x0 - object->c_point.x;
-	punto_centro.y = ray->line.y0 - object->c_point.y;
-	punto_centro.z = ray->line.z0 - object->c_point.z;
+	punto_centro = vectorminus(ray->line.l_point, object->c_point);
 	// 1 intersect with the infinite cylinder
 	intersection_cylinder1(ray, object); //HECHO!!!!
 	// 2 check if the intersection is between the planes
@@ -193,21 +180,24 @@ void	intersection_cylinder1 (t_ray *ray,t_cylinder *object)
 	double uperc;
 	t_vector	ccylinder;
 
-	u_norm.x = ray->line.Ux;
-	u_norm.y = ray->line.Uy;
-	u_norm.z = ray->line.Uz;
-	punto_recta.x =ray->line.x0;
-	punto_recta.y =ray->line.y0;
-	punto_recta.z =ray->line.z0;
+	punto_recta = ray->line.l_point;
+	u_norm = ray->line.l_vector;
+
 	//u_norm = normalize_vector (u_norm);
 
 	//c_norm = escalarxvector (object->c_height,c_norm);
-	punto_centro.x = ray->line.x0 - object->c_point.x - object->c_direction.x * object->c_height/2;
-	punto_centro.y = ray->line.y0 - object->c_point.y - object->c_direction.y * object->c_height/2;
-	punto_centro.z = ray->line.z0 - object->c_point.z - object->c_direction.z * object->c_height/2;
-	punto_centro2.x = ray->line.x0 - object->c_point.x + object->c_direction.x * object->c_height/2;
-	punto_centro2.y = ray->line.y0 - object->c_point.y + object->c_direction.y * object->c_height/2;
-	punto_centro2.z = ray->line.z0 - object->c_point.z + object->c_direction.z * object->c_height/2;
+	punto_centro = vectorminus(vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
+	punto_centro2 = vectoradd (vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
+
+	/*
+	punto_centro.x = ray->line.l_point.x - object->c_point.x - object->c_direction.x * object->c_height/2;
+	punto_centro.y = ray->line.l_point.y - object->c_point.y - object->c_direction.y * object->c_height/2;
+	punto_centro.z = ray->line.l_point.z - object->c_point.z - object->c_direction.z * object->c_height/2;
+	punto_centro2.x = ray->line.l_point.x - object->c_point.x + object->c_direction.x * object->c_height/2;
+	punto_centro2.y = ray->line.l_point.y - object->c_point.y + object->c_direction.y * object->c_height/2;
+	punto_centro2.z = ray->line.l_point.z - object->c_point.z + object->c_direction.z * object->c_height/2;
+	*/
+
 	c_norm = vectorminus(punto_centro2,punto_centro);
 	uperc = producto_escalar(u_norm,c_norm);
 
@@ -227,9 +217,8 @@ void	intersection_cylinder1 (t_ray *ray,t_cylinder *object)
 		if ( - coef[1] / (2 * coef[0]) - sqrt(discriminante) < d)
 			d =  - coef[1] / (2 * coef[0]) - sqrt(discriminante);
 	}
-	s_norm.x = ray->line.Ux;
-	s_norm.y = ray->line.Uy;
-	s_norm.z = ray->line.Uz;
+
+	s_norm = ray->line.l_vector;
 	r_norm = vectorminus(punto_centro2,punto_centro);
 	ccylinder = vectoradd(punto_recta,escalarxvector(d,s_norm));
 	//printf("solucion (%f,%f,%f) and product %f\n",r_norm.x,r_norm.y,r_norm.z,producto_escalar(r_norm,vectorminus(punto_centro,ccylinder)));
@@ -250,20 +239,22 @@ void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object)
 	t_vector punto_centro2;
 	t_vector punto_recta;
 
-	u_norm.x = ray->line.Ux;
-	u_norm.y = ray->line.Uy;
-	u_norm.z = ray->line.Uz;
-	punto_recta.x =ray->line.x0;
-	punto_recta.y =ray->line.y0;
-	punto_recta.z =ray->line.z0;
+	punto_recta = ray->line.l_point;
+	u_norm = ray->line.l_vector;
 
 	//c_norm = escalarxvector (object->c_height,c_norm);
-	punto_centro.x = ray->line.x0 - object->c_point.x - object->c_direction.x * object->c_height/2;
-	punto_centro.y = ray->line.y0 - object->c_point.y - object->c_direction.y * object->c_height/2;
-	punto_centro.z = ray->line.z0 - object->c_point.z - object->c_direction.z * object->c_height/2;
-	punto_centro2.x = ray->line.x0 - object->c_point.x + object->c_direction.x * object->c_height/2;
-	punto_centro2.y = ray->line.y0 - object->c_point.y + object->c_direction.y * object->c_height/2;
-	punto_centro2.z = ray->line.z0 - object->c_point.z + object->c_direction.z * object->c_height/2;
+	punto_centro = vectorminus(vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
+	punto_centro2 = vectoradd (vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
+
+	/*
+	punto_centro.x = ray->line.l_point.x - object->c_point.x - object->c_direction.x * object->c_height/2;
+	punto_centro.y = ray->line.l_point.y - object->c_point.y - object->c_direction.y * object->c_height/2;
+	punto_centro.z = ray->line.l_point.z - object->c_point.z - object->c_direction.z * object->c_height/2;
+	punto_centro2.x = ray->line.l_point.x - object->c_point.x + object->c_direction.x * object->c_height/2;
+	punto_centro2.y = ray->line.l_point.y - object->c_point.y + object->c_direction.y * object->c_height/2;
+	punto_centro2.z = ray->line.l_point.z - object->c_point.z + object->c_direction.z * object->c_height/2;
+	*/
+
 	//c_norm = vectorminus(punto_centro2,punto_centro);
 }
 //test
@@ -284,11 +275,11 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	double		discriminante;
 	double		d;
 
-	r_norm = normalize_vector(vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz));
+	r_norm = normalize_vector(ray->line.l_vector);
 	v_norm = vector_init(object->c_direction.x,object->c_direction.y,object->c_direction.z);
-	centro_base = vector_init(object->c_down.x-ray->line.x0,object->c_down.y-ray->line.y0,object->c_down.z-ray->line.z0);
+	centro_base = vectorminus(object->c_down, ray->line.l_point);
 	//centro_higt = vector_init(object->c_upper.x,object->c_upper.y,object->c_upper.z);
-	VoCb = vector_init (ray->line.x0-object->c_down.x,ray->line.y0-object->c_down.y,ray->line.z0-object->c_down.z);
+	VoCb = vectorminus(ray->line.l_point, object->c_down);
 	coef[0] = 1 - powl (producto_escalar(r_norm,v_norm),2);
 	coef[1] = 2*(producto_escalar(r_norm,VoCb) - producto_escalar(r_norm,v_norm)*producto_escalar(VoCb,v_norm));
 	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - powl(object->c_diameter/2,2);

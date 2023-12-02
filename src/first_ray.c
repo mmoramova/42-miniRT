@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/02 14:18:25 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:59:41 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 
 	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
 	intersection_vision (scene, &ray_light);
-	light_pos = vector_init(ray->line.x0,ray->line.y0,ray->line.z0);
+	light_pos = ray->line.l_point;
 	distance_lc = modulo(vectorminus(light->l_point,ray->colision_point));
-	light_vector = vector_init(ray->line.Ux,ray->line.Uy,ray->line.Uz);
+	light_vector = ray->line.l_vector;
 
 	new_distance = modulo(vectorminus(ray_light.colision_point,light_pos));
 	//need to improve, not working
@@ -125,9 +125,7 @@ void	set_color_normal(t_ray *ray)
 	t_vector light;
 
 	light= vector_init(50 -ray->colision_point.x,50-ray->colision_point.y,50-ray->colision_point.z);
-	u_norm.x = ray->line.Ux;
-	u_norm.y = ray->line.Uy;
-	u_norm.z = ray->line.Uz;
+	u_norm = ray->line.l_vector;
 	coef = 0;
 	if (ray->colision == 1)
 		coef =fabs(producto_escalar (normalize_vector(light),normalize_vector(ray->n_colision_vector)));

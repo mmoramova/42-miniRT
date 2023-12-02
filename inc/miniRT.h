@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/02 14:16:19 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:45:48 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,8 @@ typedef struct s_rgb
 
 typedef struct s_line
 {
-	double	x0;
-	double	y0;
-	double	z0;
-	double	Ux;
-	double	Uy;
-	double	Uz;
-
+	t_vector	l_point;
+	t_vector	l_vector;
 }		t_line;
 
 typedef struct s_ray

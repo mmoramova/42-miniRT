@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:19:49 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/15 18:19:22 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:45:36 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,8 @@ t_line	two_points_line (t_vector pi, t_vector pf)
 {
 	t_line	ray;
 
-	ray.Ux = pf.x - pi.x;
-	ray.Uy = pf.y - pi.y;
-	ray.Uz = pf.z - pi.z;
-	ray.x0 = pi.x;
-	ray.y0 = pi.y;
-	ray.z0 = pi.z;
+	ray.l_point = pi;
+	ray.l_vector = vectorminus(pf, pi);
 	return (ray);
 }
 
