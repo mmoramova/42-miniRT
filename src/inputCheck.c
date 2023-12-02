@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:00:26 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/11/29 17:37:44 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:01:50 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int inputcheck_isColor(char *data)
 	//exactly 2 commas
 	if (count_commas != 2)
 		return (0);
-	color = str2rgb(data);
+	color = set_rgb(data);
 	// between 0 and 255 inclusive, not checking < 0 because it cant contain minus
 	if (color.r > 255 || color.g > 255 || color.b > 255)
 		return (0);

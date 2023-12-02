@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/27 18:24:41 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:10:56 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	ray_color(t_scene *scene,t_pixel pos)
 	intersection_vision (scene, &ray_vision);
 
 	//provisional
-	//pixel_color_normal(ray_vision);
-	pixel_color(scene, &ray_vision);
+	//set_color_normal(ray_vision);
+	set_color(scene, &ray_vision);
 
 	return(ray_vision.color.rgb);
 }
@@ -103,100 +103,10 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 	}
 	return 0;
 }
-void	pixel_color(t_scene *scene, t_ray *ray)
-{
-	t_list	*l_list;
-	l_list = scene->lights;
-
-	double	al_ratio = scene->amblight.al_ratio;
-	t_rgb	al_color = scene->amblight.al_color;
-	t_rgb	o_color = ray->color;
-
-	t_rgb	ambient_color;
-	t_rgb	light_color;
-	t_rgb	specular_color;
-	t_rgb	final_color;
-
-	bool	in_shadow;
-
-	final_color = set_rgb("0","0","0");
-
-	//calculate ambient color
-	if (ray->color.rgb == 0)
-		ambient_color = set_rgb("0","0","0");
-		//ambient_color = rgbXdouble(al_color,al_ratio);
-	else
-		ambient_color = rgbXrgb(o_color, rgbXdouble(al_color,al_ratio));
-
-	if (l_list)
-	{
-		while (l_list->content != NULL)
-		{
-
-			in_shadow = check_intersection(scene,ray,(t_light*) l_list->content);
-			//in_shadow = 0; //provisonal
-			if (in_shadow == 0)
-			{
-				light_color = pixel_light_calculate (ray,(t_light*) l_list->content);
-				final_color = rgb_add(light_color, final_color);
-				specular_color = rgbXrgb(o_color,pixel_specular_calculate (scene, ray,(t_light*) l_list->content));
-				final_color = rgb_add(specular_color, final_color);
-			}
-			l_list = l_list -> next;
-		}
-	}
-	final_color = rgb_add(ambient_color, final_color);
-	ray->color = rgb_norm(final_color);
-}
-
-t_rgb	pixel_light_calculate (t_ray *ray, t_light *light)
-{
-	t_vector	l_point = light->l_point;
-	t_vector	o_point = ray->colision_point;
-	double		l_brightness = light->l_brightness;
-
-	t_rgb light_color;
-	t_rgb		l_color = light->color;
-
-	t_vector	o_nvector = normalize_vector(ray->n_colision_vector);
-	t_vector	l_nvector = normalize_vector(vectorminus(l_point, o_point));
-
-	if (ray->color.rgb == 0)
-		light_color = set_rgb("0","0","0");
-	else
-		light_color = rgbXrgb(ray->color, rgbXdouble(rgbXdouble(l_color,l_brightness),fmax(0, producto_escalar(l_nvector,o_nvector))));
-	return(light_color);
-	//printf("colors (%d,%d,%d)\n", ray->color.r,ray->color.g,ray->color.b);
-}
-
-t_rgb	pixel_specular_calculate (t_scene *scene, t_ray *ray, t_light *light)
-{
-	t_vector	c_point = scene->camera.c_point;
-	t_vector	l_point = light->l_point;
-	t_vector	o_point = ray->colision_point;
-
-	t_rgb		specular_color;
-	t_rgb		s_color = light->color;
-	double		specular_factor;
-
-	t_vector	o_nvector = normalize_vector(ray->n_colision_vector);
-	t_vector	l_nvector = normalize_vector(vectorminus(o_point, l_point));
-
-	t_vector reflection_vector = vectorminus(l_nvector, escalarxvector(2 * producto_escalar(l_nvector, o_nvector), o_nvector));
-	t_vector view_vector = normalize_vector(vectorminus(c_point, o_point));
-	specular_factor = pow(fmax(0, producto_escalar(reflection_vector,view_vector)),32);
-
-	if (ray->color.rgb == 0)
-		specular_color = set_rgb("0","0","0");
-	else
-		specular_color = rgbXdouble(s_color,specular_factor);
-		//specular_color = rgbXdouble(rgbXdouble(s_color,s_brightness),specular_factor);
-	return(specular_color);
-}
 
 
-//provisional
-void	pixel_color_normal(t_ray *ray)
+//provisional --this we will delete
+void	set_color_normal(t_ray *ray)
 {
 	double	coef;
 	t_vector u_norm;
@@ -212,7 +122,7 @@ void	pixel_color_normal(t_ray *ray)
 	ray->color.r= ray->color.r*coef;
 	ray->color.g= ray->color.g*coef;
 	ray->color.b= ray->color.b*coef ;
-	ray->color.rgb = ft_create_trgb (ray->color.r,ray->color.g,ray->color.b);
+	ray->color.rgb = set_trgb (ray->color.r,ray->color.g,ray->color.b);
 
 	//printf("escalar = %f u_norm = %f color = %d\n", coef,modulo(u_norm),ray->color.rgb);
 }

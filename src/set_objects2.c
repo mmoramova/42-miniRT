@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:10:13 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/02 12:04:10 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:01:50 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	set_cylinder(t_scene *scene, char **datarow)
 	cylinder->c_direction = str2vector(datarow[2]);
 	cylinder->c_diameter = ft_atod(datarow[3]);
 	cylinder->c_height = ft_atod(datarow[4]);
-	cylinder->c_color = str2rgb(datarow[5]);
+	cylinder->c_color = set_rgb(datarow[5]);
 	//cylinder->c_nvector = NULL;
 
 	ft_lstadd_front(&(scene->cylinders), ft_lstnew(cylinder));
