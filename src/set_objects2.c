@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:10:13 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/04 19:57:45 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/04 17:55:50 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	set_cylinder(t_scene *scene, char **datarow, int *orderref)
 	if (!cylinder)
 		ft_error(scene, 1, "Malloc error - cylinder");
 	cylinder->c_point = vectorminus(str2vector(datarow[1]), scene->camera.c_point_init);
-	cylinder->c_direction = normalize_vector(str2vector(datarow[2]));
+	cylinder->c_direction = str2vector(datarow[2]);
 	cylinder->c_diameter = ft_atod(datarow[3]);
 	cylinder->c_height = ft_atod(datarow[4]);
 	cylinder->c_color = set_rgb(datarow[5]);
