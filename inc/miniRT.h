@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/02 14:45:48 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:12:29 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ typedef struct s_ray
 	double		distance;
 	t_rgb		color;
 	t_vector	n_colision_vector;
+	bool		type; //0 ray, 1 light
+	int			c_orderref;
+	int			l_orderref;
 }	t_ray;
 
 typedef struct s_surface
@@ -110,6 +113,7 @@ typedef struct s_sphere
 	double		sp_diameter;
 	t_rgb		sp_color;
 	t_vector	sp_radium;
+	int			sp_orderref;
 }				t_sphere;
 
 typedef struct s_plane
@@ -118,6 +122,7 @@ typedef struct s_plane
 	t_vector	p_nvector;
 	t_rgb		p_color;
 	t_surface	p_surface;
+	int			p_orderref;
 }				t_plane;
 
 typedef struct s_cylinder
@@ -130,6 +135,7 @@ typedef struct s_cylinder
 	t_vector	c_nvector;
 	t_vector	c_upper;
 	t_vector	c_down;
+	int			c_orderref;
 }				t_cylinder;
 
 /* SCENE */
@@ -163,7 +169,7 @@ typedef struct s_scene
 //scene.c
 void scene_init(t_scene *scene);
 void scene_create(t_scene *scene, char *file);
-void scene_fill_line(t_scene *scene, char **datarow);
+void scene_fill_line(t_scene *scene, char **datarow, int *orderref);
 
 //utils.c
 int	ft_check_arg(char *file);
@@ -172,9 +178,9 @@ int	ft_check_arg(char *file);
 void	set_amblight(t_scene *scene, char **datarow);
 void	set_camera(t_scene *scene, char **datarow);
 void	set_light(t_scene *scene, char **datarow);
-void	set_sphere(t_scene *scene, char **datarow);
-void	set_plane(t_scene *scene, char **datarow);
-void	set_cylinder(t_scene *scene, char **datarow);
+void	set_sphere(t_scene *scene, char **datarow, int *orderref);
+void	set_plane(t_scene *scene, char **datarow, int *orderref);
+void	set_cylinder(t_scene *scene, char **datarow, int *orderref);
 
 //rgb.c, rgb2.c
 int		set_trgb(int r, int g, int b);
@@ -217,7 +223,7 @@ int		scene_exit(t_scene *scene);
 
 //Calculus
 int		ray_color(t_scene *scene, t_pixel pos);
-void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision);
+void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
 void 	D_plane (t_camera *camera);
 void 	camera_intersection (t_camera *camera);
 t_vector	camera_first_vector (t_camera *camera);

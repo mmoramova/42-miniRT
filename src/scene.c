@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:41:55 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/02 14:18:40 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:28:43 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void	scene_create(t_scene *scene, char *file)
 	int		fd;
 	char	*line;
 	char	**datarow;
+	int	 	orderref;
 
+	orderref = 1;
 	scene_init(scene);
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
@@ -25,7 +27,7 @@ void	scene_create(t_scene *scene, char *file)
 	{
 		datarow = ft_split_noprintable(line, '\t');
 		free(line);
-		scene_fill_line(scene, datarow);
+		scene_fill_line(scene, datarow, &orderref);
 		//free(datarow); //TODO
 		line = get_next_line(fd);
 	}
@@ -39,8 +41,9 @@ void	scene_init(t_scene *scene)
 	scene->cylinders = ft_lstnew(NULL);
 }
 
-void	scene_fill_line(t_scene *scene, char **datarow)
+void	scene_fill_line(t_scene *scene, char **datarow, int *orderref)
 {
+
 	if ((datarow[0][0]) == '\n')
 		return ;
 	if (ft_strncmp(datarow[0], "A", 1) == 0 && ft_strlen(datarow[0]) == 1)
@@ -50,11 +53,11 @@ void	scene_fill_line(t_scene *scene, char **datarow)
 	else if (ft_strncmp(datarow[0], "l", 1) == 0 && ft_strlen(datarow[0]) == 1)
 		set_light(scene, datarow);
 	else if (ft_strncmp(datarow[0], "sp", 2) == 0 && ft_strlen(datarow[0]) == 2)
-		set_sphere(scene, datarow);
+		set_sphere(scene, datarow, orderref);
 	else if (ft_strncmp(datarow[0], "pl", 2) == 0 && ft_strlen(datarow[0]) == 2)
-		set_plane(scene, datarow);
+		set_plane(scene, datarow, orderref);
 	else if (ft_strncmp(datarow[0], "cy", 2) == 0 && ft_strlen(datarow[0]) == 2)
-		set_cylinder(scene, datarow);
+		set_cylinder(scene, datarow, orderref);
 	else
 		ft_error(scene, 1, "incorrect .rt file");
 }

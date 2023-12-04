@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/02 15:13:36 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:22:47 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	//printf("punto recta (%f,%f,%f)\n",punto_centro.x,punto_centro.y,punto_centro.z);
 	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
 	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray)) && producto_escalar(radio,u_ray) <= 0))
-		ray_update(ray, object->sp_color, d, radio);//bad unorm
+		ray_update(ray, object->sp_color, d, radio, object->sp_orderref);//bad unorm
 }
 
 void	intersection_plane(t_ray *ray, t_plane *object)
@@ -100,24 +100,26 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 	if (ray->colision == 0 || (ray->distance >= t && producto_escalar(o_norm,u_norm) <= 0))
 	{
 		//printf("t de solucion %f distance %f and ray colision distance %f \n",t ,d,ray->distance);
-		ray_update(ray, object->p_color, t,o_norm);
+		ray_update(ray, object->p_color, t,o_norm, object->p_orderref);
 		//printf("ray = (%f,%f,%f) and distance %f angle in degrees %f\n",o_norm.x,o_norm.y,o_norm.z,d, acos(2*M_PI*producto_escalar(u_norm,o_norm)/(360*modulo(u_norm)*modulo(o_norm))));
 
 	}
 }
 
-void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colision)
+void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colision, int orderref)
 {
 		t_vector	nray;
 
+		if (ray->type == 1 && orderref == ray->c_orderref)
+			return;
 		ray->colision = 1;
-
 		nray = normalize_vector(ray->line.l_vector);
 		ray->colision_point = vectoradd(ray->line.l_point,escalarxvector(d,nray));
 		ray->color = object_color;
 		ray->n_colision_vector = normal_colision;
 		ray->distance = d;
-
+		if (ray->type == 0)
+			ray->c_orderref = orderref;
 }
 void	intersection_cylinder (t_ray *ray,t_cylinder *object)
 {
@@ -227,7 +229,7 @@ void	intersection_cylinder1 (t_ray *ray,t_cylinder *object)
 	if (ray->colision == 0 || ray->distance > d)
 	{
 		//printf("discriminante = %f dist = %f, cil = %f\n",discriminante,ray->distance ,d);
-		ray_update(ray, object->c_color, d, s_norm);//bad s_norm
+		ray_update(ray, object->c_color, d, s_norm, object->c_orderref);//bad s_norm
 	}
 
 }
@@ -298,6 +300,6 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 		return;
 	s_norm = vectorminus(solution,vectoradd(centro_base,escalarxvector(producto_escalar(vectorminus(solution,centro_base),v_norm),v_norm)));
 	if (ray->distance >= d  && producto_escalar(s_norm,r_norm)< 0 && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
-			ray_update(ray, object->c_color, d, s_norm);//bad s_norm
+			ray_update(ray, object->c_color, d, s_norm, object->c_orderref);//bad s_norm
 
 }
