@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/04 17:54:20 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:01:50 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	set_light(t_scene *scene, char **datarow)
 	ft_lstadd_front(&(scene->lights), ft_lstnew(light));
 }
 
-void	set_sphere(t_scene *scene, char **datarow, int *orderref)
+void	set_sphere(t_scene *scene, char **datarow)
 {
 	t_sphere	*sphere;
 
@@ -93,14 +93,12 @@ void	set_sphere(t_scene *scene, char **datarow, int *orderref)
 	sphere->sp_point = vectorminus(str2vector(datarow[1]),scene->camera.c_point_init);
 	sphere->sp_diameter = ft_atod(datarow[2]);
 	sphere->sp_color = set_rgb(datarow[3]);
-	sphere->sp_orderref = *orderref;
-	*orderref += 1;
 	//sphere->sp_radium = NULL;
-	printf("Order number of sphere is %d\n",sphere->sp_orderref);
+
 	ft_lstadd_front(&(scene->spheres), ft_lstnew(sphere));
 }
 
-void	set_plane(t_scene *scene, char **datarow, int *orderref)
+void	set_plane(t_scene *scene, char **datarow)
 {
 	t_plane	*plane;
 
@@ -120,8 +118,6 @@ void	set_plane(t_scene *scene, char **datarow, int *orderref)
 	plane->p_point = vectorminus(str2vector(datarow[1]),scene->camera.c_point_init);;
 	plane->p_nvector = str2vector(datarow[2]);
 	plane->p_color = set_rgb(datarow[3]);
-	plane->p_orderref = *orderref;
-	*orderref += 1;
 	plane->p_surface.A = -plane->p_nvector.x;
 	plane->p_surface.B = -plane->p_nvector.y;
 	plane->p_surface.C = -plane->p_nvector.z;

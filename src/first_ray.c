@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/04 18:22:49 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:59:41 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ray_color(t_scene *scene,t_pixel pos)
 	ray_vision.distance = 30000000;
 	ray_vision.colision = 0;
 	ray_vision.line = (two_points_line (scene->camera.c_point,init));
-	ray_vision.type = 0;
 	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
 	intersection_vision (scene, &ray_vision);
 
@@ -95,8 +94,6 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 	ray_light.distance = 30000000;
 	ray_light.colision = 0;
 	ray_light.line = (two_points_line (light->l_point,ray->colision_point));
-	ray_light.type = 1;
-	ray_light.c_orderref = ray->c_orderref;
 
 	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
 	intersection_vision (scene, &ray_light);
@@ -106,12 +103,12 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 
 	new_distance = modulo(vectorminus(ray_light.colision_point,light_pos));
 	//need to improve, not working
-	/*if ((distance_lc* 0.99)  <= new_distance && producto_escalar(vectorminus(ray_light.colision_point,light_pos),light_vector) >=0)
+	if ((distance_lc* 0.99)  <= new_distance && producto_escalar(vectorminus(ray_light.colision_point,light_pos),light_vector) >=0)
 	{
 		//printf("distance to object=%f, distance coalision=%f\n", distance_lc, ray_light.distance);
 		return 0;
-	}*/
-	if ((distance_lc )  <= ray_light.distance)
+	}
+	if ((distance_lc* 0.99)  <= ray_light.distance)
 	{
 		return(0);
 	}

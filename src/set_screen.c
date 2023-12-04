@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_screen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:48:20 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/04 18:26:58 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:55:11 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_screen(t_scene *scene)
 	double	fov;
 
 	north = find_normal_vector(scene->camera.c_nvector,1);
-	fov = 100;
+	fov = 50;
 	//calculate point of intersection between unitari vector and camera plane
 	scene->camera.c_ray = normalize_vector(vector_init(scene->camera.c_point.x + scene->camera.c_nvector.x
 		,scene->camera.c_point.y + scene->camera.c_nvector.y
