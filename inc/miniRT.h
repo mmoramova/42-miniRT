@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/04 18:12:29 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:06:32 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,4 +260,5 @@ int inputcheck_isDoublePositive(char *data);
 
 //test
 void	intersection_cylinder_test (t_ray *ray,t_cylinder *object);
+void	print_vector(t_vector vector,char	*str);
 #endif

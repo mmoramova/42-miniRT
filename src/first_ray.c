@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/04 18:22:49 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:11:24 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ray_color(t_scene *scene,t_pixel pos)
 	ray_vision.type = 0;
 	//color = intersection_sphere (ray_vision.line,(t_sphere*) scene->spheres->content);
 	intersection_vision (scene, &ray_vision);
-
+	
 	//provisional
 	//set_color_normal(ray_vision);
 	set_color(scene, &ray_vision);
@@ -111,7 +111,7 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 		//printf("distance to object=%f, distance coalision=%f\n", distance_lc, ray_light.distance);
 		return 0;
 	}*/
-	if ((distance_lc )  <= ray_light.distance)
+	if ((distance_lc *.99) <= ray_light.distance)
 	{
 		return(0);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atod.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:34:09 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/02 12:49:17 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:15:11 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ double	ft_atod(const char *str)
 		str++;
 	if (*str == '-')
 		sign = -1.0;
-	else if (*str == '-' || *str == '+')
+	if (*str == '-' || *str == '+')
 		str++;
 	num = 0.0;
 	while (*str >= '0' && *str <= '9')

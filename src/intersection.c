@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/04 18:22:47 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:02:01 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,11 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 	//printf("coef[%f,%f,%f]\n",coef[0],coef[1],coef[2]);
 	//printf("punto recta (%f,%f,%f)\n",punto_centro.x,punto_centro.y,punto_centro.z);
 	radio = vectorminus(vectoradd(escalarxvector(d,normalize_vector(u_ray)) ,punto_recta),object->sp_point); //vectoradd(escalarxvector(d,u_norm), punto_recta);
-	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray)) && producto_escalar(radio,u_ray) <= 0))
+	if (ray->colision == 0 || (ray->distance > modulo(escalarxvector(d,u_ray))/* && producto_escalar(radio,u_ray) <= 0)*/))
+	{
 		ray_update(ray, object->sp_color, d, radio, object->sp_orderref);//bad unorm
+
+	}
 }
 
 void	intersection_plane(t_ray *ray, t_plane *object)
@@ -110,8 +113,8 @@ void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colisio
 {
 		t_vector	nray;
 
-		if (ray->type == 1 && orderref == ray->c_orderref)
-			return;
+		// if (ray->type == 1 && orderref == ray->c_orderref)
+		// 	return;
 		ray->colision = 1;
 		nray = normalize_vector(ray->line.l_vector);
 		ray->colision_point = vectoradd(ray->line.l_point,escalarxvector(d,nray));
@@ -278,19 +281,19 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	double		d;
 
 	r_norm = normalize_vector(ray->line.l_vector);
-	v_norm = vector_init(object->c_direction.x,object->c_direction.y,object->c_direction.z);
+	v_norm = normalize_vector(vectorminus(object->c_upper,object->c_down));
 	centro_base = vectorminus(object->c_down, ray->line.l_point);
 	//centro_higt = vector_init(object->c_upper.x,object->c_upper.y,object->c_upper.z);
 	VoCb = vectorminus(ray->line.l_point, object->c_down);
-	coef[0] = 1 - powl (producto_escalar(r_norm,v_norm),2);
+	coef[0] = 1 - pow (producto_escalar(r_norm,v_norm),2);
 	coef[1] = 2*(producto_escalar(r_norm,VoCb) - producto_escalar(r_norm,v_norm)*producto_escalar(VoCb,v_norm));
-	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - powl(object->c_diameter/2,2);
-	discriminante = powl(coef[1],2) - 4 * coef[0] * coef [2];
+	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - pow(object->c_diameter/2,2);
+	discriminante = pow(coef[1],2) - 4 * coef[0] * coef [2];
 	if (discriminante >= 0)
 	{
-		d = - coef[1] / (2 * coef[0]) + sqrtl(discriminante);
-		if ( - coef[1] / (2 * coef[0]) - sqrtl(discriminante) < d)
-			d =  - coef[1] / (2 * coef[0]) - sqrtl(discriminante);
+		d = (- coef[1] + sqrtl(discriminante)) / (2 * coef[0]);
+		if ((- coef[1] - sqrtl(discriminante)) / (2 * coef[0]) < d && (- coef[1] - sqrtl(discriminante)) / (2 * coef[0])>=0)
+			d =  (- coef[1] - sqrtl(discriminante))/ (2 * coef[0]);
 		solution = escalarxvector (d,r_norm);
 		if ( d < 0)
 			return;
@@ -299,7 +302,6 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	else
 		return;
 	s_norm = vectorminus(solution,vectoradd(centro_base,escalarxvector(producto_escalar(vectorminus(solution,centro_base),v_norm),v_norm)));
-	if (ray->distance >= d  && producto_escalar(s_norm,r_norm)< 0 && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
+	if ((ray->colision == 0 ||ray->distance > modulo(solution)) /* && producto_escalar(s_norm,r_norm)<= 0*/ && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
 			ray_update(ray, object->c_color, d, s_norm, object->c_orderref);//bad s_norm
-
 }

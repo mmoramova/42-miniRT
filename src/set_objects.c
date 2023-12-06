@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_objects.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/04 17:54:20 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:07:09 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	set_camera(t_scene *scene, char **datarow)
 		ft_error(scene, 1, "incorrect camera angle");
 
 	scene->camera.c_point_init = str2vector(datarow[1]);
+	print_vector(scene->camera.c_point_init,"camara inicial");
 	scene->camera.c_point = vector_init(0,0,0);
 	scene->camera.c_nvector = normalize_vector(str2vector(datarow[2]));
 	scene->camera.c_angle = ft_atod(datarow[3])* 2 * M_PI / 360;
@@ -68,6 +69,7 @@ void	set_light(t_scene *scene, char **datarow)
 	if (!light)
 		ft_error(scene, 1, "Malloc error - light");
 	light->l_point = vectorminus(str2vector(datarow[1]),scene->camera.c_point_init);
+	print_vector(light->l_point,"posicion inicial de la luz");
 	light->l_brightness = ft_atod(datarow[2]);
 	light->color = set_rgb(datarow[3]);
 	//light->lightray = NULL;
@@ -91,6 +93,7 @@ void	set_sphere(t_scene *scene, char **datarow, int *orderref)
 	if (!sphere)
 		ft_error(scene, 1, "Malloc error - sphere");
 	sphere->sp_point = vectorminus(str2vector(datarow[1]),scene->camera.c_point_init);
+	print_vector(sphere->sp_point,"posicion inicial de la esfera");
 	sphere->sp_diameter = ft_atod(datarow[2]);
 	sphere->sp_color = set_rgb(datarow[3]);
 	sphere->sp_orderref = *orderref;
