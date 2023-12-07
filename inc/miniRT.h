@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/07 16:03:54 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:15:09 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ t_rgb	set_rgb(char *row);
 t_rgb	rgb_mult(t_rgb c1, t_rgb c2);
 t_rgb	rgb_multd(t_rgb c1, double r);
 t_rgb	rgb_sum(t_rgb c1, t_rgb c2);
-t_rgb	rgb_normalize(t_rgb c);
+t_rgb	rgb_normalize(t_rgb c); //rgb_norm
 
 //set_color.c
 void	set_color(t_scene *scene, t_ray *ray);
@@ -232,8 +232,8 @@ void 	camera_intersection (t_camera *camera);
 t_vector	camera_first_vector (t_camera *camera);
 void 	intersection_vision (t_scene *scene, t_ray *ray);
 void	intersection_sphere(t_ray *ray, t_sphere *object);
-void	intersection_cylinder (t_ray *ray,t_cylinder *object);
-void	intersection_cylinder1(t_ray *ray,t_cylinder *object);
+void	intersection_cylinder (t_ray *ray,t_cylinder *object); //delete
+void	intersection_cylinder1(t_ray *ray,t_cylinder *object); //delete
 void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane);
 void	intersection_plane(t_ray *ray, t_plane *object);
 void	init_screen(t_scene *scene);
@@ -241,15 +241,15 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light);
 
 //General calculus
 double		distance (t_vector point1,t_vector point2);
-double		producto_escalar (t_vector vector1, t_vector vector2);
-t_vector 	producto_vectorial (t_vector vector1, t_vector vector2);
+double		producto_escalar (t_vector vector1, t_vector vector2); //v_inner
+t_vector 	producto_vectorial (t_vector vector1, t_vector vector2); // v_mult
 t_vector	find_normal_vector (t_vector v1, double lengh);
-t_vector 	normalize_vector(t_vector v1);
-double		modulo(t_vector v1);
-t_line		two_points_line (t_vector pi, t_vector pf);
-t_vector 	escalarxvector(double esc, t_vector vec);
-t_vector 	vectorminus(t_vector v1, t_vector v2);
-t_vector vectoradd(t_vector v1, t_vector v2);
+t_vector 	normalize_vector(t_vector v1); //v_normalize
+double		modulo(t_vector v1);//v_dom
+t_line		two_points_line (t_vector pi, t_vector pf);//l_create
+t_vector 	escalarxvector(double esc, t_vector vec);//v_multd
+t_vector 	vectorminus(t_vector v1, t_vector v2);//v_minus
+t_vector	vectoradd(t_vector v1, t_vector v2);//v_sum
 
 //PROVISIONAL!!!!!
 void	set_color_normal(t_ray *ray);
