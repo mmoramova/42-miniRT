@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/07 14:17:55 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:03:25 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,7 @@ void		intersection_sphere(t_ray *ray, t_sphere *object)
 
 void	intersection_plane(t_ray *ray, t_plane *object)
 {
-	//todo
-
-	//double	d;
 	double	t;
-
 	t_vector	u_norm;
 	t_vector	o_norm;
 	t_vector	solution;
@@ -112,143 +108,33 @@ void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colisio
 		if (ray->type == 0)
 			ray->c_orderref = orderref;
 }
-void	intersection_cylinder (t_ray *ray,t_cylinder *object)
+
+
+void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane)
 {
-	//double	discriminante;
-	t_vector u_norm;
-	//t_vector c_norm;
-	t_vector punto_centro;
-	t_vector punto_recta;
-	//double	d;
+	double	t;
+	t_vector	u_norm;
+	t_vector	o_norm;
+	t_vector	solution;
+	double		condition;
 
-	punto_recta = ray->line.l_point;
 	u_norm = ray->line.l_vector;
-
-	u_norm = normalize_vector (u_norm);
-	//c_norm = normalize_vector (object->c_direction);
-	punto_centro = vectorminus(ray->line.l_point, object->c_point);
-	// 1 intersect with the infinite cylinder
-	intersection_cylinder1(ray, object); //HECHO!!!!
-	// 2 check if the intersection is between the planes
-	intersection_cylinder_planes(ray,object);
-	// 3 intersect with each plane
-	// 4 determine if the intersections are inside the caps
-	// 5 choose the minimal
-
-
-
-	//printf ("1 = %f\n2 = %f\n3 - %f\n ",c_norm.x,c_norm.y,c_norm.z);
-	// discriminante = pow(producto_escalar(c_norm,punto_centro),2) - pow(producto_escalar (u_norm,c_norm),2)*(pow(modulo(punto_centro),2) - pow(object->c_diameter/2,2));
-	// //printf("discriminante = %f\n",discriminante);
-	// if (discriminante < 0)
-	// {
-	// 	//no colision, no point, no normal
-	// 	//ray->colision = 0;
-	// 	return ;
-	// }
-	// else if ( discriminante == 0)
-	// 	d = -producto_escalar(punto_centro,c_norm);
-	// else
-	// {
-	// 	d = -producto_escalar(punto_centro,c_norm) + sqrt(discriminante);
-	// 	if (-producto_escalar(c_norm,punto_centro) - sqrt(discriminante) < d)
-	// 		d = -producto_escalar(punto_centro,c_norm) - sqrt(discriminante);
-	// }
-
-
-
-}
-void	intersection_cylinder1 (t_ray *ray,t_cylinder *object)
-{
-	double	discriminante;
-	t_vector u_norm;
-	t_vector c_norm;
-	t_vector punto_centro;
-	t_vector punto_centro2;
-	t_vector punto_recta;
-	t_vector s_norm;
-	t_vector r_norm;
-	double	d;
-	double coef[3];
-	double uperc;
-	t_vector	ccylinder;
-
-	punto_recta = ray->line.l_point;
-	u_norm = ray->line.l_vector;
-
-	//u_norm = normalize_vector (u_norm);
-
-	//c_norm = escalarxvector (object->c_height,c_norm);
-	punto_centro = vectorminus(vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
-	punto_centro2 = vectoradd (vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
-
-	/*
-	punto_centro.x = ray->line.l_point.x - object->c_point.x - object->c_direction.x * object->c_height/2;
-	punto_centro.y = ray->line.l_point.y - object->c_point.y - object->c_direction.y * object->c_height/2;
-	punto_centro.z = ray->line.l_point.z - object->c_point.z - object->c_direction.z * object->c_height/2;
-	punto_centro2.x = ray->line.l_point.x - object->c_point.x + object->c_direction.x * object->c_height/2;
-	punto_centro2.y = ray->line.l_point.y - object->c_point.y + object->c_direction.y * object->c_height/2;
-	punto_centro2.z = ray->line.l_point.z - object->c_point.z + object->c_direction.z * object->c_height/2;
-	*/
-
-	c_norm = vectorminus(punto_centro2,punto_centro);
-	uperc = producto_escalar(u_norm,c_norm);
-
-	coef[0] = producto_escalar(vectorminus(u_norm,escalarxvector(uperc,c_norm)),vectorminus(u_norm,escalarxvector(uperc,c_norm)));
-	coef[1] = 2 * (producto_escalar(vectorminus(u_norm,escalarxvector(uperc,c_norm)),vectorminus(punto_centro,escalarxvector(producto_escalar(punto_centro,c_norm),c_norm))));
-	coef[2] = producto_escalar(vectorminus(punto_centro,escalarxvector(producto_escalar(punto_centro,c_norm),c_norm)),vectorminus(punto_centro,escalarxvector(producto_escalar(punto_centro,c_norm),c_norm))) - pow(object->c_diameter/2,2);
-
-	discriminante = pow(coef[1],2) - 4 * coef[0] * coef [2];
-
-	if (discriminante < 0)//(producto_escalar(c_norm,vectorminus(object->c_point,punto_centro)) > 0 && producto_escalar(c_norm,vectorminus(object->c_point,punto_centro2)) > 0))
+	u_norm = normalize_vector(u_norm);
+	o_norm.x = plane.p_surface.A;
+	o_norm.y = plane.p_surface.B;
+	o_norm.z = plane.p_surface.C;
+	point = vectorminus(point,ray->line.l_point);
+	if (producto_escalar(o_norm,u_norm) == 0 )
+	 	return;
+	t = - (plane.p_surface.D + producto_escalar(o_norm,ray->line.l_point))/producto_escalar(o_norm,u_norm);
+	solution = escalarxvector(t,u_norm);
+	if (t<0)
 		return;
-	else if (discriminante == 0)
-		d = - coef[1] / (2 * coef[0]);
-	else
-	{
-		d = - coef[1] / (2 * coef[0]) + sqrt(discriminante);
-		if ( - coef[1] / (2 * coef[0]) - sqrt(discriminante) < d)
-			d =  - coef[1] / (2 * coef[0]) - sqrt(discriminante);
-	}
-
-	s_norm = ray->line.l_vector;
-	r_norm = vectorminus(punto_centro2,punto_centro);
-	ccylinder = vectoradd(punto_recta,escalarxvector(d,s_norm));
-	//printf("solucion (%f,%f,%f) and product %f\n",r_norm.x,r_norm.y,r_norm.z,producto_escalar(r_norm,vectorminus(punto_centro,ccylinder)));
-	if ((producto_escalar(r_norm,vectorminus(punto_centro,ccylinder))) > 0 || producto_escalar(r_norm,vectorminus(punto_centro2,ccylinder)) < 0)
-		return;
-	if (ray->colision == 0 || ray->distance > d)
-	{
-		//printf("discriminante = %f dist = %f, cil = %f\n",discriminante,ray->distance ,d);
-		ray_update(ray, object->c_color, d, s_norm, object->c_orderref);//bad s_norm
-	}
-
-}
-void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object)
-{
-	t_vector u_norm;
-	//t_vector c_norm;
-	t_vector punto_centro;
-	t_vector punto_centro2;
-	t_vector punto_recta;
-
-	punto_recta = ray->line.l_point;
-	u_norm = ray->line.l_vector;
-
-	//c_norm = escalarxvector (object->c_height,c_norm);
-	punto_centro = vectorminus(vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
-	punto_centro2 = vectoradd (vectorminus(ray->line.l_point, object->c_point), escalarxvector(object->c_height/2, object->c_direction));
-
-	/*
-	punto_centro.x = ray->line.l_point.x - object->c_point.x - object->c_direction.x * object->c_height/2;
-	punto_centro.y = ray->line.l_point.y - object->c_point.y - object->c_direction.y * object->c_height/2;
-	punto_centro.z = ray->line.l_point.z - object->c_point.z - object->c_direction.z * object->c_height/2;
-	punto_centro2.x = ray->line.l_point.x - object->c_point.x + object->c_direction.x * object->c_height/2;
-	punto_centro2.y = ray->line.l_point.y - object->c_point.y + object->c_direction.y * object->c_height/2;
-	punto_centro2.z = ray->line.l_point.z - object->c_point.z + object->c_direction.z * object->c_height/2;
-	*/
-
-	//c_norm = vectorminus(punto_centro2,punto_centro);
+	if (producto_escalar(o_norm,u_norm) > 0 )
+		o_norm = escalarxvector(-1,o_norm);
+	condition = producto_escalar(vectorminus(solution,point),vectorminus(solution,point));
+	if ((ray->colision == 0 ||ray->distance >= t) && (condition <= pow(object->c_diameter/2,2)))
+		ray_update(ray, object->c_color, t,o_norm, object->c_orderref);
 }
 //test
 //test
@@ -273,24 +159,33 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	centro_base = vectorminus(object->c_down, ray->line.l_point);
 	//centro_higt = vector_init(object->c_upper.x,object->c_upper.y,object->c_upper.z);
 	VoCb = vectorminus(ray->line.l_point, object->c_down);
+	intersection_cylinder_planes (ray,object,object->c_down,object->down_p);
+	intersection_cylinder_planes (ray,object,object->c_upper,object->upper_p);
 	coef[0] = 1 - pow (producto_escalar(r_norm,v_norm),2);
 	coef[1] = 2*(producto_escalar(r_norm,VoCb) - producto_escalar(r_norm,v_norm)*producto_escalar(VoCb,v_norm));
 	coef[2] = producto_escalar(VoCb,VoCb) - pow(producto_escalar(VoCb,v_norm),2) - pow(object->c_diameter/2,2);
 	discriminante = pow(coef[1],2) - 4 * coef[0] * coef [2];
+
 	if (discriminante >= 0)
 	{
 		d = (- coef[1] + sqrtl(discriminante)) / (2 * coef[0]);
 		if ((- coef[1] - sqrtl(discriminante)) / (2 * coef[0]) < d && (- coef[1] - sqrtl(discriminante)) / (2 * coef[0])>=0)
 			d =  (- coef[1] - sqrtl(discriminante))/ (2 * coef[0]);
-		solution = escalarxvector (d,r_norm);
-		if ( d < 0)
-			return;
 
 	}
-	else
+		else
+	{
 		return;
+	}
+	if (d < 0)
+		return;
+	solution = escalarxvector (d,r_norm);
+
 
 	s_norm = vectorminus(solution,vectoradd(centro_base,escalarxvector(producto_escalar(vectorminus(solution,centro_base),v_norm),v_norm)));
-	if ((ray->colision == 0 ||ray->distance > modulo(solution)) /* && producto_escalar(s_norm,r_norm)<= 0*/ && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
+	if ((ray->colision == 0 ||ray->distance > d) /* && producto_escalar(s_norm,r_norm)<= 0*/ && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
 			ray_update(ray, object->c_color, d, s_norm, object->c_orderref);//bad s_norm
+
 }
+
+

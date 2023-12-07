@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/06 17:06:32 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/07 16:03:54 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ typedef struct s_cylinder
 	t_vector	c_nvector;
 	t_vector	c_upper;
 	t_vector	c_down;
+	t_plane		upper_p;
+	t_plane		down_p;
 	int			c_orderref;
 }				t_cylinder;
 
@@ -181,6 +183,7 @@ void	set_light(t_scene *scene, char **datarow);
 void	set_sphere(t_scene *scene, char **datarow, int *orderref);
 void	set_plane(t_scene *scene, char **datarow, int *orderref);
 void	set_cylinder(t_scene *scene, char **datarow, int *orderref);
+void	set_planes_cylinder (t_plane *plane,t_vector point,t_vector axis);
 
 //rgb.c, rgb2.c
 int		set_trgb(int r, int g, int b);
@@ -231,7 +234,7 @@ void 	intersection_vision (t_scene *scene, t_ray *ray);
 void	intersection_sphere(t_ray *ray, t_sphere *object);
 void	intersection_cylinder (t_ray *ray,t_cylinder *object);
 void	intersection_cylinder1(t_ray *ray,t_cylinder *object);
-void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object);
+void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane);
 void	intersection_plane(t_ray *ray, t_plane *object);
 void	init_screen(t_scene *scene);
 bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light);

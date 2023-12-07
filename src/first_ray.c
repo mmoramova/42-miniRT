@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/07 10:54:18 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:36:00 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 {
 	t_ray	ray_light;
 	t_vector	light_pos;
-	t_vector	light_vector;
-	double	new_distance;
+	//t_vector	light_vector;
+	//double	new_distance;
 	double	distance_lc;
 
 	ray_light.color.rgb = 0;
@@ -102,16 +102,18 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 	intersection_vision (scene, &ray_light);
 	light_pos = ray->line.l_point;
 	distance_lc = modulo(vectorminus(light->l_point,ray->colision_point));
-	light_vector = ray->line.l_vector;
+	//light_vector = ray->line.l_vector;
 
-	new_distance = modulo(vectorminus(ray_light.colision_point,light_pos));
+	//new_distance = modulo(vectorminus(ray_light.colision_point,light_pos));
 	//need to improve, not working
 	/*if ((distance_lc* 0.99)  <= new_distance && producto_escalar(vectorminus(ray_light.colision_point,light_pos),light_vector) >=0)
 	{
 		//printf("distance to object=%f, distance coalision=%f\n", distance_lc, ray_light.distance);
 		return 0;
 	}*/
-	if ((distance_lc *.9999) <= ray_light.distance)
+	if (ray_light.colision == 1 && (distance_lc *.9999) > ray_light.distance )
+		return(1);
+	if ((distance_lc *.9999) <= ray_light.distance )
 	{
 		return(0);
 	}
