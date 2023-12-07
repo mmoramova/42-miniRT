@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/07 18:36:00 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:41:03 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,7 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light)
 		//printf("distance to object=%f, distance coalision=%f\n", distance_lc, ray_light.distance);
 		return 0;
 	}*/
-	if (ray_light.colision == 1 && (distance_lc *.9999) > ray_light.distance )
-		return(1);
-	if ((distance_lc *.9999) <= ray_light.distance )
+	if ((distance_lc) <= ray_light.distance )
 	{
 		return(0);
 	}

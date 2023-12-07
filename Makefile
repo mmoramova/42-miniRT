@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+         #
+#    By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 09:49:08 by josorteg          #+#    #+#              #
-#    Updated: 2023/12/02 14:10:56 by mmoramov         ###   ########.fr        #
+#    Updated: 2023/12/07 19:21:59 by josorteg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ dir:
 
 $(F_OBJ)%.o:$(PATH_SRC)%.c
 	@$(CC) -MMD $(FLAGS) -c $< -o $@ $(INC)
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) dir
 	@$(CC) $(FLAGS) $(OBJ) $(LIBA) $(MLIBA) $(L_FRAME) -o $(NAME) $(INC)
 
 #---------------------------------CLEAN---------------------------------------#
