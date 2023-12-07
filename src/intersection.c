@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/06 20:02:01 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/07 14:17:55 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,39 +75,27 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 	//double	d;
 	double	t;
 
-	t_vector	punto_recta;
 	t_vector	u_norm;
 	t_vector	o_norm;
+	t_vector	solution;
 
-
-	punto_recta = ray->line.l_point;
 	u_norm = ray->line.l_vector;
-
 	u_norm = normalize_vector(u_norm);
 	o_norm.x = object->p_surface.A;
 	o_norm.y = object->p_surface.B;
 	o_norm.z = object->p_surface.C;
-	//write(1,"meme\n",5);
-	if (producto_escalar(o_norm,u_norm) >= 0)
+	if (producto_escalar(o_norm,u_norm) == 0 )
+	 	return;
+	t = - (object->p_surface.D + producto_escalar(o_norm,ray->line.l_point))/producto_escalar(o_norm,u_norm);
+	solution = escalarxvector(t,u_norm);
+	if (producto_escalar(u_norm,solution) < 0)
 		return;
-
-	//printf("vector plano x vector recta %f modulo plano %f y modilo recta %f\n",ray->nvector.x,ray->nvector.y,ray->nvector.z);
-	t = - (object->p_surface.D + producto_escalar(o_norm,punto_recta))/producto_escalar(o_norm,u_norm);
-
-	// distvect = vectoradd(punto_recta,escalarxvector(t,u_norm));
-	// distvect = vectorminus
-
-	// if ( t < 9)
-	// 	printf("t de solucion %f distance %f and ray colision distance %f \n",t ,t,ray->distance);
-
-	if (ray->colision == 0 || (ray->distance >= t && producto_escalar(o_norm,u_norm) <= 0))
-	{
-		//printf("t de solucion %f distance %f and ray colision distance %f \n",t ,d,ray->distance);
+	if (producto_escalar(o_norm,u_norm) > 0 )
+		o_norm = escalarxvector(-1,o_norm);
+	if (ray->colision == 0 || (ray->distance >= t))
 		ray_update(ray, object->p_color, t,o_norm, object->p_orderref);
-		//printf("ray = (%f,%f,%f) and distance %f angle in degrees %f\n",o_norm.x,o_norm.y,o_norm.z,d, acos(2*M_PI*producto_escalar(u_norm,o_norm)/(360*modulo(u_norm)*modulo(o_norm))));
-
-	}
 }
+
 
 void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colision, int orderref)
 {
@@ -301,6 +289,7 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	}
 	else
 		return;
+
 	s_norm = vectorminus(solution,vectoradd(centro_base,escalarxvector(producto_escalar(vectorminus(solution,centro_base),v_norm),v_norm)));
 	if ((ray->colision == 0 ||ray->distance > modulo(solution)) /* && producto_escalar(s_norm,r_norm)<= 0*/ && (producto_escalar(vectorminus(solution,centro_base),v_norm) < object->c_height && producto_escalar(vectorminus(solution,centro_base),v_norm) > 0))
 			ray_update(ray, object->c_color, d, s_norm, object->c_orderref);//bad s_norm
