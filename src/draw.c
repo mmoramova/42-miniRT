@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 09:07:33 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 17:05:43 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:23:49 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	draw_px(t_scene *scene, t_pixel pos)
 	int	color;
 
 	color = 0;
-	color = ray_color(scene,pos);
+	color = ray_camera(scene,pos);
 	put_pixel(&scene->mlx, pos.x, pos.y, color);
 }
 

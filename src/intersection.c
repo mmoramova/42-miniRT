@@ -6,13 +6,40 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 22:05:26 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:50:35 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include"miniRT.h"
 
-void		intersection_sphere(t_ray *ray, t_sphere *object)
+void	intersection_vision(t_scene *scene, t_ray *ray)
+{
+	t_list	*sp_list;
+	t_list	*p_list;
+	t_list	*c_list;
+
+	sp_list = scene->spheres;
+	p_list = scene->planes;
+	c_list = scene->cylinders;
+	while (c_list && c_list->content != NULL)
+	{
+		intersection_cylinder(ray, (t_cylinder *) c_list->content);
+		c_list = c_list -> next;
+	}
+	while (sp_list && sp_list->content != NULL)
+	{
+		intersection_sphere(ray, (t_sphere *) sp_list->content);
+		sp_list = sp_list -> next;
+	}
+	while (p_list && p_list->content != NULL)
+	{
+		intersection_plane(ray, (t_plane *) p_list->content);
+		p_list = p_list -> next;
+	}
+	return ;
+}
+
+void	intersection_sphere(t_ray *ray, t_sphere *object)
 {
 	t_vector u_ray;
 	t_vector punto_centro;
@@ -73,24 +100,7 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 }
 
 
-void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colision, int orderref)
-{
-		t_vector	nray;
-
-		 if (ray->type == 1 && orderref == ray->c_orderref)
-		 	return;
-		ray->colision = 1;
-		nray = v_norm(ray->line.l_vector);
-		ray->colision_point = v_sum(ray->line.l_point,v_multd(d,nray));
-		ray->color = object_color;
-		ray->n_colision_vector = normal_colision;
-		ray->distance = d;
-		if (ray->type == 0)
-			ray->c_orderref = orderref;
-}
-
-
-void	intersection_cylinder(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane)
+void	intersection_cylinder_plane(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane)
 {
 	double	t;
 	t_vector	u_norm;
@@ -116,7 +126,8 @@ void	intersection_cylinder(t_ray *ray,t_cylinder *object,t_vector point,t_plane 
 	if ((ray->colision == 0 ||ray->distance >= t) && (condition <= pow(object->c_diameter/2,2)))
 		ray_update(ray, object->c_color, t,o_norm, object->c_orderref);
 }
-void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
+
+void	intersection_cylinder(t_ray *ray,t_cylinder *object)
 {
 	t_vector 	r_norm;
 	t_vector	v_nvec;
@@ -132,8 +143,8 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	v_nvec = v_norm(v_substr(object->c_upper,object->c_down));
 	centro_base = v_substr(object->c_down, ray->line.l_point);
 	VoCb = v_substr(ray->line.l_point, object->c_down);
-	intersection_cylinder (ray,object,object->c_down,object->down_p);
-	intersection_cylinder (ray,object,object->c_upper,object->upper_p);
+	intersection_cylinder_plane (ray,object,object->c_down,object->down_p);
+	intersection_cylinder_plane (ray,object,object->c_upper,object->upper_p);
 	coef[0] = 1 - pow (v_inner(r_norm,v_nvec),2);
 	coef[1] = 2*(v_inner(r_norm,VoCb) - v_inner(r_norm,v_nvec)*v_inner(VoCb,v_nvec));
 	coef[2] = v_inner(VoCb,VoCb) - pow(v_inner(VoCb,v_nvec),2) - pow(object->c_diameter/2,2);

@@ -22,7 +22,7 @@ void	set_color(t_scene *scene, t_ray *ray)
 	l_list = scene->lights;
 	while (l_list && l_list->content != NULL)
 	{
-		if (check_intersection(scene, ray, (t_light*) l_list->content) == 0)
+		if (ray_light(scene, ray, (t_light*) l_list->content) == 0)
 		{
 			final_color = rgb_sum(final_color, set_diffuse_color (ray, (t_light*) l_list->content));
 			final_color = rgb_sum(final_color, set_specular_color (scene, ray, (t_light*) l_list->content));

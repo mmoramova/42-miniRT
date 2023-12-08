@@ -6,13 +6,13 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:48:20 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 22:04:43 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:51:47 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"miniRT.h"
 
-void	screen_set(t_scene *scene)
+/*void	screen_set(t_scene *scene)  //we can delete, i put all to set_camera
 {
 	t_vector	width_v;
 	t_vector	hight_v;
@@ -21,7 +21,6 @@ void	screen_set(t_scene *scene)
 
 	north = find_normal_vector(scene->camera.c_nvector,1);
 	fov = 150;
-	//calculate point of intersection between unitari vector and camera plane
 	scene->camera.c_ray = v_norm(vector_init(scene->camera.c_point.x + scene->camera.c_nvector.x
 		,scene->camera.c_point.y + scene->camera.c_nvector.y
 		,scene->camera.c_point.z + scene->camera.c_nvector.z));
@@ -36,6 +35,6 @@ void	screen_set(t_scene *scene)
 	scene->camera.c_ray = v_multd(fov,scene->camera.c_ray);
 	scene->camera.c_left = v_multd(fov,scene->camera.c_left);
 	scene->camera.c_up = v_multd(fov,scene->camera.c_up);
-}
+}*/
 
 

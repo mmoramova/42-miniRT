@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 22:05:38 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:56:06 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,6 @@ typedef struct s_scene
 	t_mlx		mlx;
 }				t_scene;
 
-//miniRT.c
-
 ///scene.c
 void scene_create(t_scene *scene, char *file);
 void scene_fill(t_scene *scene, char **datarow, int *orderref);
@@ -206,6 +204,19 @@ t_rgb	rgb_multd(t_rgb c1, double r);
 t_rgb	rgb_sum(t_rgb c1, t_rgb c2);
 t_rgb	rgb_norm(t_rgb c);
 
+//ray.c
+void	ray_init(t_ray *ray, bool type, t_vector v1, t_vector v2);
+int		ray_camera(t_scene *scene, t_pixel pos);
+bool	ray_light (t_scene *scene, t_ray *ray, t_light *light);
+void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
+
+//intersection.c
+void 	intersection_vision (t_scene *scene, t_ray *ray);
+void	intersection_sphere(t_ray *ray, t_sphere *object);
+void	intersection_plane(t_ray *ray, t_plane *object);
+void	intersection_cylinder_plane(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane);
+void	intersection_cylinder (t_ray *ray,t_cylinder *object);
+
 //set_color.c
 void	set_color(t_scene *scene, t_ray *ray);
 t_rgb	set_ambient_color (t_ray *ray, t_amblight *amblight);
@@ -238,14 +249,7 @@ int		key_hook(int keycode, t_scene *scene); //exit
 int		scene_exit(t_scene *scene);
 
 //Calculus
-int		ray_color(t_scene *scene, t_pixel pos);
-void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
-void 	intersection_vision (t_scene *scene, t_ray *ray);
-void	intersection_sphere(t_ray *ray, t_sphere *object);
-void	intersection_cylinder(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane);
-void	intersection_plane(t_ray *ray, t_plane *object);
-void	screen_set(t_scene *scene);
-bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light);
+//void	screen_set(t_scene *scene);
 
 //General calculus
 double		distance (t_vector point1,t_vector point2);
@@ -262,6 +266,5 @@ t_vector	v_sum(t_vector v1, t_vector v2);
 
 
 //test
-void	intersection_cylinder_test (t_ray *ray,t_cylinder *object);
 void	print_vector(t_vector vector,char	*str);
 #endif

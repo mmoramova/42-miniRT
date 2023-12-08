@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 21:53:23 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:19:19 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void	set_amblight(t_scene *scene, char **datarow)
 
 void	set_camera(t_scene *scene, char **datarow)
 {
+	t_vector	width_v;
+	t_vector	hight_v;
+	t_vector	north;
+	double	fov;
+
 	check_camera(scene, datarow);
 	scene->camera.c_point_init = str2vector(datarow[1]);
 	print_vector(scene->camera.c_point_init,"camara inicial");
@@ -29,6 +34,14 @@ void	set_camera(t_scene *scene, char **datarow)
 	scene->camera.c_nvector = v_norm(str2vector(datarow[2]));
 	scene->camera.c_angle = ft_atod(datarow[3])* 2 * M_PI / 360;
 	scene->camera.c_count = 1;
+	north = find_normal_vector(scene->camera.c_nvector,1);
+	fov = 150;
+	scene->camera.c_ray = v_norm(v_sum(scene->camera.c_point,scene->camera.c_nvector));
+	width_v = v_norm(v_mult(scene->camera.c_ray,north));
+	hight_v = v_mult(width_v,scene->camera.c_ray);
+	scene->camera.c_left = v_multd(fov*2*tan(scene->camera.c_angle/2),width_v);
+	scene->camera.c_up = v_multd((fov*2*tan(scene->camera.c_angle/2)*scene->mlx.win_size.y)/scene->mlx.win_size.x,hight_v);
+	scene->camera.c_ray = v_multd(fov,scene->camera.c_ray);
 }
 
 void	set_light(t_scene *scene, char **datarow)
