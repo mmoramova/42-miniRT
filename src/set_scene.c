@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.c                                            :+:      :+:    :+:   */
+/*   set_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:41:55 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/04 18:28:43 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 21:43:42 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,28 @@ void	scene_create(t_scene *scene, char *file)
 	int		fd;
 	char	*line;
 	char	**datarow;
-	int	 	orderref;
+	int		orderref;
 
 	orderref = 1;
-	scene_init(scene);
+	scene->lights = ft_lstnew(NULL);
+	scene->spheres = ft_lstnew(NULL);
+	scene->planes = ft_lstnew(NULL);
+	scene->cylinders = ft_lstnew(NULL);
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
 		datarow = ft_split_noprintable(line, '\t');
 		free(line);
-		scene_fill_line(scene, datarow, &orderref);
-		//free(datarow); //TODO
+		scene_fill(scene, datarow, &orderref);
+		free(datarow);
 		line = get_next_line(fd);
 	}
+	close(fd);
 }
 
-void	scene_init(t_scene *scene)
+void	scene_fill(t_scene *scene, char **datarow, int *orderref)
 {
-	scene->lights = ft_lstnew(NULL);
-	scene->spheres = ft_lstnew(NULL);
-	scene->planes = ft_lstnew(NULL);
-	scene->cylinders = ft_lstnew(NULL);
-}
-
-void	scene_fill_line(t_scene *scene, char **datarow, int *orderref)
-{
-
 	if ((datarow[0][0]) == '\n')
 		return ;
 	if (ft_strncmp(datarow[0], "A", 1) == 0 && ft_strlen(datarow[0]) == 1)

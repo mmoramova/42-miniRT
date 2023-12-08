@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 17:01:36 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:05:38 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,15 +168,14 @@ typedef struct s_scene
 
 //miniRT.c
 
-//scene.c
-void scene_init(t_scene *scene);
+///scene.c
 void scene_create(t_scene *scene, char *file);
-void scene_fill_line(t_scene *scene, char **datarow, int *orderref);
+void scene_fill(t_scene *scene, char **datarow, int *orderref);
 
 //utils.c
 int	ft_check_arg(char *file);
 
-//set_objects 1,2;
+///set_objects 1,2;
 void	set_amblight(t_scene *scene, char **datarow);
 void	set_camera(t_scene *scene, char **datarow);
 void	set_light(t_scene *scene, char **datarow);
@@ -185,8 +184,22 @@ void	set_plane(t_scene *scene, char **datarow, int *orderref);
 void	set_cylinder(t_scene *scene, char **datarow, int *orderref);
 void	set_planes_cylinder (t_plane *plane,t_vector point,t_vector axis);
 
-//rgb.c, rgb2.c
-int		set_trgb(int r, int g, int b);
+///check_objects 1,2;
+void	check_amblight(t_scene *scene, char **datarow);
+void	check_camera(t_scene *scene, char **datarow);
+void	check_light(t_scene *scene, char **datarow);
+void	check_sphere(t_scene *scene, char **datarow);
+void	check_plane(t_scene *scene, char **datarow);
+void	check_cylinder(t_scene *scene, char **datarow);
+
+///check_input.c
+int check_ratio(char *data);
+int check_angle(char *data);
+int check_color(char *data);
+int check_vector(char *data);
+int check_nbrpositive(char *data);
+
+///rgb.c
 t_rgb	set_rgb(char *row);
 t_rgb	rgb_mult(t_rgb c1, t_rgb c2);
 t_rgb	rgb_multd(t_rgb c1, double r);
@@ -215,7 +228,7 @@ void free_plane(void *plane);
 void free_cylinder(void *cylinder);
 
 //minilib
-void	init(t_scene *scene);
+void	window_create(t_scene *scene);
 int		display_mlx_win(t_scene *scene);
 void	draw_px(t_scene *scene, t_pixel pos);
 void	draw_win(t_scene *scene);
@@ -227,15 +240,11 @@ int		scene_exit(t_scene *scene);
 //Calculus
 int		ray_color(t_scene *scene, t_pixel pos);
 void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
-void 	D_plane (t_camera *camera);
-t_vector	camera_first_vector (t_camera *camera);
 void 	intersection_vision (t_scene *scene, t_ray *ray);
 void	intersection_sphere(t_ray *ray, t_sphere *object);
-void	intersection_cylinder (t_ray *ray,t_cylinder *object); //delete
-void	intersection_cylinder1(t_ray *ray,t_cylinder *object); //delete
-void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane);
+void	intersection_cylinder(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane);
 void	intersection_plane(t_ray *ray, t_plane *object);
-void	init_screen(t_scene *scene);
+void	screen_set(t_scene *scene);
 bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light);
 
 //General calculus
@@ -251,12 +260,6 @@ t_vector 	v_substr(t_vector v1, t_vector v2);
 t_vector	v_sum(t_vector v1, t_vector v2);
 
 
-//inputCheck.c
-int inputcheck_isRatio(char *data);
-int inputcheck_isAngle(char *data);
-int inputcheck_isColor(char *data);
-int inputcheck_isPointOrVector(char *data);
-int inputcheck_isDoublePositive(char *data);
 
 //test
 void	intersection_cylinder_test (t_ray *ray,t_cylinder *object);

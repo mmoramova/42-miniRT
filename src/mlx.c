@@ -6,19 +6,14 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 14:03:45 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/27 17:22:25 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 21:37:40 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "minilibx.h"
 #include "miniRT.h"
 
-void	ft_mensaje(void)
-{
-	ft_printf("Error-->Usage: \n");
-}
-
-void	init(t_scene *scene)
+void	window_create(t_scene *scene)
 {
 	scene->mlx.win_size.x = 1400;
 	scene->mlx.win_size.y = 800;

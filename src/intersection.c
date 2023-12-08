@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 17:05:03 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:05:26 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void ray_update(t_ray *ray, t_rgb object_color, double d,t_vector normal_colisio
 }
 
 
-void	intersection_cylinder_planes(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane)
+void	intersection_cylinder(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane)
 {
 	double	t;
 	t_vector	u_norm;
@@ -132,8 +132,8 @@ void	intersection_cylinder_test (t_ray *ray,t_cylinder *object)
 	v_nvec = v_norm(v_substr(object->c_upper,object->c_down));
 	centro_base = v_substr(object->c_down, ray->line.l_point);
 	VoCb = v_substr(ray->line.l_point, object->c_down);
-	intersection_cylinder_planes (ray,object,object->c_down,object->down_p);
-	intersection_cylinder_planes (ray,object,object->c_upper,object->upper_p);
+	intersection_cylinder (ray,object,object->c_down,object->down_p);
+	intersection_cylinder (ray,object,object->c_upper,object->upper_p);
 	coef[0] = 1 - pow (v_inner(r_norm,v_nvec),2);
 	coef[1] = 2*(v_inner(r_norm,VoCb) - v_inner(r_norm,v_nvec)*v_inner(VoCb,v_nvec));
 	coef[2] = v_inner(VoCb,VoCb) - pow(v_inner(VoCb,v_nvec),2) - pow(object->c_diameter/2,2);
