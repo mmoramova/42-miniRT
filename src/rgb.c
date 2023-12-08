@@ -6,19 +6,17 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 14:03:12 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/02 13:15:46 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:59:58 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-/*changes RGB to int*/
 int	set_trgb(int r, int g, int b)
 {
 	return (r << 16 | g << 8 | b);
 }
 
-/* creates rgb from str for example: 10,0,255 */
 t_rgb	set_rgb(char *row)
 {
 	char		**colors;
@@ -68,7 +66,7 @@ t_rgb rgb_sum(t_rgb c1, t_rgb c2)
 	return(rgb);
 }
 
-t_rgb	rgb_normalize(t_rgb rgb)
+t_rgb	rgb_norm(t_rgb rgb)
 {
 	double	max_color;
 

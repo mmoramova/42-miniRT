@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:19:49 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/02 14:45:36 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:55:59 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ double	distance (t_vector point1,t_vector point2)
 	return (sqrt (pow((point1.x - point2.x),2)+pow((point1.y - point2.y),2)+pow((point1.z - point2.z),2)));
 }
 
-double	producto_escalar (t_vector vector1, t_vector vector2)
+double	v_inner (t_vector vector1, t_vector vector2)
 {
 	double	res;
 
@@ -28,7 +28,7 @@ double	producto_escalar (t_vector vector1, t_vector vector2)
 	return (vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z);
 }
 
-t_vector producto_vectorial (t_vector vector1, t_vector vector2)
+t_vector v_mult (t_vector vector1, t_vector vector2)
 {
 	t_vector	result;
 
@@ -38,7 +38,7 @@ t_vector producto_vectorial (t_vector vector1, t_vector vector2)
 	return(result);
 }
 
-t_vector normalize_vector(t_vector v1)
+t_vector v_norm(t_vector v1)
 {
 	double	module;
 
@@ -46,27 +46,27 @@ t_vector normalize_vector(t_vector v1)
 	v1.x = v1.x/module;
 	v1.y = v1.y/module;
 	v1.z = v1.z/module;
-	//printf("vector (%f,%f,%f), con modulo %f\n",v1.x,v1.y,v1.z,modulo(v1));
+	//printf("vector (%f,%f,%f), con v_mod %f\n",v1.x,v1.y,v1.z,v_mod(v1));
 	return (v1);
 }
 
-double	modulo(t_vector v1)
+double	v_mod(t_vector v1)
 {
 	double	result;
 	result = sqrt(pow(v1.x,2) + pow(v1.y,2) + pow(v1.z,2));
 	return(result);
 }
 
-t_line	two_points_line (t_vector pi, t_vector pf)
+t_line	l_create (t_vector pi, t_vector pf)
 {
 	t_line	ray;
 
 	ray.l_point = pi;
-	ray.l_vector = vectorminus(pf, pi);
+	ray.l_vector = v_substr(pf, pi);
 	return (ray);
 }
 
-t_vector escalarxvector(double esc, t_vector vec)
+t_vector v_multd(double esc, t_vector vec)
 {
 	t_vector	res;
 
@@ -75,7 +75,7 @@ t_vector escalarxvector(double esc, t_vector vec)
 	res.z = esc * vec.z;
 	return (res);
 }
-t_vector vectorminus(t_vector v1, t_vector v2)
+t_vector v_substr(t_vector v1, t_vector v2)
 {
 	t_vector res;
 
@@ -85,7 +85,7 @@ t_vector vectorminus(t_vector v1, t_vector v2)
 
 	return (res);
 }
-t_vector vectoradd(t_vector v1, t_vector v2)
+t_vector v_sum(t_vector v1, t_vector v2)
 {
 	t_vector res;
 

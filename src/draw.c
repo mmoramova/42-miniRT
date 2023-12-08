@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 09:07:33 by josorteg          #+#    #+#             */
-/*   Updated: 2023/11/14 12:59:24 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:05:43 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "miniRT.h"
 
@@ -19,16 +18,6 @@ void	draw_px(t_scene *scene, t_pixel pos)
 
 	color = 0;
 	color = ray_color(scene,pos);
-	//printf("pixel x,y= (%d,%d)  color = %d\n",pos.x, pos.y,color);
-	// iter_num = 0;
-	// if (!ft_strncmp("mandelbrot", scene->pict.name, 10))
-	// 	iter_num = draw_mandelbrot(scene, pos);
-	// if (!ft_strncmp("Julia", scene->pict.name, 5))
-	// 	iter_num = draw_julia(scene, pos);
-	// if (!ft_strncmp("ship", scene->pict.name, 4))
-	// 	iter_num = draw_ship(scene, pos);
-	// color = fade(iter_num, scene->pict.iter_num, table);
-	//FUNCION MATEMATICA QUE DETECTA EL COLOR POR RAY TRACING!!
 	put_pixel(&scene->mlx, pos.x, pos.y, color);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:43:43 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/06 17:07:42 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:07:54 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	ft_check_arg(char *file)
 		return (1);
 	return (0);
 }
-
 
 void	print_vector(t_vector vector,char	*str)
 {

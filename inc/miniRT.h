@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/07 19:15:09 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:01:36 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ t_rgb	set_rgb(char *row);
 t_rgb	rgb_mult(t_rgb c1, t_rgb c2);
 t_rgb	rgb_multd(t_rgb c1, double r);
 t_rgb	rgb_sum(t_rgb c1, t_rgb c2);
-t_rgb	rgb_normalize(t_rgb c); //rgb_norm
+t_rgb	rgb_norm(t_rgb c);
 
 //set_color.c
 void	set_color(t_scene *scene, t_ray *ray);
@@ -228,7 +228,6 @@ int		scene_exit(t_scene *scene);
 int		ray_color(t_scene *scene, t_pixel pos);
 void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
 void 	D_plane (t_camera *camera);
-void 	camera_intersection (t_camera *camera);
 t_vector	camera_first_vector (t_camera *camera);
 void 	intersection_vision (t_scene *scene, t_ray *ray);
 void	intersection_sphere(t_ray *ray, t_sphere *object);
@@ -241,18 +240,16 @@ bool	check_intersection (t_scene *scene, t_ray *ray, t_light *light);
 
 //General calculus
 double		distance (t_vector point1,t_vector point2);
-double		producto_escalar (t_vector vector1, t_vector vector2); //v_inner
-t_vector 	producto_vectorial (t_vector vector1, t_vector vector2); // v_mult
+double		v_inner (t_vector vector1, t_vector vector2);
+t_vector 	v_mult (t_vector vector1, t_vector vector2);
+t_vector 	v_multd(double esc, t_vector vec);
 t_vector	find_normal_vector (t_vector v1, double lengh);
-t_vector 	normalize_vector(t_vector v1); //v_normalize
-double		modulo(t_vector v1);//v_dom
-t_line		two_points_line (t_vector pi, t_vector pf);//l_create
-t_vector 	escalarxvector(double esc, t_vector vec);//v_multd
-t_vector 	vectorminus(t_vector v1, t_vector v2);//v_minus
-t_vector	vectoradd(t_vector v1, t_vector v2);//v_sum
+t_vector 	v_norm(t_vector v1);
+double		v_mod(t_vector v1);
+t_line		l_create (t_vector pi, t_vector pf);
+t_vector 	v_substr(t_vector v1, t_vector v2);
+t_vector	v_sum(t_vector v1, t_vector v2);
 
-//PROVISIONAL!!!!!
-void	set_color_normal(t_ray *ray);
 
 //inputCheck.c
 int inputcheck_isRatio(char *data);

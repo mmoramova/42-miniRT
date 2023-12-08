@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"miniRT.h"
+#include "miniRT.h"
 
 void	set_color(t_scene *scene, t_ray *ray)
 {
@@ -29,7 +29,7 @@ void	set_color(t_scene *scene, t_ray *ray)
 		}
 		l_list = l_list -> next;
 	}
-	ray->color = rgb_normalize(final_color);
+	ray->color = rgb_norm(final_color);
 }
 
 t_rgb	set_ambient_color (t_ray *ray, t_amblight *amblight)
@@ -55,13 +55,13 @@ t_rgb	set_diffuse_color (t_ray *ray, t_light *light)
 	t_rgb		diffuse_color;
 	t_rgb		l_color = light->color;
 
-	t_vector	o_nvector = normalize_vector(ray->n_colision_vector);
-	t_vector	l_nvector = normalize_vector(vectorminus(l_point, o_point));
+	t_vector	o_nvector = v_norm(ray->n_colision_vector);
+	t_vector	l_nvector = v_norm(v_substr(l_point, o_point));
 
 	if (ray->color.rgb == 0)
 		diffuse_color = set_rgb("0,0,0");
 	else
-		diffuse_color = rgb_mult(ray->color, rgb_multd(rgb_multd(l_color,l_brightness),fmax(0, producto_escalar(l_nvector,o_nvector))));
+		diffuse_color = rgb_mult(ray->color, rgb_multd(rgb_multd(l_color,l_brightness),fmax(0, v_inner(l_nvector,o_nvector))));
 	return(diffuse_color);
 }
 
@@ -75,12 +75,12 @@ t_rgb	set_specular_color (t_scene *scene, t_ray *ray, t_light *light)
 	double		specular_factor;
 	t_rgb		o_color = ray->color;
 
-	t_vector	o_nvector = normalize_vector(ray->n_colision_vector);
-	t_vector	l_nvector = normalize_vector(vectorminus(o_point, l_point));
+	t_vector	o_nvector = v_norm(ray->n_colision_vector);
+	t_vector	l_nvector = v_norm(v_substr(o_point, l_point));
 
-	t_vector	reflection_vector = vectorminus(l_nvector, escalarxvector(2 * producto_escalar(l_nvector, o_nvector), o_nvector));
-	t_vector	view_vector = normalize_vector(vectorminus(c_point, o_point));
-	specular_factor = pow(fmax(0, producto_escalar(reflection_vector,view_vector)),32);
+	t_vector	reflection_vector = v_substr(l_nvector, v_multd(2 * v_inner(l_nvector, o_nvector), o_nvector));
+	t_vector	view_vector = v_norm(v_substr(c_point, o_point));
+	specular_factor = pow(fmax(0, v_inner(reflection_vector,view_vector)),32);
 
 	if (ray->color.rgb == 0)
 		specular_color = set_rgb("0,0,0");
