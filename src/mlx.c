@@ -6,11 +6,10 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 14:03:45 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 21:37:40 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:04:05 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minilibx.h"
 #include "miniRT.h"
 
 void	window_create(t_scene *scene)
@@ -21,9 +20,7 @@ void	window_create(t_scene *scene)
 
 static void	add_mlx_hook(t_scene *scene)
 {
-	/*mlx_hook(scene->mlx.window, KEYPRESS, 0, key_hook, scene);
-	mlx_hook(scene->mlx.window, MOTIONNOTIFY, 0, mouse_hook, scene);
-	mlx_hook(scene->mlx.window, BUTTONPRESS, 0, scroll_hook, scene);*/
+	mlx_hook(scene->mlx.window, KEYPRESS, 0, key_hook, scene);
 	mlx_hook(scene->mlx.window, DESTROYNOTIFY, 0, scene_exit, scene);
 }
 
@@ -54,4 +51,21 @@ int	display_mlx_win(t_scene *scene)
 		}
 	}
 	return (1);
+}
+
+int	key_hook(int keycode, t_scene *scene)
+{
+	if (keycode == ESC_KEY)
+		scene_exit(scene);
+	draw_win(scene);
+	return (0);
+}
+
+int	scene_exit(t_scene *scene)
+{
+	if (scene->mlx.mlx && scene->mlx.window)
+		mlx_destroy_window(scene->mlx.mlx, scene->mlx.window);
+	if (scene->mlx.mlx && scene->mlx.image)
+		mlx_destroy_image(scene->mlx.mlx, scene->mlx.image);
+	exit(0);
 }

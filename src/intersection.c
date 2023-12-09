@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 12:02:22 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:21:29 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 	o_norm.z = object->p_surface.C;
 	if (v_inner(o_norm,ray->line.l_vector) == 0 )
 	 	return;
-	t = - (object->p_surface.D + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,ray->line.l_vector);
+	t = - (object->p_surface.d + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,ray->line.l_vector);
 	solution = v_multd(t,ray->line.l_vector);
 	if (v_inner(ray->line.l_vector,solution) < 0)
 		return;

@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:48:20 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 10:46:23 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 11:11:48 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 	t_vector	north;
 	double	fov;
 
-	north = find_normal_vector(scene->camera.c_nvector,1);
+	north = find_nvector(scene->camera.c_nvector,1);
 	fov = 150;
 	scene->camera.c_ray = v_norm(vector_init(scene->camera.c_point.x + scene->camera.c_nvector.x
 		,scene->camera.c_point.y + scene->camera.c_nvector.y
