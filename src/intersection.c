@@ -6,13 +6,13 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 12:21:29 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:18:41 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include"miniRT.h"
+#include "miniRT.h"
 
-void	intersection_vision(t_scene *scene, t_ray *ray)
+void	intersection_vision(t_scene *scene, t_ray *r)
 {
 	t_list	*sp_list;
 	t_list	*p_list;
@@ -23,128 +23,115 @@ void	intersection_vision(t_scene *scene, t_ray *ray)
 	c_list = scene->cylinders;
 	while (c_list && c_list->content != NULL)
 	{
-		intersection_cylinder(ray, (t_cylinder *) c_list->content);
+		intersection_cylinder(r, (t_cylinder *) c_list->content);
 		c_list = c_list -> next;
 	}
 	while (sp_list && sp_list->content != NULL)
 	{
-		intersection_sphere(ray, (t_sphere *) sp_list->content);
+		intersection_sphere(r, (t_sphere *) sp_list->content);
 		sp_list = sp_list -> next;
 	}
 	while (p_list && p_list->content != NULL)
 	{
-		intersection_plane(ray, (t_plane *) p_list->content);
+		intersection_plane(r, (t_plane *) p_list->content);
 		p_list = p_list -> next;
 	}
 	return ;
 }
 
-void	intersection_sphere(t_ray *ray, t_sphere *object)
+void	intersection_sphere(t_ray *r, t_sphere *obj)
 {
-	t_vector punto_centro;
-	t_vector radio;
-	double coef[3];
-	double	d;
-	double	discriminante;
+	t_vector	punto_centro;
+	t_vector	rad;
+	double		c[6];
+	t_line		l;
 
-	punto_centro = v_substr(ray->line.l_point, object->sp_point);
-	coef[0] = v_inner(ray->line.l_vector,ray->line.l_vector);
-	coef[1] = 2 * (v_inner(ray->line.l_vector,punto_centro));
-	coef[2] = v_inner(punto_centro,punto_centro) - pow(object->sp_diameter/2,2);
-	discriminante = pow(coef[1],2) - 4 * coef[0] *coef[2];
-	if (discriminante < 0)
-		return;
-	d = (- coef[1] + sqrtl(discriminante)) / (2 * coef[0]);
-	if ((- coef[1] - sqrtl(discriminante)) / (2 * coef[0]) < d && (- coef[1] - sqrtl(discriminante)) / (2 * coef[0])>=0)
-		d =  (- coef[1] - sqrtl(discriminante))/ (2 * coef[0]);
-	if (d < 0)
-		return;
-	radio = v_substr(v_sum(v_multd(d,v_norm(ray->line.l_vector)) ,ray->line.l_point),object->sp_point);
-	if (v_inner(radio,ray->line.l_vector) >= 0 )
-		radio = v_multd(-1,radio);
-	if (ray->colision == 0 || (ray->distance > v_mod(v_multd(d,ray->line.l_vector)) && v_inner(radio,ray->line.l_vector) <= 0))
-		ray_update(ray, object->sp_color, d, radio, object->sp_orderref);//bad unorm
+	l = r->line;
+	punto_centro = v_substr(l.l_point, obj->sp_point);
+	c[0] = v_inner(l.l_vector, l.l_vector);
+	c[1] = 2 * (v_inner(l.l_vector, punto_centro));
+	c[2] = v_inner(punto_centro, punto_centro) - pow(obj->sp_diameter / 2, 2);
+	c[3] = pow(c[1], 2) - 4 * c[0] * c[2];
+	c[4] = (-c[1] + sqrt(fabs(c[3]))) / (2 * c[0]);
+	c[5] = (-c[1] - sqrt(fabs(c[3]))) / (2 * c[0]);
+	if (c[5] < c[4] && c[5] >= 0)
+		c[4] = (-c[1] - sqrt(fabs(c[3]))) / (2 * c[0]);
+	if (c[4] < 0 || c[3] < 0)
+		return ;
+	rad = v_substr(v_sum(v_multd(c[4], v_norm(l.l_vector)), l.l_point), obj->sp_point);
+	if (v_inner(rad, l.l_vector) >= 0)
+		rad = v_multd(-1, rad);
+	if (r->colision == 0 || (r->distance > v_mod(v_multd(c[4], l.l_vector)) && v_inner(rad, l.l_vector) <= 0))
+		ray_update(r, obj->sp_color, c[4], rad, obj->sp_orderref);
 }
 
-void	intersection_plane(t_ray *ray, t_plane *object)
+void	intersection_plane(t_ray *r, t_plane *obj)
 {
-	double	t;
+	double		t;
 	t_vector	o_norm;
 	t_vector	solution;
 
-	o_norm.x = object->p_surface.A;
-	o_norm.y = object->p_surface.B;
-	o_norm.z = object->p_surface.C;
-	if (v_inner(o_norm,ray->line.l_vector) == 0 )
-	 	return;
-	t = - (object->p_surface.d + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,ray->line.l_vector);
-	solution = v_multd(t,ray->line.l_vector);
-	if (v_inner(ray->line.l_vector,solution) < 0)
-		return;
-	if (v_inner(o_norm,ray->line.l_vector) >= 0 )
-		o_norm = v_multd(-1,o_norm);
-	if (ray->colision == 0 || (ray->distance >= t))
-		ray_update(ray, object->p_color, t,o_norm, object->p_orderref);
+	o_norm.x = obj->p_surface.a;
+	o_norm.y = obj->p_surface.b;
+	o_norm.z = obj->p_surface.c;
+	if (v_inner(o_norm, r->line.l_vector) == 0)
+		return ;
+	t = -(obj->p_surface.d + v_inner(o_norm, r->line.l_point)) / v_inner(o_norm, r->line.l_vector);
+	solution = v_multd(t, r->line.l_vector);
+	if (v_inner(r->line.l_vector, solution) < 0)
+		return ;
+	if (v_inner(o_norm, r->line.l_vector) >= 0)
+		o_norm = v_multd(-1, o_norm);
+	if (r->colision == 0 || (r->distance >= t))
+		ray_update(r, obj->p_color, t, o_norm, obj->p_orderref);
 }
 
-
-void	intersection_cylinder_plane(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane)
+void	intersection_cylinder_plane(t_ray *r, t_cylinder *obj, t_vector point, t_plane plane)
 {
-	double	t;
+	double		t;
 	t_vector	o_norm;
 	t_vector	solution;
 	double		condition;
 
-	o_norm.x = plane.p_surface.A;
-	o_norm.y = plane.p_surface.B;
-	o_norm.z = plane.p_surface.C;
-	point = v_substr(point,ray->line.l_point);
-	if (v_inner(o_norm,ray->line.l_vector) == 0 )
-	 	return;
-	t = - (plane.p_surface.D + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,ray->line.l_vector);
-	solution = v_multd(t,ray->line.l_vector);
+	o_norm.x = plane.p_surface.a;
+	o_norm.y = plane.p_surface.b;
+	o_norm.z = plane.p_surface.c;
+	point = v_substr(point, r->line.l_point);
+	if (v_inner(o_norm, r->line.l_vector) == 0)
+		return ;
+	t = -(plane.p_surface.d + v_inner(o_norm, r->line.l_point)) / v_inner(o_norm, r->line.l_vector);
+	solution = v_multd(t, r->line.l_vector);
 	if (t < 0)
-		return;
-	if (v_inner(o_norm,ray->line.l_vector) >= 0 )
-		o_norm = v_multd(-1,o_norm);
-	condition = v_inner(v_substr(solution,point),v_substr(solution,point));
-	if ((ray->colision == 0 ||ray->distance >= t) && (condition <= pow(object->c_diameter/2,2)))
-		ray_update(ray, object->c_color, t,o_norm, object->c_orderref);
+		return ;
+	if (v_inner(o_norm, r->line.l_vector) >= 0)
+		o_norm = v_multd(-1, o_norm);
+	condition = v_inner(v_substr(solution, point), v_substr(solution, point));
+	if ((r->colision == 0 || r->distance >= t) && (condition <= pow(obj->c_diameter / 2, 2)))
+		ray_update(r, obj->c_color, t, o_norm, obj->c_orderref);
 }
 
-void	intersection_cylinder(t_ray *ray,t_cylinder *object)
+void	intersection_cylinder(t_ray *r, t_cylinder *obj)
 {
-	t_vector	v_nvec;
 	t_vector	s_norm;
-	t_vector 	centro_base;
-	t_vector	VoCb;
+	t_vector	cb;
 	t_vector	solution;
-	double coef[3];
-	double		discriminante;
-	double		d;
+	double		c[6];
 
-	v_nvec = v_norm(v_substr(object->c_upper,object->c_down));
-	centro_base = v_substr(object->c_down, ray->line.l_point);
-	VoCb = v_substr(ray->line.l_point, object->c_down);
-	intersection_cylinder_plane (ray,object,object->c_down,object->down_p);
-	intersection_cylinder_plane (ray,object,object->c_upper,object->upper_p);
-	coef[0] = 1 - pow (v_inner(ray->line.l_vector,v_nvec),2);
-	coef[1] = 2*(v_inner(ray->line.l_vector,VoCb) - v_inner(ray->line.l_vector,v_nvec)*v_inner(VoCb,v_nvec));
-	coef[2] = v_inner(VoCb,VoCb) - pow(v_inner(VoCb,v_nvec),2) - pow(object->c_diameter/2,2);
-	discriminante = pow(coef[1],2) - 4 * coef[0] * coef [2];
-	if (discriminante < 0)
-		return;
-	d = (- coef[1] + sqrtl(discriminante)) / (2 * coef[0]);
-	if ((- coef[1] - sqrtl(discriminante)) / (2 * coef[0]) < d && (- coef[1] - sqrtl(discriminante)) / (2 * coef[0])>=0)
-		d =  (- coef[1] - sqrtl(discriminante))/ (2 * coef[0]);
-	if (d < 0)
-		return;
-	solution = v_multd (d,ray->line.l_vector);
-	s_norm = v_substr(solution,v_sum(centro_base,v_multd(v_inner(v_substr(solution,centro_base),v_nvec),v_nvec)));
-	if ((ray->colision == 0 ||ray->distance >= d) /* && v_inner(s_norm,r_norm)<= 0*/ && (v_inner(v_substr(solution,centro_base),v_nvec) < object->c_height && v_inner(v_substr(solution,centro_base),v_nvec) >= 0))
-			ray_update(ray, object->c_color, d, s_norm, object->c_orderref);
+	cb = v_substr(obj->c_down, r->line.l_point);
+	intersection_cylinder_plane(r, obj, obj->c_down, obj->down_p);
+	intersection_cylinder_plane(r, obj, obj->c_upper, obj->upper_p);
+	c[0] = 1 - pow(v_inner(r->line.l_vector, obj->c_vh), 2);
+	c[1] = 2 * (v_inner(r->line.l_vector, v_multd(-1, cb)) - v_inner(r->line.l_vector, obj->c_vh) * v_inner(v_multd(-1, cb), obj->c_vh));
+	c[2] = v_inner(v_multd(-1, cb), v_multd(-1, cb)) - pow(v_inner(v_multd(-1, cb), obj->c_vh), 2) - pow(obj->c_diameter / 2, 2);
+	c[3] = pow(c[1], 2) - 4 * c[0] * c[2];
+	c[4] = (-c[1] + sqrt(fabs(c[3]))) / (2 * c[0]);
+	c[5] = (-c[1] - sqrt(fabs(c[3]))) / (2 * c[0]);
+	if (c[5] < c[4] && c[5] >= 0)
+		c[4] = (-c[1] - sqrt(fabs(c[3]))) / (2 * c[0]);
+	if (c[4] < 0 || c[3] < 0)
+		return ;
+	solution = v_multd (c[4], r->line.l_vector);
+	s_norm = v_substr(solution, v_sum(cb, v_multd(v_inner(v_substr(solution, cb), obj->c_vh), obj->c_vh)));
+	if ((r->colision == 0 || r->distance >= c[4]) /* && v_inner(s_norm,r_norm)<= 0*/ && (v_inner(v_substr(solution, cb), obj->c_vh) < obj->c_height && v_inner(v_substr(solution, cb), obj->c_vh) >= 0))
+		ray_update(r, obj->c_color, c[4], s_norm, obj->c_orderref);
 }
-
-
-
-

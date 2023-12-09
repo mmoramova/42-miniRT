@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 12:41:07 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:08:08 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct s_cylinder
 	double		c_height;
 	t_rgb		c_color;
 	t_vector	c_nvector;
+	t_vector	c_vh;
 	t_vector	c_upper;
 	t_vector	c_down;
 	t_plane		upper_p;

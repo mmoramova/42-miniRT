@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_objects2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:10:13 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 12:14:17 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:33:29 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	set_cylinder(t_scene *scene, char **datarow, int *orderref)
 	*orderref += 1;
 	cylinder->c_upper = v_sum(cylinder->c_point,v_multd(cylinder->c_height/2,cylinder->c_direction));
 	cylinder->c_down = v_sum(cylinder->c_point,v_multd(-cylinder->c_height/2,cylinder->c_direction));
+	cylinder->c_vh = v_norm(v_substr(cylinder->c_upper,cylinder->c_down));
 	set_planes_cylinder (&cylinder->upper_p,cylinder->c_upper,cylinder->c_direction);
 	set_planes_cylinder (&cylinder->down_p,cylinder->c_down,v_multd(-1,cylinder->c_direction));
 	ft_lstadd_front(&(scene->cylinders), ft_lstnew(cylinder));
