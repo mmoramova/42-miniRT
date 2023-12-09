@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:43:43 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 11:49:02 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:53:26 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_vector	find_nvector(t_vector v1, double length)
 	return (result);
 }
 
-void ft_error(t_scene *scene, int exitnumber, char *txt)
+void	ft_error(t_scene *scene, int exitnumber, char *txt)
 {
 	ft_putstr_fd("Error\n", 2);
 	if (txt)

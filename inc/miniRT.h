@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 12:14:29 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:41:07 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_surface
 	double		c;
 	double		d;
 	t_vector	nvector;
-
 }	t_surface;
 
 /* BASICS */
@@ -80,7 +79,6 @@ typedef struct s_amblight
 	double			al_ratio;
 	t_rgb			al_color;
 	int				al_count;
-
 }					t_amblight;
 
 typedef struct s_camera
@@ -141,7 +139,6 @@ typedef struct s_cylinder
 }				t_cylinder;
 
 /* SCENE */
-
 typedef struct s_mlx
 {
 	void		*image;
@@ -149,7 +146,7 @@ typedef struct s_mlx
 	int			buf_wid;
 	void		*window;
 	void		*mlx;
-	t_pixel		win_size;	//aprox
+	t_pixel		win_size;
 	int			bpp;
 	int			endian;
 }				t_mlx;
@@ -222,9 +219,9 @@ void		intersection_cylinder(t_ray *ray, t_cylinder *object);
 
 //set_color.c
 void		set_color(t_scene *scene, t_ray *ray);
-t_rgb		set_ambient_color(t_ray *ray, t_amblight *amblight);
-t_rgb		set_diffuse_color(t_ray *ray, t_light *light);
-t_rgb		set_specular_color(t_scene *scene, t_ray *ray, t_light *light);
+t_rgb		ambient_color(t_ray *r, t_amblight *a);
+t_rgb		diffuse_color(t_ray *r, t_light *l);
+t_rgb		specular_color(t_scene *scene, t_ray *r, t_light *l);
 
 ///vector.c 1,2
 t_vector	vector_init(double x, double y, double z);
@@ -245,7 +242,7 @@ void		free_sphere(void *sphere);
 void		free_plane(void *plane);
 void		free_cylinder(void *cylinder);
 
-//mlx.c, draw.c
+///mlx.c, draw.c
 void		window_create(t_scene *scene);
 int			display_mlx_win(t_scene *scene);
 int			scene_exit(t_scene *scene);

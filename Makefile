@@ -6,7 +6,7 @@
 #    By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 09:49:08 by josorteg          #+#    #+#              #
-#    Updated: 2023/12/09 12:04:02 by mmoramov         ###   ########.fr        #
+#    Updated: 2023/12/09 12:32:23 by mmoramov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,13 @@ RM = rm -rf
 LIBC = ar -rcs
 FLAGS = -g -O3 -Wall -Wextra -Werror
 
-
 #------------------------------SORUCES-----------------------------------------#
 
-SRC = miniRT.c set_scene.c set_objects.c set_objects2.c rgb.c vector.c utils.c free.c draw.c mlx.c set_screen.c vector2.c intersection.c ray.c check_objects.c check_objects2.c check_input.c set_color.c
+SRC_FILES = miniRT set_scene set_objects set_objects2 rgb \
+		vector vector2 utils free draw mlx set_screen \
+		intersection ray check_objects check_objects2 \
+		check_input set_color
+SRC = $(addsuffix .c, $(SRC_FILES))
 PATH_SRC = ./src/
 LIBFT = ./libs/libft/
 MLIB = ./libs/minilibx_opengl_20191021/
@@ -45,8 +48,6 @@ dir:
 	@make -C $(LIBFT) bonus
 	@make -C $(MLIB)
 	@mkdir -p $(F_OBJ)
-#	@mkdir -p $(F_OBJ)frac
-#	@mkdir -p $(F_OBJ)menu
 
 $(F_OBJ)%.o:$(PATH_SRC)%.c
 	@$(CC) -MMD $(FLAGS) -c $< -o $@ $(INC)
