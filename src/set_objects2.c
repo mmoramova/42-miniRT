@@ -6,13 +6,13 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:10:13 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 13:45:06 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:29:52 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	set_cylinder(t_scene *scene, char **datarow, int *orderref)
+void	set_cylinder(t_scene *scene, char **datarow)
 {
 	t_cylinder	*cylinder;
 
@@ -26,8 +26,6 @@ void	set_cylinder(t_scene *scene, char **datarow, int *orderref)
 	cylinder->c_diameter = ft_atod(datarow[3]);
 	cylinder->c_height = ft_atod(datarow[4]);
 	cylinder->c_color = set_rgb(datarow[5]);
-	cylinder->c_orderref = *orderref;
-	*orderref += 1;
 	cylinder->c_upper = v_sum(cylinder->c_point, v_multd(cylinder->c_height
 				/ 2, cylinder->c_direction));
 	cylinder->c_down = v_sum(cylinder->c_point, v_multd(-cylinder->c_height

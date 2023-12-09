@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 13:26:22 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:33:07 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ bool	ray_light(t_scene *scene, t_ray *ray, t_light *light)
 	double	distance_lc;
 
 	ray_init(&ray_light, 1, light->l_point, ray->colision_point);
-	ray_light.c_orderref = ray->c_orderref;
 	intersection_vision(scene, &ray_light);
 	distance_lc = v_mod(v_substr(light->l_point, ray->colision_point));
 	if ((distance_lc * 0.99) <= ray_light.distance)
@@ -61,20 +60,14 @@ bool	ray_light(t_scene *scene, t_ray *ray, t_light *light)
 	return (1);
 }
 
-void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref)
+void	ray_update(t_ray *ray, t_rgb o_color, double d, t_vector n_col)
 {
 	t_vector	nray;
 
-	//if (ray->type == 1 && orderref == ray->c_orderref)
-	//	return ;
 	ray->colision = 1;
 	nray = v_norm(ray->line.l_vec);
-	ray->colision_point = v_sum(ray->line.l_point, v_multd(d,nray));
-	ray->color = object_color;
-	ray->n_colision_vector = normal_colision;
+	ray->colision_point = v_sum(ray->line.l_point, v_multd(d, nray));
+	ray->color = o_color;
+	ray->n_colision_vector = n_col;
 	ray->distance = d;
-	//delete!!
-	orderref = 5;
-//	if (ray->type == 0)
-	//	ray->c_orderref = orderref;
 }

@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 17:45:00 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:33:00 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ typedef struct s_ray
 	t_rgb		color;
 	t_vector	n_colision_vector;
 	bool		type; //0 ray, 1 light
-	int			c_orderref;
-	int			l_orderref;
 }	t_ray;
 
 typedef struct s_surface
@@ -111,7 +109,6 @@ typedef struct s_sphere
 	double		sp_diameter;
 	t_rgb		sp_color;
 	t_vector	sp_radium;
-	int			sp_orderref;
 }				t_sphere;
 
 typedef struct s_plane
@@ -120,7 +117,6 @@ typedef struct s_plane
 	t_vector	p_nvector;
 	t_rgb		p_color;
 	t_surface	p_surface;
-	int			p_orderref;
 }				t_plane;
 
 typedef struct s_cylinder
@@ -136,7 +132,6 @@ typedef struct s_cylinder
 	t_vector	c_down;
 	t_plane		upper_p;
 	t_plane		down_p;
-	int			c_orderref;
 }				t_cylinder;
 
 /* SCENE */
@@ -166,7 +161,8 @@ typedef struct s_scene
 
 ///scene.c
 void		scene_create(t_scene *scene, char *file);
-void		scene_fill(t_scene *scene, char **datarow, int *orderref);
+void		scene_fill(t_scene *scene, char **datarow);
+void		print_vector(t_vector vector, char *str);
 void		free_datarow(char **s);
 
 ///utils.c
@@ -180,9 +176,9 @@ void		ft_error(t_scene *scene, int exitnumber, char *txt);
 void		set_amblight(t_scene *scene, char **datarow);
 void		set_camera(t_scene *scene, char **datarow);
 void		set_light(t_scene *scene, char **datarow);
-void		set_sphere(t_scene *scene, char **datarow, int *orderref);
-void		set_plane(t_scene *scene, char **datarow, int *orderref);
-void		set_cylinder(t_scene *scene, char **datarow, int *orderref);
+void		set_sphere(t_scene *scene, char **datarow);
+void		set_plane(t_scene *scene, char **datarow);
+void		set_cylinder(t_scene *scene, char **datarow);
 void		set_planes_cylinder(t_plane *plane, t_vector point, t_vector axis);
 
 ///check_objects.c 1,2;
@@ -212,7 +208,7 @@ t_rgb		rgb_norm(t_rgb c);
 void		ray_init(t_ray *ray, bool type, t_vector v1, t_vector v2);
 int			ray_camera(t_scene *scene, t_pixel pos);
 bool		ray_light(t_scene *scene, t_ray *ray, t_light *light);
-void		ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
+void		ray_update(t_ray *ray, t_rgb o_color, double d, t_vector n_col);
 
 //intersection.c
 void		intersection_vision(t_scene *scene, t_ray *r);
@@ -255,9 +251,5 @@ void		draw_px(t_scene *scene, t_pixel pos);
 int			key_hook(int keycode, t_scene *scene);
 void		draw_win(t_scene *scene);
 void		put_pixel(t_mlx *mlx, int x, int y, int color);
-
-//test
-//void	screen_set(t_scene *scene);
-void		print_vector(t_vector vector, char *str);
 
 #endif

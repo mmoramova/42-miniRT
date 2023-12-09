@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 14:00:51 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:28:46 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	intersection_sphere(t_ray *r, t_sphere *o)
 		rad = v_multd(-1, rad);
 	if (r->colision == 0 || (r->distance > v_mod(v_multd(c[4], l.l_vec))
 			&& v_inner(rad, l.l_vec) <= 0))
-		ray_update(r, o->sp_color, c[4], rad, o->sp_orderref);
+		ray_update(r, o->sp_color, c[4], rad);
 }
 
 void	intersection_plane(t_ray *r, t_plane *o)
@@ -82,7 +82,7 @@ void	intersection_plane(t_ray *r, t_plane *o)
 	if (v_inner(o_norm, r->line.l_vec) >= 0)
 		o_norm = v_multd(-1, o_norm);
 	if (r->colision == 0 || (r->distance >= t))
-		ray_update(r, o->p_color, t, o_norm, o->p_orderref);
+		ray_update(r, o->p_color, t, o_norm);
 }
 
 void	plane_cyl(t_ray *r, t_cylinder *o, t_vector point, t_plane plane)
@@ -108,7 +108,7 @@ void	plane_cyl(t_ray *r, t_cylinder *o, t_vector point, t_plane plane)
 	condition = v_inner(v_substr(solution, point), v_substr(solution, point));
 	if ((r->colision == 0 || r->distance >= t) && (condition
 			<= pow(o->c_diameter / 2, 2)))
-		ray_update(r, o->c_color, t, o_norm, o->c_orderref);
+		ray_update(r, o->c_color, t, o_norm);
 }
 
 void	intersection_cylinder(t_ray *r, t_cylinder *o)
@@ -137,5 +137,5 @@ void	intersection_cylinder(t_ray *r, t_cylinder *o)
 	if ((r->colision == 0 || r->distance >= c[4])
 		&& (v_inner(v_substr(solution, cb), o->c_vh) < o->c_height
 			&& v_inner(v_substr(solution, cb), o->c_vh) >= 0))
-		ray_update(r, o->c_color, c[4], s_norm, o->c_orderref);
+		ray_update(r, o->c_color, c[4], s_norm);
 }

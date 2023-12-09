@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 14:13:19 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:29:46 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	set_camera(t_scene *scene, char **datarow)
 
 	check_camera(scene, datarow);
 	scene->camera.c_point_init = set_vector(datarow[1]);
-	print_vector(scene->camera.c_point_init, "camara inicial");
 	scene->camera.c_point = vector_init(0, 0, 0);
 	scene->camera.c_nvector = v_norm(set_vector(datarow[2]));
 	scene->camera.c_angle = ft_atod(datarow[3]) * 2 * M_PI / 360;
@@ -62,7 +61,7 @@ void	set_light(t_scene *scene, char **datarow)
 	ft_lstadd_front(&(scene->lights), ft_lstnew(light));
 }
 
-void	set_sphere(t_scene *scene, char **datarow, int *orderref)
+void	set_sphere(t_scene *scene, char **datarow)
 {
 	t_sphere	*sphere;
 
@@ -74,12 +73,10 @@ void	set_sphere(t_scene *scene, char **datarow, int *orderref)
 			scene->camera.c_point_init);
 	sphere->sp_diameter = ft_atod(datarow[2]);
 	sphere->sp_color = set_rgb(datarow[3]);
-	sphere->sp_orderref = *orderref;
-	*orderref += 1;
 	ft_lstadd_front(&(scene->spheres), ft_lstnew(sphere));
 }
 
-void	set_plane(t_scene *scene, char **datarow, int *orderref)
+void	set_plane(t_scene *scene, char **datarow)
 {
 	t_plane	*plane;
 
@@ -91,8 +88,6 @@ void	set_plane(t_scene *scene, char **datarow, int *orderref)
 			scene->camera.c_point_init);
 	plane->p_nvector = set_vector(datarow[2]);
 	plane->p_color = set_rgb(datarow[3]);
-	plane->p_orderref = *orderref;
-	*orderref += 1;
 	plane->p_surface.a = -plane->p_nvector.x;
 	plane->p_surface.b = -plane->p_nvector.y;
 	plane->p_surface.c = -plane->p_nvector.z;

@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:41:55 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 17:47:41 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:30:42 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ void	scene_create(t_scene *scene, char *file)
 	int		fd;
 	char	*line;
 	char	**datarow;
-	int		orderref;
 
-	orderref = 1;
 	scene->lights = ft_lstnew(NULL);
 	scene->spheres = ft_lstnew(NULL);
 	scene->planes = ft_lstnew(NULL);
@@ -32,14 +30,14 @@ void	scene_create(t_scene *scene, char *file)
 	{
 		datarow = ft_split_noprintable(line, '\t');
 		free(line);
-		scene_fill(scene, datarow, &orderref);
+		scene_fill(scene, datarow);
 		free_datarow(datarow);
 		line = get_next_line(fd);
 	}
 	close(fd);
 }
 
-void	scene_fill(t_scene *scene, char **datarow, int *orderref)
+void	scene_fill(t_scene *scene, char **datarow)
 {
 	if ((datarow[0][0]) == '\n')
 		return ;
@@ -50,13 +48,19 @@ void	scene_fill(t_scene *scene, char **datarow, int *orderref)
 	else if (ft_strncmp(datarow[0], "l", 1) == 0 && ft_strlen(datarow[0]) == 1)
 		set_light(scene, datarow);
 	else if (ft_strncmp(datarow[0], "sp", 2) == 0 && ft_strlen(datarow[0]) == 2)
-		set_sphere(scene, datarow, orderref);
+		set_sphere(scene, datarow);
 	else if (ft_strncmp(datarow[0], "pl", 2) == 0 && ft_strlen(datarow[0]) == 2)
-		set_plane(scene, datarow, orderref);
+		set_plane(scene, datarow);
 	else if (ft_strncmp(datarow[0], "cy", 2) == 0 && ft_strlen(datarow[0]) == 2)
-		set_cylinder(scene, datarow, orderref);
+		set_cylinder(scene, datarow);
 	else
 		ft_error(scene, 1, "incorrect .rt file");
+}
+
+void	print_vector(t_vector vector, char *str)
+{
+	printf("vector %s is (%f, %f, %f)\n", str, vector.x, vector.y, vector.z);
+	return ;
 }
 
 void	free_datarow(char **s)
