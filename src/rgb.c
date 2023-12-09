@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rgb.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 14:03:12 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 22:03:01 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:42:00 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_rgb	set_rgb(char *row)
 	rgb.r = ft_atoi(colors[0]);
 	rgb.g = ft_atoi(colors[1]);
 	rgb.b = ft_atoi(colors[2]);
+	free_datarow(colors);
 	rgb.rgb = (rgb.r << 16 | rgb.g << 8 | rgb.b);
 	return (rgb);
 }

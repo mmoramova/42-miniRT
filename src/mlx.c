@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 14:03:45 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 16:05:52 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:47:06 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,11 @@ int	key_hook(int keycode, t_scene *scene)
 {
 	if (keycode == ESC_KEY)
 		scene_exit(scene);
-	draw_win(scene);
 	return (0);
 }
 
 int	scene_exit(t_scene *scene)
 {
-	if (scene->mlx.mlx && scene->mlx.window)
-		mlx_destroy_window(scene->mlx.mlx, scene->mlx.window);
-	if (scene->mlx.mlx && scene->mlx.image)
-		mlx_destroy_image(scene->mlx.mlx, scene->mlx.image);
+	free_scene(scene);
 	exit(0);
 }

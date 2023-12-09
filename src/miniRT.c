@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 13:05:28 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 15:51:00 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:45:47 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,5 @@ int	main(int argc, char **argv)
 	window_create(&scene);
 	scene_create(&scene, argv[1]);
 	display_mlx_win(&scene);
-	free_scene(&scene);
 	return (0);
 }

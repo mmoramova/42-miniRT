@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 16:27:43 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:45:00 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ typedef struct s_scene
 ///scene.c
 void		scene_create(t_scene *scene, char *file);
 void		scene_fill(t_scene *scene, char **datarow, int *orderref);
+void		free_datarow(char **s);
 
 ///utils.c
 int			ft_check_arg(char *file);

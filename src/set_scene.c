@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:41:55 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 21:43:42 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:47:41 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	scene_create(t_scene *scene, char *file)
 	scene->spheres = ft_lstnew(NULL);
 	scene->planes = ft_lstnew(NULL);
 	scene->cylinders = ft_lstnew(NULL);
+	scene->amblight.al_count = 0;
+	scene->camera.c_count = 0;
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
@@ -31,7 +33,7 @@ void	scene_create(t_scene *scene, char *file)
 		datarow = ft_split_noprintable(line, '\t');
 		free(line);
 		scene_fill(scene, datarow, &orderref);
-		free(datarow);
+		free_datarow(datarow);
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -55,4 +57,17 @@ void	scene_fill(t_scene *scene, char **datarow, int *orderref)
 		set_cylinder(scene, datarow, orderref);
 	else
 		ft_error(scene, 1, "incorrect .rt file");
+}
+
+void	free_datarow(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		free(s[i]);
+		i++;
+	}
+	free(s);
 }

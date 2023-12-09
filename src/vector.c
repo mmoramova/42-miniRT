@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:12:06 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 11:35:44 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:42:15 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_vector	set_vector(char *row)
 	vector.x = ft_atod(data[0]);
 	vector.y = ft_atod(data[1]);
 	vector.z = ft_atod(data[2]);
+	free_datarow(data);
 	return (vector);
 }
 
