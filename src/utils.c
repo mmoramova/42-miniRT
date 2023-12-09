@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:43:43 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 13:46:44 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 14:13:42 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_vector	find_nvector(t_vector v1, double length)
 	return (result);
 }
 
-void eq_two_grade(double *c)
+void	eq_two_grade(double *c)
 {
 	c[3] = pow(c[1], 2) - 4 * c[0] * c[2];
 	c[4] = (-c[1] + sqrt(fabs(c[3]))) / (2 * c[0]);
