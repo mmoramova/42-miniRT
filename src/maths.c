@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:19:49 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 21:45:03 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 10:53:55 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 double	distance (t_vector point1,t_vector point2)
 {
-	//printf("distance = %f\n",sqrt (pow((point1.x - point2.x),2)+pow((point1.y - point2.y),2)+pow((point1.z - point2.z),2)));
 	return (sqrt (pow((point1.x - point2.x),2)+pow((point1.y - point2.y),2)+pow((point1.z - point2.z),2)));
 }
 
@@ -42,29 +41,20 @@ t_vector v_norm(t_vector v1)
 {
 	double	module;
 
-	module = sqrt(pow(v1.x,2) + pow(v1.y,2) + pow(v1.z,2));
-	v1.x = v1.x/module;
-	v1.y = v1.y/module;
-	v1.z = v1.z/module;
-	//printf("vector (%f,%f,%f), con v_mod %f\n",v1.x,v1.y,v1.z,v_mod(v1));
+	module = sqrt(pow(v1.x,2) + pow(v1.y,2) + pow(v1.z,2)); //use the v _mod
+	v1.x = v1.x / module;
+	v1.y = v1.y / module;
+	v1.z = v1.z / module;
 	return (v1);
 }
 
 double	v_mod(t_vector v1)
 {
 	double	result;
-	result = sqrt(pow(v1.x,2) + pow(v1.y,2) + pow(v1.z,2));
+	result = sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2));
 	return(result);
 }
 
-t_line	l_create (t_vector pi, t_vector pf)
-{
-	t_line	ray;
-
-	ray.l_point = pi;
-	ray.l_vector = v_substr(pf, pi);
-	return (ray);
-}
 
 t_vector v_multd(double esc, t_vector vec)
 {
@@ -97,8 +87,7 @@ t_vector v_sum(t_vector v1, t_vector v2)
 
 }
 
-
-t_vector	find_normal_vector (t_vector v1, double lengh)
+t_vector	find_normal_vector(t_vector v1, double lengh) //find_nvector
 {
 	t_vector result;
 
@@ -122,7 +111,5 @@ t_vector	find_normal_vector (t_vector v1, double lengh)
 	result.x= result.x * lengh;
 	result.y= result.y * lengh;
 	result.z= result.z * lengh;
-	//printf("vector (%f,%f,%f), con v_mod %f",result.x,result.y,result.z,sqrt(pow(result.x,2) + pow(result.y,2) + pow(result.z,2)));
 	return (result);
 }
-

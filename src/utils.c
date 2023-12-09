@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:43:43 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 17:07:54 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 10:51:17 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,14 @@ int	ft_check_arg(char *file)
 	return (0);
 }
 
-void	print_vector(t_vector vector,char	*str)
+t_line	l_create (t_vector pi, t_vector pf)
 {
-	printf("vector %s is (%f,%f,%f)\n",str,vector.x,vector.y,vector.z);
-	return;
+	t_line	ray;
+
+	ray.l_point = pi;
+	ray.l_vector = v_substr(pf, pi);
+	return (ray);
 }
+
+
+

@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:48:20 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 22:51:47 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 10:46:23 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,9 @@
 	scene->camera.c_up = v_multd(fov,scene->camera.c_up);
 }*/
 
+void	print_vector(t_vector vector,char	*str)
+{
+	printf("vector %s is (%f,%f,%f)\n",str,vector.x,vector.y,vector.z);
+	return;
+}
 

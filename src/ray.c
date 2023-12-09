@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 22:50:32 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 11:00:26 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ray_camera(t_scene *scene, t_pixel pos)
 
 	width = scene->camera.c_left;
 	hight = scene->camera.c_up;
-	//TODO we can do it nicer
 	init_point.x = scene->camera.c_ray.x + width.x + hight.x
 		- 2 * pos.x * (width.x / scene->mlx.win_size.x)
 		- 2 * pos.y * (hight.x / scene->mlx.win_size.y);
@@ -56,7 +55,7 @@ bool	ray_light(t_scene *scene, t_ray *ray, t_light *light)
 	ray_light.c_orderref = ray->c_orderref;
 	intersection_vision(scene, &ray_light);
 	distance_lc = v_mod(v_substr(light->l_point, ray->colision_point));
-	if ((distance_lc) <= ray_light.distance)
+	if ((distance_lc*0.99) <= ray_light.distance)
 		return (0);
 	return (1);
 }
@@ -73,6 +72,8 @@ void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colisi
 	ray->color = object_color;
 	ray->n_colision_vector = normal_colision;
 	ray->distance = d;
+	//delete!!
+	//orderref = 5;
 	if (ray->type == 0)
 		ray->c_orderref = orderref;
 }
