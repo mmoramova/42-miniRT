@@ -17,20 +17,21 @@ RM = rm -f
 DEPS = $(SRCS:.c=.d)
 DEPS_BONUS = $(SRCSBONUS:.c=.d)
 
-%.o: %.c
-	@${CC} ${CFLAGS} -MMD $(INCLUDE) -c $< -o $@
+%.o: %.c Makefile
+	${CC} ${CFLAGS} -MMD $(INCLUDE) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@ar -rcs $(NAME) $(OBJS)
+	ar -rcs $(NAME) $(OBJS)
 
 -include $(DEPS)
 
 bonus: $(BONUS)
 
 $(BONUS) : $(OBJS) $(OBJSBONUS)
-	@ar -rcs $(NAME) $(OBJS) $(OBJSBONUS)
+	ar -rcs $(NAME) $(OBJS) $(OBJSBONUS)
+	touch $(BONUS)
 
 -include $(DEPS_BONUS)
 
