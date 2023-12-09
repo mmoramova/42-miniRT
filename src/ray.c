@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 11:00:26 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 11:55:38 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ray_init(t_ray *ray, bool type, t_vector v1, t_vector v2)
 	ray->distance = 30000000;
 	ray->colision = 0;
 	ray->line = (l_create (v1, v2));
+	ray->line.l_vector = v_norm(ray->line.l_vector);
 	ray->type = type;
 }
 
@@ -64,8 +65,8 @@ void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colisi
 {
 	t_vector	nray;
 
-	if (ray->type == 1 && orderref == ray->c_orderref)
-		return ;
+	// if (ray->type == 1 && orderref == ray->c_orderref)
+	// 	return ;
 	ray->colision = 1;
 	nray = v_norm(ray->line.l_vector);
 	ray->colision_point = v_sum(ray->line.l_point, v_multd(d,nray));
@@ -73,7 +74,7 @@ void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colisi
 	ray->n_colision_vector = normal_colision;
 	ray->distance = d;
 	//delete!!
-	//orderref = 5;
-	if (ray->type == 0)
-		ray->c_orderref = orderref;
+	orderref = 5;
+	// if (ray->type == 0)
+	// 	ray->c_orderref = orderref;
 }
