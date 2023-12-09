@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:27:38 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 11:01:49 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:13:59 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ void	intersection_plane(t_ray *ray, t_plane *object)
 
 	u_norm = ray->line.l_vector;
 	u_norm = v_norm(u_norm);
-	o_norm.x = object->p_surface.A;
-	o_norm.y = object->p_surface.B;
-	o_norm.z = object->p_surface.C;
+	o_norm.x = object->p_surface.a;
+	o_norm.y = object->p_surface.b;
+	o_norm.z = object->p_surface.c;
 	if (v_inner(o_norm,u_norm) == 0 )
 	 	return;
-	t = - (object->p_surface.D + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,u_norm);
+	t = - (object->p_surface.d + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,u_norm);
 	solution = v_multd(t,u_norm);
 	if (v_inner(u_norm,solution) < 0)
 		return;
@@ -110,13 +110,13 @@ void	intersection_cylinder_plane(t_ray *ray,t_cylinder *object,t_vector point,t_
 
 	u_norm = ray->line.l_vector;
 	u_norm = v_norm(u_norm);
-	o_norm.x = plane.p_surface.A;
-	o_norm.y = plane.p_surface.B;
-	o_norm.z = plane.p_surface.C;
+	o_norm.x = plane.p_surface.a;
+	o_norm.y = plane.p_surface.b;
+	o_norm.z = plane.p_surface.c;
 	point = v_substr(point,ray->line.l_point);
 	if (v_inner(o_norm,u_norm) == 0 )
 	 	return;
-	t = - (plane.p_surface.D + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,u_norm);
+	t = - (plane.p_surface.d + v_inner(o_norm,ray->line.l_point))/v_inner(o_norm,u_norm);
 	solution = v_multd(t,u_norm);
 	if (t < 0)
 		return;

@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 09:07:33 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/08 22:23:49 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:03:17 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,3 @@ void	put_pixel(t_mlx *mlx, int x, int y, int color)
 	if (x >= 0 && x < mlx->win_size.x && y >= 0 && y < mlx->win_size.y)
 		img[x + mlx->win_size.x * y] = color;
 }
-
-

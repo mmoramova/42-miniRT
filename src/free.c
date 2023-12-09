@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:50:16 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 22:22:46 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 11:48:07 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,3 @@ void	free_cylinder(void *cylinder)
 	if (cylinder)
 		free(cylinder);
 }
-
-
-
-
-

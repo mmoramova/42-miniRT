@@ -6,16 +6,16 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 22:56:06 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:14:29 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include"libft.h"
-# include"keyscode.h"
-# include"mlx.h"
+# include "libft.h"
+# include "keyscode.h"
+# include "mlx.h"
 # include <math.h>
 # include <unistd.h>
 # include <stdbool.h>
@@ -66,10 +66,10 @@ typedef struct s_ray
 
 typedef struct s_surface
 {
-	double		A;
-	double		B;
-	double		C;
-	double		D;
+	double		a;
+	double		b;
+	double		c;
+	double		d;
 	t_vector	nvector;
 
 }	t_surface;
@@ -87,7 +87,7 @@ typedef struct s_camera
 {
 	t_vector	c_point;
 	t_vector	c_point_init;
-	t_vector	c_inter; //point of intersection with unitary vector
+	t_vector	c_inter;
 	t_vector	c_nvector;
 	t_vector	c_up;
 	t_vector	c_left;
@@ -167,104 +167,96 @@ typedef struct s_scene
 }				t_scene;
 
 ///scene.c
-void scene_create(t_scene *scene, char *file);
-void scene_fill(t_scene *scene, char **datarow, int *orderref);
+void		scene_create(t_scene *scene, char *file);
+void		scene_fill(t_scene *scene, char **datarow, int *orderref);
 
-//utils.c
-int	ft_check_arg(char *file);
+///utils.c
+int			ft_check_arg(char *file);
+t_vector	find_nvector(t_vector v1, double length);
+t_line		l_create(t_vector pi, t_vector pf);
+void		ft_error(t_scene *scene, int exitnumber, char *txt);
 
-///set_objects 1,2;
-void	set_amblight(t_scene *scene, char **datarow);
-void	set_camera(t_scene *scene, char **datarow);
-void	set_light(t_scene *scene, char **datarow);
-void	set_sphere(t_scene *scene, char **datarow, int *orderref);
-void	set_plane(t_scene *scene, char **datarow, int *orderref);
-void	set_cylinder(t_scene *scene, char **datarow, int *orderref);
-void	set_planes_cylinder (t_plane *plane,t_vector point,t_vector axis);
+///set_objects.c 1,2;
+void		set_amblight(t_scene *scene, char **datarow);
+void		set_camera(t_scene *scene, char **datarow);
+void		set_light(t_scene *scene, char **datarow);
+void		set_sphere(t_scene *scene, char **datarow, int *orderref);
+void		set_plane(t_scene *scene, char **datarow, int *orderref);
+void		set_cylinder(t_scene *scene, char **datarow, int *orderref);
+void		set_planes_cylinder(t_plane *plane, t_vector point, t_vector axis);
 
-///check_objects 1,2;
-void	check_amblight(t_scene *scene, char **datarow);
-void	check_camera(t_scene *scene, char **datarow);
-void	check_light(t_scene *scene, char **datarow);
-void	check_sphere(t_scene *scene, char **datarow);
-void	check_plane(t_scene *scene, char **datarow);
-void	check_cylinder(t_scene *scene, char **datarow);
+///check_objects.c 1,2;
+void		check_amblight(t_scene *scene, char **datarow);
+void		check_camera(t_scene *scene, char **datarow);
+void		check_light(t_scene *scene, char **datarow);
+void		check_sphere(t_scene *scene, char **datarow);
+void		check_plane(t_scene *scene, char **datarow);
+void		check_cylinder(t_scene *scene, char **datarow);
 
 ///check_input.c
-int check_ratio(char *data);
-int check_angle(char *data);
-int check_color(char *data);
-int check_vector(char *data);
-int check_nbrpositive(char *data);
+int			check_ratio(char *data);
+int			check_angle(char *data);
+int			check_color(char *data);
+int			check_vector(char *data);
+int			check_nbrpositive(char *data);
 
 ///rgb.c
-t_rgb	set_rgb(char *row);
-t_rgb	rgb_mult(t_rgb c1, t_rgb c2);
-t_rgb	rgb_multd(t_rgb c1, double r);
-t_rgb	rgb_sum(t_rgb c1, t_rgb c2);
-t_rgb	rgb_norm(t_rgb c);
+t_rgb		set_rgb(char *row);
+t_rgb		rgb_mult(t_rgb c1, t_rgb c2);
+t_rgb		rgb_multd(t_rgb c1, double r);
+t_rgb		rgb_sum(t_rgb c1, t_rgb c2);
+t_rgb		rgb_norm(t_rgb c);
 
 //ray.c
-void	ray_init(t_ray *ray, bool type, t_vector v1, t_vector v2);
-int		ray_camera(t_scene *scene, t_pixel pos);
-bool	ray_light (t_scene *scene, t_ray *ray, t_light *light);
-void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
+void		ray_init(t_ray *ray, bool type, t_vector v1, t_vector v2);
+int			ray_camera(t_scene *scene, t_pixel pos);
+bool		ray_light(t_scene *scene, t_ray *ray, t_light *light);
+void		ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
 
 //intersection.c
-void 	intersection_vision (t_scene *scene, t_ray *ray);
-void	intersection_sphere(t_ray *ray, t_sphere *object);
-void	intersection_plane(t_ray *ray, t_plane *object);
-void	intersection_cylinder_plane(t_ray *ray,t_cylinder *object,t_vector point,t_plane plane);
-void	intersection_cylinder (t_ray *ray,t_cylinder *object);
+void		intersection_vision(t_scene *scene, t_ray *ray);
+void		intersection_sphere(t_ray *ray, t_sphere *object);
+void		intersection_plane(t_ray *ray, t_plane *object);
+void		intersection_cylinder_plane(t_ray *ray, t_cylinder *object, t_vector point, t_plane plane);
+void		intersection_cylinder(t_ray *ray, t_cylinder *object);
 
 //set_color.c
-void	set_color(t_scene *scene, t_ray *ray);
-t_rgb	set_ambient_color (t_ray *ray, t_amblight *amblight);
-t_rgb	set_diffuse_color (t_ray *ray, t_light *light);
-t_rgb	set_specular_color (t_scene *scene, t_ray *ray, t_light *light);
+void		set_color(t_scene *scene, t_ray *ray);
+t_rgb		set_ambient_color(t_ray *ray, t_amblight *amblight);
+t_rgb		set_diffuse_color(t_ray *ray, t_light *light);
+t_rgb		set_specular_color(t_scene *scene, t_ray *ray, t_light *light);
 
-//vector.c
-t_vector vector_init(double x, double y, double z);
-t_vector str2vector(char *row);
-t_vector set_vector(char *x, char *y, char *z);
-
-//error.c
-void ft_error(t_scene *scene, int exitnumber, char *txt);
-
-//free.c
-void free_scene(t_scene *scene);
-void free_light(void *light);
-void free_sphere(void *sphere);
-void free_plane(void *plane);
-void free_cylinder(void *cylinder);
-
-//minilib
-void	window_create(t_scene *scene);
-int		display_mlx_win(t_scene *scene);
-void	draw_px(t_scene *scene, t_pixel pos);
-void	draw_win(t_scene *scene);
-void	put_pixel(t_mlx *mlx, int x, int y, int color);
-//hook
-int		key_hook(int keycode, t_scene *scene); //exit
-int		scene_exit(t_scene *scene);
-
-//Calculus
-//void	screen_set(t_scene *scene);
-
-//General calculus
-double		distance (t_vector point1,t_vector point2);
-double		v_inner (t_vector vector1, t_vector vector2);
-t_vector 	v_mult (t_vector vector1, t_vector vector2);
-t_vector 	v_multd(double esc, t_vector vec);
-t_vector	find_normal_vector (t_vector v1, double lengh);
-t_vector 	v_norm(t_vector v1);
-double		v_mod(t_vector v1);
-t_line		l_create (t_vector pi, t_vector pf);
-t_vector 	v_substr(t_vector v1, t_vector v2);
+///vector.c 1,2
+t_vector	vector_init(double x, double y, double z);
+t_vector	set_vector(char *row);
+t_vector	v_multd(double esc, t_vector vec);
+t_vector	v_substr(t_vector v1, t_vector v2);
 t_vector	v_sum(t_vector v1, t_vector v2);
+double		v_mod(t_vector v1);
+double		distance(t_vector point1, t_vector point2);
+double		v_inner(t_vector vector1, t_vector vector2);
+t_vector	v_mult(t_vector vector1, t_vector vector2);
+t_vector	v_norm(t_vector v1);
 
+///free.c
+void		free_scene(t_scene *scene);
+void		free_light(void *light);
+void		free_sphere(void *sphere);
+void		free_plane(void *plane);
+void		free_cylinder(void *cylinder);
 
+//mlx.c, draw.c
+void		window_create(t_scene *scene);
+int			display_mlx_win(t_scene *scene);
+int			scene_exit(t_scene *scene);
+int			scene_exit(t_scene *scene);
+void		draw_px(t_scene *scene, t_pixel pos);
+int			key_hook(int keycode, t_scene *scene);
+void		draw_win(t_scene *scene);
+void		put_pixel(t_mlx *mlx, int x, int y, int color);
 
 //test
-void	print_vector(t_vector vector,char	*str);
+//void	screen_set(t_scene *scene);
+void		print_vector(t_vector vector, char *str);
+
 #endif

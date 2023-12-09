@@ -6,7 +6,7 @@
 /*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 11:00:26 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 11:46:57 by mmoramov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	ray_light(t_scene *scene, t_ray *ray, t_light *light)
 	ray_light.c_orderref = ray->c_orderref;
 	intersection_vision(scene, &ray_light);
 	distance_lc = v_mod(v_substr(light->l_point, ray->colision_point));
-	if ((distance_lc*0.99) <= ray_light.distance)
+	if ((distance_lc * 0.99) <= ray_light.distance)
 		return (0);
 	return (1);
 }
@@ -64,8 +64,8 @@ void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colisi
 {
 	t_vector	nray;
 
-	if (ray->type == 1 && orderref == ray->c_orderref)
-		return ;
+	//if (ray->type == 1 && orderref == ray->c_orderref)
+	//	return ;
 	ray->colision = 1;
 	nray = v_norm(ray->line.l_vector);
 	ray->colision_point = v_sum(ray->line.l_point, v_multd(d,nray));
@@ -73,7 +73,7 @@ void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colisi
 	ray->n_colision_vector = normal_colision;
 	ray->distance = d;
 	//delete!!
-	//orderref = 5;
-	if (ray->type == 0)
-		ray->c_orderref = orderref;
+	orderref = 5;
+//	if (ray->type == 0)
+	//	ray->c_orderref = orderref;
 }
