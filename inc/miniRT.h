@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 13:08:08 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 14:00:51 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_rgb
 typedef struct s_line
 {
 	t_vector	l_point;
-	t_vector	l_vector;
+	t_vector	l_vec;
 }		t_line;
 
 typedef struct s_ray
@@ -171,6 +171,7 @@ void		scene_fill(t_scene *scene, char **datarow, int *orderref);
 ///utils.c
 int			ft_check_arg(char *file);
 t_vector	find_nvector(t_vector v1, double length);
+void		eq_two_grade(double *c);
 t_line		l_create(t_vector pi, t_vector pf);
 void		ft_error(t_scene *scene, int exitnumber, char *txt);
 
@@ -212,11 +213,11 @@ bool		ray_light(t_scene *scene, t_ray *ray, t_light *light);
 void		ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colision, int orderref);
 
 //intersection.c
-void		intersection_vision(t_scene *scene, t_ray *ray);
-void		intersection_sphere(t_ray *ray, t_sphere *object);
-void		intersection_plane(t_ray *ray, t_plane *object);
-void		intersection_cylinder_plane(t_ray *ray, t_cylinder *object, t_vector point, t_plane plane);
-void		intersection_cylinder(t_ray *ray, t_cylinder *object);
+void		intersection_vision(t_scene *scene, t_ray *r);
+void		intersection_sphere(t_ray *r, t_sphere *o);
+void		intersection_plane(t_ray *r, t_plane *o);
+void		plane_cyl(t_ray *r, t_cylinder *o, t_vector point, t_plane plane);
+void		intersection_cylinder(t_ray *r, t_cylinder *o);
 
 //set_color.c
 void		set_color(t_scene *scene, t_ray *ray);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_objects.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:09:00 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 12:13:48 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:45:53 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	set_camera(t_scene *scene, char **datarow)
 
 	check_camera(scene, datarow);
 	scene->camera.c_point_init = set_vector(datarow[1]);
-	print_vector(scene->camera.c_point_init,"camara inicial");
+	print_vector(scene->camera.c_point_init, "camara inicial");
 	scene->camera.c_point = vector_init(0,0,0);
 	scene->camera.c_nvector = v_norm(set_vector(datarow[2]));
 	scene->camera.c_angle = ft_atod(datarow[3])* 2 * M_PI / 360;
@@ -56,7 +56,6 @@ void	set_light(t_scene *scene, char **datarow)
 	print_vector(light->l_point,"posicion inicial de la luz");
 	light->l_brightness = ft_atod(datarow[2]);
 	light->color = set_rgb(datarow[3]);
-
 	ft_lstadd_front(&(scene->lights), ft_lstnew(light));
 }
 
@@ -69,12 +68,11 @@ void	set_sphere(t_scene *scene, char **datarow, int *orderref)
 	if (!sphere)
 		ft_error(scene, 1, "Malloc error - sphere");
 	sphere->sp_point = v_substr(set_vector(datarow[1]),scene->camera.c_point_init);
-	print_vector(sphere->sp_point,"posicion inicial de la esfera");
+	print_vector(sphere->sp_point, "posicion inicial de la esfera");
 	sphere->sp_diameter = ft_atod(datarow[2]);
 	sphere->sp_color = set_rgb(datarow[3]);
 	sphere->sp_orderref = *orderref;
 	*orderref += 1;
-	printf("Order number of sphere is %d\n",sphere->sp_orderref);
 	ft_lstadd_front(&(scene->spheres), ft_lstnew(sphere));
 }
 
@@ -86,8 +84,7 @@ void	set_plane(t_scene *scene, char **datarow, int *orderref)
 	plane = (t_plane *) malloc(sizeof(t_plane));
 	if (!plane)
 		ft_error(scene, 1, "Malloc error - plane");
-	write(1,"a",1);
-	plane->p_point = v_substr(set_vector(datarow[1]),scene->camera.c_point_init);;
+	plane->p_point = v_substr(set_vector(datarow[1]), scene->camera.c_point_init);;
 	plane->p_nvector = set_vector(datarow[2]);
 	plane->p_color = set_rgb(datarow[3]);
 	plane->p_orderref = *orderref;
@@ -95,10 +92,8 @@ void	set_plane(t_scene *scene, char **datarow, int *orderref)
 	plane->p_surface.a = -plane->p_nvector.x;
 	plane->p_surface.b = -plane->p_nvector.y;
 	plane->p_surface.c = -plane->p_nvector.z;
-	plane->p_surface.d = -(plane->p_surface.a*(plane->p_point.x) +
-								plane->p_surface.b*(plane->p_point.y) +
-								plane->p_surface.c*(plane->p_point.z));
-
-
+	plane->p_surface.d = -(plane->p_surface.a * (plane->p_point.x)
+			+ plane->p_surface.b * (plane->p_point.y)
+			+ plane->p_surface.c * (plane->p_point.z));
 	ft_lstadd_front(&(scene->planes), ft_lstnew(plane));
 }

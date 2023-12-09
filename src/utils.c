@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 15:43:43 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 12:53:26 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:46:44 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_line	l_create(t_vector pi, t_vector pf)
 	t_line	ray;
 
 	ray.l_point = pi;
-	ray.l_vector = v_substr(pf, pi);
+	ray.l_vec = v_substr(pf, pi);
 	return (ray);
 }
 
@@ -53,6 +53,15 @@ t_vector	find_nvector(t_vector v1, double length)
 	}
 	result = v_multd(length, v_norm(result));
 	return (result);
+}
+
+void eq_two_grade(double *c)
+{
+	c[3] = pow(c[1], 2) - 4 * c[0] * c[2];
+	c[4] = (-c[1] + sqrt(fabs(c[3]))) / (2 * c[0]);
+	c[5] = (-c[1] - sqrt(fabs(c[3]))) / (2 * c[0]);
+	if (c[5] < c[4] && c[5] >= 0)
+		c[4] = (-c[1] - sqrt(fabs(c[3]))) / (2 * c[0]);
 }
 
 void	ft_error(t_scene *scene, int exitnumber, char *txt)

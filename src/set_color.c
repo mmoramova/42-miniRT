@@ -72,7 +72,8 @@ t_rgb	specular_color(t_scene *scene, t_ray *r, t_light *l)
 
 	l_nvec = v_norm(v_substr(r->colision_point, l->l_point));
 	refl_vec = v_substr(l_nvec, v_multd(2 * v_inner(l_nvec,
-				v_norm(r->n_colision_vector)), v_norm(r->n_colision_vector)));
+					v_norm(r->n_colision_vector)),
+				v_norm(r->n_colision_vector)));
 	view_vec = v_norm(v_substr(scene->camera.c_point, r->colision_point));
 	spec_factor = pow(fmax(0, v_inner(refl_vec, view_vec)), 32);
 	if (r->color.rgb == 0)

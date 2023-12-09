@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:49:12 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 12:20:34 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:26:22 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ray_init(t_ray *ray, bool type, t_vector v1, t_vector v2)
 	ray->distance = 30000000;
 	ray->colision = 0;
 	ray->line = (l_create (v1, v2));
-	ray->line.l_vector = v_norm(ray->line.l_vector);
+	ray->line.l_vec = v_norm(ray->line.l_vec);
 	ray->type = type;
 }
 
@@ -68,7 +68,7 @@ void	ray_update(t_ray *ray, t_rgb object_color, double d, t_vector normal_colisi
 	//if (ray->type == 1 && orderref == ray->c_orderref)
 	//	return ;
 	ray->colision = 1;
-	nray = v_norm(ray->line.l_vector);
+	nray = v_norm(ray->line.l_vec);
 	ray->colision_point = v_sum(ray->line.l_point, v_multd(d,nray));
 	ray->color = object_color;
 	ray->n_colision_vector = normal_colision;
