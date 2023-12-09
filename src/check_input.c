@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:00:26 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/08 21:58:50 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:27:04 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,16 @@ int	check_vector(char *data)
 	return (1);
 }
 
-int	check_nbrpositive(char *data)
+int	check_nvector(char *data)
 {
-	int		i;
-	int		count_dots;
+	t_vector	nvector;
 
-	i = 0;
-	count_dots = 0;
-	while (data[i] && data[i] != '\n')
-	{
-		if (!ft_isdigit(data[i]) && data[i] != '.')
-			return (0);
-		if (data[i] == '.')
-			count_dots += 1;
-		i++;
-	}
-	if (data[i - 1] == '.' || count_dots > 1)
+	if (!check_vector(data))
+		return (0);
+	nvector = set_vector(data);
+	if (nvector.x > 1 || nvector.x < -1
+		|| nvector.y > 1 || nvector.y < -1
+		|| nvector.z > 1 || nvector.z < -1)
 		return (0);
 	return (1);
 }

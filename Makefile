@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+         #
+#    By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 09:49:08 by josorteg          #+#    #+#              #
-#    Updated: 2023/12/09 12:32:23 by mmoramov         ###   ########.fr        #
+#    Updated: 2023/12/09 16:27:24 by josorteg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ FLAGS = -g -O3 -Wall -Wextra -Werror
 SRC_FILES = miniRT set_scene set_objects set_objects2 rgb \
 		vector vector2 utils free draw mlx set_screen \
 		intersection ray check_objects check_objects2 \
-		check_input set_color
+		check_input check_input2 set_color
 SRC = $(addsuffix .c, $(SRC_FILES))
 PATH_SRC = ./src/
 LIBFT = ./libs/libft/

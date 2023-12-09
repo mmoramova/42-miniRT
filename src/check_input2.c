@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   miniRT.c                                           :+:      :+:    :+:   */
+/*   check_input2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/11 13:05:28 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 15:51:00 by josorteg         ###   ########.fr       */
+/*   Created: 2023/12/09 16:26:55 by josorteg          #+#    #+#             */
+/*   Updated: 2023/12/09 16:27:13 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int	main(int argc, char **argv)
+int	check_nbrpositive(char *data)
 {
-	t_scene	scene;
+	int		i;
+	int		count_dots;
 
-	if (argc != 2 || ft_check_arg(argv[1]))
+	i = 0;
+	count_dots = 0;
+	while (data[i] && data[i] != '\n')
 	{
-		ft_putstr_fd("Error\nPlease add one .rt type argument\n", 2);
-		exit (1);
+		if (!ft_isdigit(data[i]) && data[i] != '.')
+			return (0);
+		if (data[i] == '.')
+			count_dots += 1;
+		i++;
 	}
-	window_create(&scene);
-	scene_create(&scene, argv[1]);
-	display_mlx_win(&scene);
-	free_scene(&scene);
-	return (0);
+	if (data[i - 1] == '.' || count_dots > 1)
+		return (0);
+	return (1);
 }

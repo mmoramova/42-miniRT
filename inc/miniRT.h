@@ -6,7 +6,7 @@
 /*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:59:11 by mmoramov          #+#    #+#             */
-/*   Updated: 2023/12/09 14:00:51 by josorteg         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:27:43 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,11 +192,12 @@ void		check_sphere(t_scene *scene, char **datarow);
 void		check_plane(t_scene *scene, char **datarow);
 void		check_cylinder(t_scene *scene, char **datarow);
 
-///check_input.c
+///check_input.c 1,2
 int			check_ratio(char *data);
 int			check_angle(char *data);
 int			check_color(char *data);
 int			check_vector(char *data);
+int			check_nvector(char *data);
 int			check_nbrpositive(char *data);
 
 ///rgb.c

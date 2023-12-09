@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoramov <mmoramov@student.42barcel>       +#+  +:+       +#+        */
+/*   By: josorteg <josorteg@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 14:03:45 by josorteg          #+#    #+#             */
-/*   Updated: 2023/12/09 12:04:05 by mmoramov         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:05:52 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	window_create(t_scene *scene)
 {
-	scene->mlx.win_size.x = 1400;
-	scene->mlx.win_size.y = 800;
+	scene->mlx.win_size.x = 1900;
+	scene->mlx.win_size.y = 980;
 }
 
 static void	add_mlx_hook(t_scene *scene)
